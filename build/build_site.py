@@ -159,5 +159,12 @@ page('index.html', 'Destination Cycling',
      'Station readings on the Spain dashboard: © Servei Meteorològic de Catalunya (Meteocat), used with permission; © AEMET, Agencia Estatal de Meteorología. '
      'Source and method: <a href="https://github.com/stuartwmvivers/Destination-Cycling">GitHub</a>.')
 
+# ---------- redirects: old URLs that must keep working ----------
+for old, new in [('spanish-coast-climate.html', 'spain-coast/')]:
+    sizes[old] = write(old, '<!doctype html>\n<html lang="en-GB">\n<head>\n<meta charset="utf-8">\n'
+                       f'<title>Moved</title>\n<link rel="canonical" href="{new}">\n<meta http-equiv="refresh" content="0; url={new}">\n'
+                       f'<script>location.replace({json.dumps(new)} + location.hash);</script>\n</head>\n'
+                       f'<body><p>This page has moved to <a href="{new}">{new}</a>.</p></body>\n</html>\n')
+
 for rel, n in sorted(sizes.items()): print(f'  {rel:40} {n / 1024:7.1f} KB')
 print('built', OUT)

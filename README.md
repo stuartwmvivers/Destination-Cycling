@@ -37,7 +37,7 @@ node tests/serve.js _site 8000      # preview at http://127.0.0.1:8000/
 
 What to build comes from `config/places.json` and `config/regions.json`; monthly data from `data/processed/`; page templates, styles and scripts from `site-src/`. Pages fetch their data, so preview them through the local server rather than opening the files directly.
 
-A refactor towards multiple regions is in progress ([docs/refactor-plan.md](docs/refactor-plan.md)). Until it switches deployment to GitHub Actions, the live site is served from the frozen `index.html` and `spanish-coast-climate.html` at the repo root.
+Every push to `main` is built and checked by GitHub Actions ([.github/workflows/deploy.yml](.github/workflows/deploy.yml)) and published to GitHub Pages only if the checks pass. Built files aren't committed. A refactor towards multiple regions is in progress ([docs/refactor-plan.md](docs/refactor-plan.md)).
 
 Data pipeline scripts are in `pipeline/`; see HANDOVER.md for how to run them (station data needs API keys, which are never committed).
 

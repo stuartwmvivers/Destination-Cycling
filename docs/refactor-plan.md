@@ -1,6 +1,6 @@
 # Refactor plan: from one Spain page to a multi-region site
 
-Status: **approved 23 October 2026** as written (drop offline, deploy with Actions, `/spain-coast/` URLs, one page per country). **Phase A done 23 Oct 2026** (see the end of this file); B–D to do.
+Status: **approved 23 October 2026** as written (drop offline, deploy with Actions, `/spain-coast/` URLs, one page per country). **Phases A and D done 23 Oct 2026** (see the end of this file, D was brought forward); B and C to do.
 
 Goal (HANDOVER 9.1): adding a region should mean adding places to a config file and re-running the pipeline and build, with no edits to page code. The numbers on the page must not change as a side effect: the reference values in HANDOVER 4.4 are the test.
 
@@ -111,3 +111,11 @@ After this, adding a region means: add places to `config/places.json` and a row 
   - the shim's `DEFAULTS` and the page's region constants are still hard-coded (phase C);
   - `site-src/` replaces `src/` rather than living beside it.
 - The live site is unchanged: Pages still serves the frozen root files until phase D.
+
+## Phase D: done (23 October 2026, brought forward ahead of B and C)
+
+- `.github/workflows/deploy.yml` runs on every push to `main` (and manually): `npm ci`, Playwright Chromium, `build_site.py`, `data_check.py`, `render_check.js _site`, then publishes `_site/` with GitHub's official Pages actions. A failed step publishes nothing.
+- The build writes `_site/spanish-coast-climate.html`, a redirect to `spain-coast/` that keeps any `#section`, so the old link works. (This was phase C in the plan; it was needed for D.)
+- The frozen root `index.html` and `spanish-coast-climate.html` are removed. For before/after comparisons, take the old page from history: `git show 052c30e:spanish-coast-climate.html`.
+- Checked by simulating the workflow in a fresh clone: clean `npm ci`, the build, both checks and the 31-setting comparison all pass; the redirect lands on `/spain-coast/#measured`. The workflow itself first runs on GitHub after the owner switches Pages to "GitHub Actions" and pushes.
+- Saved dashboard settings don't carry over (the localStorage key changed); visitors start from the defaults once.

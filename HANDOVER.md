@@ -22,13 +22,13 @@ A free, static website that helps a keen road cyclist (the owner, based in Scotl
 
 | Item | State |
 |---|---|
-| Live page | https://stuartwmvivers.github.io/Destination-Cycling/spanish-coast-climate.html |
-| Repo | `stuartwmvivers/Destination-Cycling`, public, GitHub Pages from `main` / root |
+| Live site | https://stuartwmvivers.github.io/Destination-Cycling/ (landing page) and `/spain-coast/` (Spain dashboard). The old `/spanish-coast-climate.html` redirects to `/spain-coast/`. |
+| Repo | `stuartwmvivers/Destination-Cycling`, public. GitHub Pages is deployed by GitHub Actions (`.github/workflows/deploy.yml`) on every push to `main`: build, `data_check.py`, `render_check.js`, then publish `_site/`. A failed check publishes nothing. |
 | Site root (`/Destination-Cycling/`) | Landing page `index.html` (added 23 Oct 2026). |
-| Published files | `index.html` and `spanish-coast-climate.html` (one self-contained ~1.2 MB file, works offline) at the repo root. **Since refactor phase A (23 Oct 2026) these are frozen copies**: the source now builds a different site into `_site/`, which goes live when phase D switches Pages to GitHub Actions (`docs/refactor-plan.md`). |
+| Built files | Not committed since refactor phase D (23 Oct 2026). The last self-contained single-file page is in git history: `git show 052c30e:spanish-coast-climate.html`. |
 | Source | `config/`, `data/processed/`, `site-src/` and `build/build_site.py` build `_site/`. The new Spain dashboard renders identically to the published page across 31 settings (`tests/compare_pages.js`, 23 Oct 2026). |
 | Private twin | A Claude.ai "Dashboard" artifact with the same page and data. **Not reachable from Claude Code**; treat this repo as canonical from now on. |
-| Pushing | The Claude GitHub App is **not installed** on the owner's account, so Claude sessions could read but not push. The owner uploaded files via the GitHub web UI. If you're running locally with the owner's git credentials this doesn't apply; otherwise ask the owner to install the app (https://github.com/apps/claude/installations/select_target). |
+| Pushing | Since 23 Oct 2026 the project is a local git clone in the owner's folder, and the owner pushes from there. Claude Code's push permission is not granted, so ask the owner to push. |
 
 ### What the page shows
 
@@ -50,7 +50,7 @@ A free, static website that helps a keen road cyclist (the owner, based in Scotl
 CLAUDE.md                     short orientation for Claude Code (points here)
 HANDOVER.md                   this file
 docs/cycling-score-spec.md    the agreed design for the future cycling-base score
-docs/refactor-plan.md         the multi-region refactor (phases A-D; A done 23 Oct 2026)
+docs/refactor-plan.md         the multi-region refactor (phases A-D; A and D done 23 Oct 2026)
 config/places.json            every place (id, name, country, region, lat/lon, model elevation, setting, note, baseline)
 config/regions.json           one entry per dashboard page: countries, UK baselines, defaults, title, credits
 data/processed/climate/<country>.json    modelled monthly rows (4.2), one file per country (ES, GB)
@@ -73,7 +73,7 @@ tests/data_check.py           4.4 reference values + region files match data/pro
 tests/render_check.js         Playwright smoke test over HTTP (desktop light + phone dark, overflow, errors, failed requests)
 tests/compare_pages.js        before/after markup comparison of a dashboard across 31 settings
 tests/serve.js                tiny static server for tests and local preview
-index.html, spanish-coast-climate.html   FROZEN copies of the live site until refactor phase D
+.github/workflows/deploy.yml  build + checks + publish to GitHub Pages on push to main
 .env.example                  key names; real keys go in git-ignored .env
 ```
 
