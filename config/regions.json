@@ -1,0 +1,14 @@
+[
+  {
+    "id": "spain-coast",
+    "name": "Spanish coast",
+    "title": "Spanish Coast Climate",
+    "description": "Nine years of recorded weather for twenty places on the Costa Brava, Costa del Sol, Costa Blanca and Mallorca, compared with Dunning (Perthshire) and Bristol.",
+    "countries": ["ES"],
+    "baselines": ["dunning", "bristol"],
+    "default_place": "begur",
+    "default_compare": "dunning",
+    "outlines": "map-outlines-spain.json",
+    "credits": "Weather data: <a href=\"https://open-meteo.com/\">Open-Meteo</a> historical archive (ECMWF analysis, CC BY 4.0). Station readings: Costa Brava © Servei Meteorològic de Catalunya (Meteocat), used with permission; Costa del Sol, Costa Blanca and Mallorca © AEMET, Agencia Estatal de Meteorología. Coastlines: geo-maps (OpenStreetMap contributors), Natural Earth, es-atlas. Snapshot built 17 October 2026 from 2017–2025 records."
+  }
+]

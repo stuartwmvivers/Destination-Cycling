@@ -5,3 +5,4 @@ data/interim/
 *.key
 render-*.png
 __pycache__/
+_site/

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Fetch daily ERA5-family reanalysis from Open-Meteo and aggregate to monthly cycling measures.
 
-Reproduces the method used to build data/processed/climate-spain-2017-2025.json.
+Reproduces the method used to build data/processed/climate/<country>.json (one file per country).
 The original run (16-17 Oct 2026) was done from browser JavaScript; this is a faithful
 Python port of that logic (see pipeline/openmeteo_browser_reference.js). Verified against
 the live API on 23 Oct 2026 (begur, torrox, dunning): temperatures, hot, frost and tram match
@@ -12,7 +12,7 @@ write, re-fetch every place together so places stay mutually consistent.
 
 Usage:
   python3 pipeline/openmeteo_fetch.py --check begur   # compare with committed rows, write nothing
-  python3 pipeline/openmeteo_fetch.py                 # fetch all places in pipeline/places.json and WRITE
+  python3 pipeline/openmeteo_fetch.py                 # fetch all places in config/places.json and WRITE
   python3 pipeline/openmeteo_fetch.py begur bristol   # fetch only these place ids and WRITE
 
 Rate limits: the free API allows a limited number of calls per minute/hour/day weighted by
@@ -21,7 +21,7 @@ roughly 5 consecutive requests triggered HTTP 429 "Minutely API request limit ex
 This script waits 10 s between places and 65 s after a 429. An empty or non-JSON response
 (seen once on 23 Oct 2026) or a network error is retried after 20 s.
 """
-import json, math, os, sys, time, urllib.request, urllib.error
+import glob, json, math, os, sys, time, urllib.request, urllib.error
 
 def jsround(x, nd=0):
     """Round like JavaScript Math.round (halves go up), which produced the committed data.
@@ -31,8 +31,9 @@ def jsround(x, nd=0):
     return int(v) if nd == 0 else v
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PLACES = json.load(open(os.path.join(ROOT, 'pipeline', 'places.json'), encoding='utf-8'))
-OUT = os.path.join(ROOT, 'data', 'processed', 'climate-spain-2017-2025.json')
+PLACES = json.load(open(os.path.join(ROOT, 'config', 'places.json'), encoding='utf-8'))
+COUNTRY = {p['place']: p['country'] for p in PLACES}
+OUT_DIR = os.path.join(ROOT, 'data', 'processed', 'climate')
 START, END = '2017-01-01', '2025-12-31'
 VARS = 'temperature_2m_max,temperature_2m_min,precipitation_sum,wind_gusts_10m_max,wind_direction_10m_dominant'
 MEASURES = ['tmax', 'tmin', 'rain', 'wet', 'ride', 'warm', 'hot', 'frost', 'tram']
@@ -100,7 +101,8 @@ def compare(place_id, old_rows, new_rows):
     print(f'  {total} of {len(old) * len(MEASURES)} values differ')
 
 def main(ids, check):
-    existing = json.load(open(OUT, encoding='utf-8')) if os.path.exists(OUT) else []
+    files = sorted(glob.glob(os.path.join(OUT_DIR, '*.json')))
+    existing = [r for f in files for r in json.load(open(f, encoding='utf-8'))]
     keep = [r for r in existing if r['place'] not in ids]
     new = []
     for p in PLACES:
@@ -116,8 +118,11 @@ def main(ids, check):
         time.sleep(10)
     if check:
         print('check only: nothing written'); return
-    json.dump(keep + new, open(OUT, 'w', encoding='utf-8'), separators=(',', ':'))
-    print('wrote', len(keep + new), 'rows')
+    by_country = {}
+    for r in keep + new: by_country.setdefault(COUNTRY[r['place']], []).append(r)
+    for c, rows in sorted(by_country.items()):
+        json.dump(rows, open(os.path.join(OUT_DIR, f'{c}.json'), 'w', encoding='utf-8'), separators=(',', ':'))
+        print('wrote', len(rows), 'rows to', f'data/processed/climate/{c}.json')
 
 if __name__ == '__main__':
     args = sys.argv[1:]

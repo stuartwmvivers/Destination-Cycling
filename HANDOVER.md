@@ -24,9 +24,9 @@ A free, static website that helps a keen road cyclist (the owner, based in Scotl
 |---|---|
 | Live page | https://stuartwmvivers.github.io/Destination-Cycling/spanish-coast-climate.html |
 | Repo | `stuartwmvivers/Destination-Cycling`, public, GitHub Pages from `main` / root |
-| Site root (`/Destination-Cycling/`) | Shows the README (no `index.html` yet). A landing page is wanted (section 9.0). |
-| Published file | `spanish-coast-climate.html`, one self-contained ~1.2 MB file: page + d3 + all data inlined, works offline |
-| Source in this bundle | `src/dashboard.html` + `src/standalone/` + `build/build_standalone.py` rebuild the published file **byte-for-byte** (verified 22 Oct 2026) |
+| Site root (`/Destination-Cycling/`) | Landing page `index.html` (added 23 Oct 2026). |
+| Published files | `index.html` and `spanish-coast-climate.html` (one self-contained ~1.2 MB file, works offline) at the repo root. **Since refactor phase A (23 Oct 2026) these are frozen copies**: the source now builds a different site into `_site/`, which goes live when phase D switches Pages to GitHub Actions (`docs/refactor-plan.md`). |
+| Source | `config/`, `data/processed/`, `site-src/` and `build/build_site.py` build `_site/`. The new Spain dashboard renders identically to the published page across 31 settings (`tests/compare_pages.js`, 23 Oct 2026). |
 | Private twin | A Claude.ai "Dashboard" artifact with the same page and data. **Not reachable from Claude Code**; treat this repo as canonical from now on. |
 | Pushing | The Claude GitHub App is **not installed** on the owner's account, so Claude sessions could read but not push. The owner uploaded files via the GitHub web UI. If you're running locally with the owner's git credentials this doesn't apply; otherwise ask the owner to install the app (https://github.com/apps/claude/installations/select_target). |
 
@@ -50,30 +50,40 @@ A free, static website that helps a keen road cyclist (the owner, based in Scotl
 CLAUDE.md                     short orientation for Claude Code (points here)
 HANDOVER.md                   this file
 docs/cycling-score-spec.md    the agreed design for the future cycling-base score
-spanish-coast-climate.html    the published page (build output, committed so Pages serves it)
-src/dashboard.html            page source: HTML + CSS + JS written against a small `dash` API
-src/standalone/shim.js        re-implements the `dash` API for the standalone build
-src/standalone/tokens.html    CSS design tokens (light + dark) the page expects
-build/build_standalone.py     inlines d3 7.9.0 + data + shim -> spanish-coast-climate.html
-pipeline/places.json          the 22 places (id, name, lat/lon, model elevation, region, setting, note)
-pipeline/openmeteo_fetch.py   modelled data: fetch + aggregate (Python port, see 4.1)
+docs/refactor-plan.md         the multi-region refactor (phases A-D; A done 23 Oct 2026)
+config/places.json            every place (id, name, country, region, lat/lon, model elevation, setting, note, baseline)
+config/regions.json           one entry per dashboard page: countries, UK baselines, defaults, title, credits
+data/processed/climate/<country>.json    modelled monthly rows (4.2), one file per country (ES, GB)
+data/processed/stations/<country>.json   station monthly rows (5.3)
+data/processed/map-outlines-spain.json   LEGACY map outlines, until refactor phase B
+data/reference/aemet-station-inventory.json   AEMET station list (public, reusable)
+data/raw/, data/interim/      git-ignored download caches and intermediates
+pipeline/openmeteo_fetch.py   modelled data: fetch + aggregate (Python port, see 4.1); --check compares without writing
 pipeline/openmeteo_browser_reference.js   the exact JS aggregation originally used
 pipeline/meteocat_fetch.py / meteocat_aggregate.py   Catalan stations (needs METEOCAT_API_KEY)
 pipeline/aemet_fetch.py / aemet_aggregate.py         Spanish national stations (needs AEMET_API_KEY)
-pipeline/stations_combine.py  merges both station sets -> data/processed/stations-all-2017-2025.json
-pipeline/maps/mk*.js          LEGACY hand-built map outlines (to be replaced, section 9.1)
-data/processed/*.json         everything the page reads (committed)
-data/reference/aemet-station-inventory.json   AEMET station list (public, reusable)
-data/raw/, data/interim/      git-ignored download caches and intermediates
-tests/render_check.js         Playwright smoke test (desktop light + phone dark, overflow, errors)
+pipeline/stations_combine.py  merges both station sets -> data/processed/stations/<country>.json
+pipeline/maps/mk*.js          LEGACY hand-built map outlines (removed in refactor phase B)
+site-src/pages/               index.html (landing), region.html (dashboard template, one page per region)
+site-src/css/                 tokens.css (light + dark design tokens), dashboard.css, landing.css
+site-src/js/                  dash-shim.js (the `dash` API, fetches region data), periods.js (calcs), dashboard.js (UI)
+build/build_site.py           -> _site/: pages, columnar data files per region, summary.json, vendored d3
+_site/                        git-ignored build output
+tests/data_check.py           4.4 reference values + region files match data/processed
+tests/render_check.js         Playwright smoke test over HTTP (desktop light + phone dark, overflow, errors, failed requests)
+tests/compare_pages.js        before/after markup comparison of a dashboard across 31 settings
+tests/serve.js                tiny static server for tests and local preview
+index.html, spanish-coast-climate.html   FROZEN copies of the live site until refactor phase D
 .env.example                  key names; real keys go in git-ignored .env
 ```
 
 Build and test:
 ```bash
-npm ci                        # d3 + playwright
-python3 build/build_standalone.py
-node tests/render_check.js spanish-coast-climate.html
+npm ci && npx playwright install chromium
+python3 build/build_site.py
+python3 tests/data_check.py
+node tests/render_check.js _site
+node tests/serve.js _site 8000      # preview; pages fetch data, so file:// won't work
 ```
 
 ---
@@ -105,10 +115,10 @@ node tests/render_check.js spanish-coast-climate.html
 
 `tram` captures the Tramuntana (Costa Brava, Mallorca) but **not** the Levante (easterly, Strait of Gibraltar / Estepona). Any strong-wind day still counts against `ride`.
 
-Row schema, `data/processed/climate-spain-2017-2025.json` (2,376 rows = 22 places × 108 months):
+Row schema, `data/processed/climate/<country>.json` (2,376 rows in all = 22 places × 108 months):
 `{place, year, month, tmax, tmin, rain, wet, ride, warm, hot, frost, tram}`
 
-The page derives whole-year values (temperatures = mean of 12 monthly means; counts and rain = sums) and 9-year averages with min/max across years, in the `periods` calc in `src/dashboard.html`.
+The page derives whole-year values (temperatures = mean of 12 monthly means; counts and rain = sums) and 9-year averages with min/max across years, in the `periods` calc in `site-src/js/periods.js`. `build/build_site.py` repeats the 9-year averages (same rounding) in `_site/data/summary.json` for the landing page and future ranking.
 
 ### 4.3 The places
 
@@ -152,7 +162,9 @@ Excluded on purpose: **Cadaqués**, which falls in the same grid cell as Roses.
 | Palma | 14.8 / 8.0 | 19.0 | 244.9 | 71.8 |
 | Pollença | 14.0 / 8.8 | 13.8 | 212.3 | 23.7 |
 | Dunning | 5.6 / 0.8 | 0.0 | 91.9 | 0 |
-| Bristol | 7.4 / 2.1 | 0.1 | 118.2 | 0 |
+| Bristol | 7.4 / 2.1 | 0.1 | 118.2 | 1.2 |
+
+Bristol's hot days were listed as 0 in the original handover; the committed data has always given 1.2 (11 days ≥ 30 °C over 2017–2025, e.g. July 2022). Corrected 23 Oct 2026; no data or method changed. `tests/data_check.py` checks this table against the built site.
 
 ---
 
@@ -202,7 +214,7 @@ Frigiliana has no station of its own (it shares Nerja's).
 - `ride` and `warm` need temperature, rain and gust all present, so stations without wind have no rideable-day figures.
 - Station scripts use Python's `round()` (banker's rounding). The committed station data was made that way, so that's the reference.
 
-Row schema, `data/processed/stations-all-2017-2025.json` (1,836 rows):
+Row schema, `data/processed/stations/<country>.json` (1,836 rows):
 `{place, source: "Meteocat"|"AEMET", station, station_name, distance_km, elevation_m, gust_height_m|null, year, month, tmax, tmin, rain, wet, ride, warm, hot, frost, tram}`, with `null` where a measure isn't valid for that month.
 
 ### 5.4 Findings (the most important result so far)
@@ -259,15 +271,15 @@ Conclusions:
 
 ## 7. Front-end architecture (current)
 
-- `src/dashboard.html` is one file: a `<style>` block, the markup, and three `<script>` blocks:
-  1. `dash.calc('periods', …)` builds per place × year × period rows (period `'1'`…`'12'` or `'year'`; year `'2017'`…`'2025'` or `'all'`), with `_lo`/`_hi` for the all-years rows.
-  2. `dash.calc('station_periods', …)` does the same for stations, plus `_n` counts of years with data.
-  3. The UI IIFE, whose `dash.onData(…)` redraws everything from `dash.params()`.
-- **The `dash` API** (`data`, `onData`, `calc`, `params`, `setParams`, `resetParams`, `colors`, `setLink`) comes from the Claude.ai Dashboard artifact the page was first built in. `src/standalone/shim.js` re-implements it: in-memory params persisted to localStorage, a calc cache, and redraw on resize.
+- **Since refactor phase A (23 Oct 2026)** the dashboard is split into `site-src/pages/region.html` (markup), `site-src/css/dashboard.css` and three scripts loaded in order after d3:
+  1. `site-src/js/dash-shim.js` implements the `dash` API (`data`, `onData`, `calc`, `params`, `setParams`, `resetParams`, `colors`, `setLink`), which comes from the Claude.ai Dashboard artifact the page was first built in. It fetches `data/regions/<region>.json`, named by `window.DC_PAGE`, expands the columns back into the original row shape, persists params to localStorage (`dc-params-<region>`), caches calcs and redraws on resize. It reports `loading` until the data arrive and `error` if the fetch fails.
+  2. `site-src/js/periods.js`: `dash.calc('periods', …)` builds per place × year × period rows (period `'1'`…`'12'` or `'year'`; year `'2017'`…`'2025'` or `'all'`), with `_lo`/`_hi` for the all-years rows; `dash.calc('station_periods', …)` does the same for stations, plus `_n` counts of years with data.
+  3. `site-src/js/dashboard.js`: the UI IIFE, whose `dash.onData(…)` redraws everything from `dash.params()`.
+- **Region file** (`_site/data/regions/<region>.json`, ~120 KB for Spain): `{id, name, years, places, climate: {place: {measure: [108 values]}}, stations: {place: {source, station, …, series: {measure: [108, null where invalid]}}}, outlines}`. Months run year-major from January of the first year. It holds the region's places plus the UK baselines.
 - **Params:** `place` (default `begur`), `compare` (`dunning`), `measure` (`tmax`), `year` (`all`), `period` (`'1'`), `frame` (`auto` | `spain` | `brava` | `sol` | `blanca` | `mallorca`), `region` (`all` | region name).
 - **Map:** hand-projected SVG (equirectangular with cos-latitude scaling), one frame per region, from `map-outlines-spain.json` rows `{frame, layer, path, W, E, S, N, k, scale, width, height}`. Label placement is hand-tuned in `LABEL_SIDE`, `FRAME_LABELS` and `REGION_TAGS`. **This doesn't scale**; replacing it is the top refactor item (9.1).
-- Styling: CSS custom properties (`--cds-*`, `--color-*`, `--font-anthropic-*`) supplied by `tokens.html` in the standalone build, with light and dark themes. Charts are d3 v7. The layout works at 400 px with no horizontal scroll, and the smoke test checks this.
-- Data are inlined in the HTML, so the page is one file. That's fine at the current ~1.2 MB but won't be at multi-country scale.
+- Styling: CSS custom properties (`--cds-*`, `--color-*`, `--font-anthropic-*`) from `site-src/css/tokens.css`, with light and dark themes. Charts are d3 v7. The layout works at 400 px with no horizontal scroll, and the smoke test checks this.
+- Still hard-coded in `dashboard.js` until refactor phase C: `REGIONS`, `FRAMES`, map label tuning, `YEARS`, `DEFAULTS` and the Spain-specific prose.
 
 ---
 
@@ -285,6 +297,7 @@ Conclusions:
 | 20–21 Oct | Station validation shown side by side; no correction yet ("option 3") | Bias is regional; a Catalan correction would mislead elsewhere |
 | 21 Oct | Meteocat monthly summaries published with permission; AEMET published with credit | Licence compliance |
 | 22 Oct | Future ranking = cycling-base score with **climbing as the dominant factor**, gated | Owner's stated priorities (docs/cycling-score-spec.md) |
+| 23 Oct | Refactor plan approved (docs/refactor-plan.md): **drop the offline single file** (pages fetch data), **deploy with GitHub Actions** (built files no longer committed), region URLs like `/spain-coast/`, **one dashboard page per country** with sub-region map shortcuts; keep the `dash` API | Scale to many regions without page surgery; reverses the 17 Oct offline decision |
 
 ---
 

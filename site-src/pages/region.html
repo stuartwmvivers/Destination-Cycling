@@ -1,0 +1,103 @@
+<div class="cb">
+  <header class="cb-head" id="overview">
+    <h1 class="cb-title">Spanish Coast Climate</h1>
+    <p class="cb-take dash-skeleton" id="cb-take" data-source="periods">—</p>
+  </header>
+
+  <section class="cb-controls" id="controls" aria-label="What to show">
+    <div class="cb-ctl">
+      <label class="cb-lab" for="cb-place">Place</label>
+      <select id="cb-place" data-source="places"></select>
+    </div>
+    <div class="cb-ctl">
+      <label class="cb-lab" for="cb-compare">Compare with</label>
+      <select id="cb-compare" data-source="places"></select>
+    </div>
+    <div class="cb-ctl">
+      <label class="cb-lab" for="cb-month">Month</label>
+      <div class="cb-slide">
+        <input type="range" id="cb-month" min="1" max="13" step="1" aria-describedby="cb-month-out">
+        <output id="cb-month-out" for="cb-month"></output>
+        <button type="button" class="cb-btn" id="cb-play">Play</button>
+      </div>
+    </div>
+    <div class="cb-ctl">
+      <label class="cb-lab" for="cb-year">Year</label>
+      <div class="cb-slide">
+        <input type="range" id="cb-year" min="2016" max="2025" step="1" aria-describedby="cb-year-out">
+        <output id="cb-year-out" for="cb-year"></output>
+      </div>
+    </div>
+    <div class="cb-ctl cb-span">
+      <span class="cb-lab" id="cb-measure-lab">Measure on the map and charts</span>
+      <div class="cb-seg" id="cb-measure" role="group" aria-labelledby="cb-measure-lab"></div>
+      <p class="cb-def" id="cb-def"></p>
+    </div>
+  </section>
+
+  <section class="cb-tiles" id="headline" aria-label="Headline figures"></section>
+
+  <section class="cb-grid" id="where">
+    <article class="cb-card" id="map-card">
+      <h2 id="cb-map-title">Map</h2>
+      <div class="cb-seg" id="cb-frames" role="group" aria-label="Map area"></div>
+      <p class="cb-note">Click a place to select it. Dot colour and label show the chosen measure.</p>
+      <div class="cb-chart cb-map dash-skeleton" id="cb-map" data-source="outlines places periods"></div>
+    </article>
+    <article class="cb-card" id="season-card">
+      <h2 id="cb-season-title">Through the year</h2>
+      <p class="cb-note" id="cb-season-note"></p>
+      <div class="cb-chart dash-skeleton" id="cb-season" data-source="periods"></div>
+    </article>
+  </section>
+
+  <section class="cb-grid" id="years">
+    <article class="cb-card" id="heat-card">
+      <h2 id="cb-heat-title">Every month, every year</h2>
+      <p class="cb-note">Click a cell to pick that month and year. Darker means more.</p>
+      <div class="cb-heat dash-skeleton" id="cb-heat" data-source="periods"></div>
+    </article>
+    <article class="cb-card" id="year-card">
+      <h2 id="cb-year-title">Year by year</h2>
+      <p class="cb-note" id="cb-year-note"></p>
+      <div class="cb-chart dash-skeleton" id="cb-years" data-source="periods"></div>
+    </article>
+  </section>
+
+  <section class="cb-card" id="measured" hidden>
+    <h2 id="cb-meas-title">Measured at a weather station</h2>
+    <p class="cb-note" id="cb-meas-note"></p>
+    <div class="cb-grid" id="cb-meas-grid">
+      <div class="cb-tablewrap" style="max-height:none">
+        <table class="cb-table cb-meas-table" data-source="stations">
+          <thead><tr><th>Measure</th><th>Modelled</th><th>Measured</th><th>Difference</th></tr></thead>
+          <tbody id="cb-meas-body"></tbody>
+        </table>
+      </div>
+      <div class="cb-chart" id="cb-meas-chart" data-source="stations periods" style="min-height:250px"></div>
+    </div>
+    <p class="cb-note" id="cb-meas-summary">At every station checked, the model counts too many wet days (by roughly a third to two-thirds), so real rideable days are as many as modelled or more. Temperatures vary by region: on the Costa Brava, Costa Blanca and around Pollença the model runs 1.5–3°C cool by day; on the Costa del Sol it is about right by day but overstates summer heat, with far fewer real days over 30°C than modelled.</p>
+  </section>
+
+  <section class="cb-card" id="compare-all">
+    <h2 id="cb-table-title">All places</h2>
+    <div class="cb-seg" id="cb-regions" role="group" aria-label="Regions in the table"></div>
+    <p class="cb-note" id="cb-table-note">Click a row to select a place. Click a heading to sort.</p>
+    <div class="cb-tablewrap">
+      <table class="cb-table" id="cb-table" data-source="periods" data-row-key="place,year,period">
+        <thead><tr id="cb-thead"></tr></thead>
+        <tbody id="cb-tbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="cb-card" id="method">
+    <h2>How these figures were made</h2>
+    <div class="cb-method">
+      <p><b>Source.</b> Daily weather for 2017–2025 from Open-Meteo's historical archive, which serves ECMWF's model analysis of past weather on a grid of about 9 km. It is built from real observations (stations, satellites, buoys) but it is not a single thermometer reading. 2016 is left out because only a coarser 25 km grid covers that year, which blurs neighbouring towns together.</p>
+      <p><b>Places.</b> Each place is the nearest grid point to the town, adjusted for the town's own height. Begur's figures are for the hilltop village at about 200 m, so its seafront and coves run roughly 1°C warmer. Cadaqués shares a grid point with Roses, so it is not shown. Nerja and Frigiliana share one grid point: Frigiliana's temperatures are adjusted for its 320 m, but its rain and wind are Nerja's. Sóller sits in a steep valley that a 9 km grid cannot resolve, so treat its figures as a rough guide.</p>
+      <p><b>Measures.</b> Rideable days are dry (under 1 mm), with gusts under 50 km/h and a high of at least 11°C; warm riding days need a high of 14–30°C. North-wind days have gusts of 50 km/h or more from the north or north-west: the Tramuntana on the Costa Brava and in Mallorca. They don't capture the Levante, the easterly that blows through the Strait near Estepona, though strong Levante days still count against rideable days. Modelled gusts tend to understate real coastal gusts, so read wind counts as relative, not absolute.</p>
+      <p><b>Averages.</b> "2017–2025 average" is the mean of the nine years; the shaded band in the seasonal chart runs from the lowest to the highest year. Whole-year temperatures are the mean of the twelve monthly values; day counts and rainfall are totals.</p>
+    </div>
+  </section>
+</div>

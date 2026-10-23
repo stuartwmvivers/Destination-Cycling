@@ -28,13 +28,18 @@ Needs Python 3 and Node.js.
 
 ```bash
 npm ci
-npx playwright install chromium                    # once, for the smoke test
-python3 build/build_standalone.py                  # -> spanish-coast-climate.html and index.html
-node tests/render_check.js spanish-coast-climate.html
-node tests/render_check.js index.html
+npx playwright install chromium     # once, for the tests
+python3 build/build_site.py         # -> _site/ (landing page, one dashboard per region, data files)
+python3 tests/data_check.py         # reference values and data integrity
+node tests/render_check.js _site    # every page, desktop and phone
+node tests/serve.js _site 8000      # preview at http://127.0.0.1:8000/
 ```
 
-The built pages are committed because GitHub Pages serves them straight from `main`. Edit `src/`, not the built files. Data pipeline scripts are in `pipeline/`; see HANDOVER.md for how to run them (station data needs API keys, which are never committed).
+What to build comes from `config/places.json` and `config/regions.json`; monthly data from `data/processed/`; page templates, styles and scripts from `site-src/`. Pages fetch their data, so preview them through the local server rather than opening the files directly.
+
+A refactor towards multiple regions is in progress ([docs/refactor-plan.md](docs/refactor-plan.md)). Until it switches deployment to GitHub Actions, the live site is served from the frozen `index.html` and `spanish-coast-climate.html` at the repo root.
+
+Data pipeline scripts are in `pipeline/`; see HANDOVER.md for how to run them (station data needs API keys, which are never committed).
 
 ## Credits and licences
 

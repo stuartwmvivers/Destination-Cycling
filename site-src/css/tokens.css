@@ -1,0 +1,27 @@
+:root {
+  --font-anthropic-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-anthropic-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  --color-bg: #fbfaf8; --color-fg: #1d2126; --color-fg-muted: #5d6670; --color-panel: #ffffff; --color-border-line: #e2e0dc;
+  --color-ok: #2e7d4f; --color-warn: #a66a00; --color-bad: #c0392b;
+  --dash-c0: #1f6f9f; --dash-c1: #c4622d; --dash-c2: #6a7f2a; --dash-c3: #7a4fa0;
+  --cds-chart-grid: #eeece8; --cds-chart-axis: #9aa1a8; --cds-chart-reference: #8a9097; --cds-chart-muted: #9aa3ad;
+  --cds-surface-popover: #ffffff; --cds-border: #d8d5d0; --cds-shadow-popover: 0 4px 16px rgba(20,25,30,.12); --cds-text-secondary: #5d6670;
+  --cds-gap-xs: 4px; --cds-gap-sm: 8px; --cds-gap-md: 14px; --cds-gap-lg: 22px; --cds-gap-xl: 32px;
+  --cds-pad-xs: 4px; --cds-pad-sm: 8px; --cds-pad-md: 12px; --cds-pad-lg: 18px; --cds-pad-xl: 28px;
+  --cds-radius: 8px; --cds-font-size-caption: 12.5px; --cds-font-size-body: 14.5px; --cds-font-size-heading: 16px; --cds-font-size-title: 30px;
+  --cds-font-weight-medium: 550; --cds-dur-slow: 300ms; --cds-ease-out: cubic-bezier(.2,.7,.2,1);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root {
+  --color-bg: #15181b; --color-fg: #e8eaec; --color-fg-muted: #a0a8b0; --color-panel: #1d2125; --color-border-line: #30363c;
+  --color-bad: #ef6b5b; --dash-c0: #5fb0e0; --dash-c1: #e8925c; --dash-c2: #a8c060; --dash-c3: #b890e0;
+  --cds-chart-grid: #262b30; --cds-chart-axis: #6b737b; --cds-chart-reference: #7d858d; --cds-chart-muted: #6f7882;
+  --cds-surface-popover: #23282d; --cds-border: #3a4148; --cds-shadow-popover: 0 4px 16px rgba(0,0,0,.4); --cds-text-secondary: #a0a8b0;
+  color-scheme: dark; } }
+html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); font-family: var(--font-anthropic-sans); font-size: 14.5px; -webkit-text-size-adjust: 100%; }
+#dash-root { box-sizing: border-box; padding-block: 24px 40px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+@media (min-width: 900px) { #dash-root { padding-left: 32px; padding-right: 32px; } }
+#dash-root *, #dash-root *::before, #dash-root *::after { box-sizing: border-box; }
+.dash-skeleton:empty { background: var(--cds-chart-grid); border-radius: var(--cds-radius); }
+.cb-foot { max-width: 1320px; margin: 28px auto 0; font-size: 12.5px; color: var(--color-fg-muted); line-height: 1.6; }
+.cb-foot a { color: inherit; }
