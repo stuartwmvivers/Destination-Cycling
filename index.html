@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Destination Cycling</title>
+<meta name="description" content="Comparing places in Europe as year-round road-cycling bases, starting with nine years of weather on the Spanish coast.">
+<style>
+  :root {
+    --font-anthropic-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-anthropic-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+    --color-bg: #fbfaf8; --color-fg: #1d2126; --color-fg-muted: #5d6670; --color-panel: #ffffff; --color-border-line: #e2e0dc;
+    --color-ok: #2e7d4f; --color-warn: #a66a00; --color-bad: #c0392b;
+    --dash-c0: #1f6f9f; --dash-c1: #c4622d; --dash-c2: #6a7f2a; --dash-c3: #7a4fa0;
+    --cds-chart-grid: #eeece8; --cds-chart-axis: #9aa1a8; --cds-chart-reference: #8a9097; --cds-chart-muted: #9aa3ad;
+    --cds-surface-popover: #ffffff; --cds-border: #d8d5d0; --cds-shadow-popover: 0 4px 16px rgba(20,25,30,.12); --cds-text-secondary: #5d6670;
+    --cds-gap-xs: 4px; --cds-gap-sm: 8px; --cds-gap-md: 14px; --cds-gap-lg: 22px; --cds-gap-xl: 32px;
+    --cds-pad-xs: 4px; --cds-pad-sm: 8px; --cds-pad-md: 12px; --cds-pad-lg: 18px; --cds-pad-xl: 28px;
+    --cds-radius: 8px; --cds-font-size-caption: 12.5px; --cds-font-size-body: 14.5px; --cds-font-size-heading: 16px; --cds-font-size-title: 30px;
+    --cds-font-weight-medium: 550; --cds-dur-slow: 300ms; --cds-ease-out: cubic-bezier(.2,.7,.2,1);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) { :root {
+    --color-bg: #15181b; --color-fg: #e8eaec; --color-fg-muted: #a0a8b0; --color-panel: #1d2125; --color-border-line: #30363c;
+    --color-bad: #ef6b5b; --dash-c0: #5fb0e0; --dash-c1: #e8925c; --dash-c2: #a8c060; --dash-c3: #b890e0;
+    --cds-chart-grid: #262b30; --cds-chart-axis: #6b737b; --cds-chart-reference: #7d858d; --cds-chart-muted: #6f7882;
+    --cds-surface-popover: #23282d; --cds-border: #3a4148; --cds-shadow-popover: 0 4px 16px rgba(0,0,0,.4); --cds-text-secondary: #a0a8b0;
+    color-scheme: dark; } }
+  html, body { margin: 0; background: var(--color-bg); color: var(--color-fg); font-family: var(--font-anthropic-sans); font-size: 14.5px; -webkit-text-size-adjust: 100%; }
+  #dash-root { box-sizing: border-box; padding-block: 24px 40px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  @media (min-width: 900px) { #dash-root { padding-left: 32px; padding-right: 32px; } }
+  #dash-root *, #dash-root *::before, #dash-root *::after { box-sizing: border-box; }
+  .dash-skeleton:empty { background: var(--cds-chart-grid); border-radius: var(--cds-radius); }
+  .cb-foot { max-width: 1320px; margin: 28px auto 0; font-size: 12.5px; color: var(--color-fg-muted); line-height: 1.6; }
+  .cb-foot a { color: inherit; }
+</style>
+</head>
+<body>
+<div id="dash-root">
+<style>
+  .lp { max-width: 960px; margin-inline: auto; display: flex; flex-direction: column; gap: var(--cds-gap-xl); font-variant-numeric: tabular-nums; }
+  .lp-head { display: flex; flex-direction: column; gap: var(--cds-gap-sm); padding-top: var(--cds-gap-md); }
+  .lp-title { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: clamp(30px, 6vw, 44px); line-height: 1.1; margin: 0; }
+  .lp-lede { margin: 0; font-size: 16.5px; line-height: 1.55; color: var(--color-fg-muted); max-width: 62ch; }
+  .lp-lede b { color: var(--color-fg); font-weight: 500; }
+  .lp h2 { margin: 0 0 var(--cds-gap-sm); font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); }
+  .lp p { line-height: 1.55; }
+  .lp-note { margin: 0; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); max-width: 70ch; }
+
+  .lp-regions { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); gap: var(--cds-gap-md); }
+  .lp-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); display: flex; flex-direction: column; gap: var(--cds-gap-sm); min-width: 0; }
+  a.lp-card { color: inherit; text-decoration: none; transition: border-color var(--cds-dur-slow) var(--cds-ease-out); }
+  a.lp-card:hover { border-color: var(--dash-c0); }
+  a.lp-card:focus-visible { outline: 2px solid var(--color-fg); outline-offset: 2px; }
+  .lp-card h3 { margin: 0; font-family: var(--font-anthropic-serif); font-weight: 400; font-size: 22px; }
+  .lp-card p { margin: 0; font-size: var(--cds-font-size-body); color: var(--color-fg-muted); }
+  .lp-go { margin-top: auto; font-size: var(--cds-font-size-body); color: var(--dash-c0); font-weight: 500; }
+  .lp-card.lp-soon { background: transparent; border-style: dashed; }
+  .lp-tag { align-self: flex-start; font-size: var(--cds-font-size-caption); padding: 1px var(--cds-pad-sm); border: 1px solid var(--color-border-line); border-radius: 999px; color: var(--color-fg-muted); }
+
+  .lp-bars { list-style: none; margin: var(--cds-gap-md) 0 0; padding: 0; display: grid; grid-template-columns: minmax(6.5rem, max-content) 1fr 3.2rem; gap: 3px var(--cds-gap-sm); align-items: center; font-size: var(--cds-font-size-caption); }
+  .lp-bars li { display: contents; }
+  .lp-bars .lp-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .lp-bars .lp-reg { color: var(--color-fg-muted); }
+  .lp-bars .lp-track { height: 12px; background: var(--cds-chart-grid); border-radius: 2px; overflow: hidden; }
+  .lp-bars .lp-bar { display: block; height: 100%; background: var(--dash-c0); border-radius: 2px; }
+  .lp-bars .lp-uk .lp-bar { background: var(--cds-chart-muted); }
+  .lp-bars .lp-val { text-align: right; }
+  @media (max-width: 480px) { .lp-bars .lp-reg { display: none; } }
+
+  .lp-plan { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: var(--cds-gap-md); margin: var(--cds-gap-md) 0 0; padding: 0; list-style: none; }
+  .lp-plan li { font-size: var(--cds-font-size-body); color: var(--color-fg-muted); line-height: 1.5; }
+  .lp-plan b { display: block; color: var(--color-fg); font-weight: var(--cds-font-weight-medium); }
+  .lp a { color: var(--dash-c0); }
+  .lp a.lp-card { color: inherit; }
+</style>
+
+<main class="lp">
+  <header class="lp-head">
+    <h1 class="lp-title">Destination Cycling</h1>
+    <p class="lp-lede">Where in Europe could you keep a base for <b>road cycling all year round</b>? This site compares candidate places by how much good riding their weather allows, month by month, against two UK baselines, and is open about how far to trust each figure.</p>
+  </header>
+
+  <section aria-labelledby="lp-regions-h">
+    <h2 id="lp-regions-h">Regions</h2>
+    <div class="lp-regions">
+      <a class="lp-card" href="spanish-coast-climate.html">
+        <span class="lp-tag">Available</span>
+        <h3>Spanish coast</h3>
+        <p>20 places on the Costa Brava, Costa del Sol, Costa Blanca and Mallorca. Nine years of daily weather (2017–2025), with 17 towns checked against real weather stations.</p>
+        <span class="lp-go">Open the Spain dashboard →</span>
+      </a>
+      <div class="lp-card lp-soon">
+        <span class="lp-tag">Planned</span>
+        <h3>More of Europe</h3>
+        <p>The rest of Spain including the Canaries, then Portugal, France and the UK, and later Italy, Croatia and Slovenia.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="lp-card" aria-labelledby="lp-bars-h">
+    <h2 id="lp-bars-h">Rideable days a year</h2>
+    <p class="lp-note">A rideable day is dry (under 1 mm of rain), with gusts under 50 km/h and a high of at least 11°C. Modelled figures, averaged over 2017–2025. Grey bars are the UK baselines.</p>
+    <ul class="lp-bars">
+      <li class=""><span class="lp-name">Torrox Costa <span class="lp-reg">· Costa del Sol</span></span><span class="lp-track"><span class="lp-bar" style="width:100.0%"></span></span><span class="lp-val">294</span></li>
+      <li class=""><span class="lp-name">Nerja <span class="lp-reg">· Costa del Sol</span></span><span class="lp-track"><span class="lp-bar" style="width:94.6%"></span></span><span class="lp-val">278</span></li>
+      <li class=""><span class="lp-name">Altea <span class="lp-reg">· Costa Blanca</span></span><span class="lp-track"><span class="lp-bar" style="width:94.5%"></span></span><span class="lp-val">278</span></li>
+      <li class=""><span class="lp-name">Frigiliana <span class="lp-reg">· Costa del Sol</span></span><span class="lp-track"><span class="lp-bar" style="width:94.2%"></span></span><span class="lp-val">277</span></li>
+      <li class=""><span class="lp-name">Marbella <span class="lp-reg">· Costa del Sol</span></span><span class="lp-track"><span class="lp-bar" style="width:93.3%"></span></span><span class="lp-val">275</span></li>
+      <li class=""><span class="lp-name">Alicante <span class="lp-reg">· Costa Blanca</span></span><span class="lp-track"><span class="lp-bar" style="width:89.4%"></span></span><span class="lp-val">263</span></li>
+      <li class=""><span class="lp-name">Xàbia (Jávea) <span class="lp-reg">· Costa Blanca</span></span><span class="lp-track"><span class="lp-bar" style="width:85.9%"></span></span><span class="lp-val">253</span></li>
+      <li class=""><span class="lp-name">Palma <span class="lp-reg">· Mallorca</span></span><span class="lp-track"><span class="lp-bar" style="width:83.2%"></span></span><span class="lp-val">245</span></li>
+      <li class=""><span class="lp-name">Tossa de Mar <span class="lp-reg">· Costa Brava</span></span><span class="lp-track"><span class="lp-bar" style="width:76.4%"></span></span><span class="lp-val">225</span></li>
+      <li class=""><span class="lp-name">Figueres <span class="lp-reg">· Costa Brava</span></span><span class="lp-track"><span class="lp-bar" style="width:75.5%"></span></span><span class="lp-val">222</span></li>
+      <li class=""><span class="lp-name">Girona <span class="lp-reg">· Costa Brava</span></span><span class="lp-track"><span class="lp-bar" style="width:72.2%"></span></span><span class="lp-val">213</span></li>
+      <li class=""><span class="lp-name">Pollença <span class="lp-reg">· Mallorca</span></span><span class="lp-track"><span class="lp-bar" style="width:72.1%"></span></span><span class="lp-val">212</span></li>
+      <li class=""><span class="lp-name">Olot <span class="lp-reg">· Costa Brava</span></span><span class="lp-track"><span class="lp-bar" style="width:71.9%"></span></span><span class="lp-val">212</span></li>
+      <li class=""><span class="lp-name">Palamós <span class="lp-reg">· Costa Brava</span></span><span class="lp-track"><span class="lp-bar" style="width:70.8%"></span></span><span class="lp-val">208</span></li>
+      <li class=""><span class="lp-name">Estepona <span class="lp-reg">· Costa del Sol</span></span><span class="lp-track"><span class="lp-bar" style="width:70.2%"></span></span><span class="lp-val">207</span></li>
+      <li class=""><span class="lp-name">Sóller <span class="lp-reg">· Mallorca</span></span><span class="lp-track"><span class="lp-bar" style="width:69.4%"></span></span><span class="lp-val">204</span></li>
+      <li class=""><span class="lp-name">Begur <span class="lp-reg">· Costa Brava</span></span><span class="lp-track"><span class="lp-bar" style="width:64.8%"></span></span><span class="lp-val">191</span></li>
+      <li class=""><span class="lp-name">L'Escala <span class="lp-reg">· Costa Brava</span></span><span class="lp-track"><span class="lp-bar" style="width:64.3%"></span></span><span class="lp-val">189</span></li>
+      <li class=""><span class="lp-name">Roses <span class="lp-reg">· Costa Brava</span></span><span class="lp-track"><span class="lp-bar" style="width:54.6%"></span></span><span class="lp-val">161</span></li>
+      <li class=""><span class="lp-name">Llançà <span class="lp-reg">· Costa Brava</span></span><span class="lp-track"><span class="lp-bar" style="width:46.2%"></span></span><span class="lp-val">136</span></li>
+      <li class="lp-uk"><span class="lp-name">Bristol <span class="lp-reg">· UK</span></span><span class="lp-track"><span class="lp-bar" style="width:40.1%"></span></span><span class="lp-val">118</span></li>
+      <li class="lp-uk"><span class="lp-name">Dunning <span class="lp-reg">· UK</span></span><span class="lp-track"><span class="lp-bar" style="width:31.2%"></span></span><span class="lp-val">92</span></li>
+    </ul>
+    <p class="lp-note" style="margin-top: var(--cds-gap-md)">These are modelled, not measured. Where we checked against weather stations, the model counts too many wet days, so real rideable days are as many as shown or more. The dashboard shows both side by side.</p>
+  </section>
+
+  <section aria-labelledby="lp-next-h">
+    <h2 id="lp-next-h">What's coming</h2>
+    <p class="lp-note">Weather is only part of what makes a good cycling base. The plan is a combined score that ranks places on:</p>
+    <ul class="lp-plan">
+      <li><b>Climbing</b>Climbs within riding distance, measured from terrain data. The most important factor.</li>
+      <li><b>Weather at the climbs</b>Rideable days at the height of the climbs, not just in the town, weighted to autumn through spring.</li>
+      <li><b>Quiet roads</b>Minor paved roads that join up into loops, from OpenStreetMap.</li>
+      <li><b>Getting there</b>Drive time to an airport with year-round direct flights from Scotland.</li>
+    </ul>
+  </section>
+</main>
+
+<footer class="cb-foot" style="max-width:960px">Weather data: <a href="https://open-meteo.com/">Open-Meteo</a> historical archive (ECMWF analysis, CC BY 4.0). Station readings on the Spain dashboard: © Servei Meteorològic de Catalunya (Meteocat), used with permission; © AEMET, Agencia Estatal de Meteorología. Source and method: <a href="https://github.com/stuartwmvivers/Destination-Cycling">GitHub</a>.</footer>
+</div>
+</body>
+</html>

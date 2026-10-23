@@ -1,6 +1,6 @@
 // Smoke test: open the built page in headless Chromium at desktop/phone widths, light/dark,
-// fail on any page error or horizontal overflow, and click through the main controls.
-// Usage: node tests/render_check.js spanish-coast-climate.html   (needs `npm i playwright`)
+// fail on any page error or horizontal overflow, and click through the main controls (dashboards).
+// Usage: node tests/render_check.js spanish-coast-climate.html   (also index.html; needs `npm i playwright`)
 const { chromium } = require('playwright');
 (async () => {
   const file = 'file://' + require('path').resolve(process.argv[2] || 'spanish-coast-climate.html');
@@ -11,9 +11,11 @@ const { chromium } = require('playwright');
     await p.goto(file); await p.waitForTimeout(600);
     const [sw, cw] = await p.evaluate(() => [document.documentElement.scrollWidth, document.documentElement.clientWidth]);
     if (sw > cw) errs.push(`${w}: horizontal overflow ${sw}>${cw}`);
-    for (const f of ['spain', 'brava', 'sol', 'blanca', 'mallorca']) { await p.click(`#cb-frames button[data-f="${f}"]`); await p.waitForTimeout(100); }
-    for (const pl of ['begur', 'nerja', 'bristol', 'torrox']) { await p.selectOption('#cb-place', pl); await p.waitForTimeout(100); }
-    await p.screenshot({ path: `render-${w}.png`, fullPage: true });
+    if (await p.$('#cb-frames')) {   // dashboard pages only: click through the main controls
+      for (const f of ['spain', 'brava', 'sol', 'blanca', 'mallorca']) { await p.click(`#cb-frames button[data-f="${f}"]`); await p.waitForTimeout(100); }
+      for (const pl of ['begur', 'nerja', 'bristol', 'torrox']) { await p.selectOption('#cb-place', pl); await p.waitForTimeout(100); }
+    }
+    await p.screenshot({ path: `render-${require('path').basename(file, '.html')}-${w}.png`, fullPage: true });
     await ctx.close();
   }
   await b.close();

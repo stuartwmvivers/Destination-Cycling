@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Build the single-file public page (spanish-coast-climate.html) from src/dashboard.html + data.
+"""Build the single-file public page (spanish-coast-climate.html) from src/dashboard.html + data,
+and the landing page (index.html) from src/index.html.
 
 src/dashboard.html is written against a small `dash` API (from the Claude.ai Dashboard artifact
 it was first built in). src/standalone/shim.js re-implements that API in ~70 lines so the same
@@ -34,3 +35,30 @@ html = ('<!doctype html>\n<html lang="en-GB">\n<head>\n<meta charset="utf-8">\n<
         + '\n'.join(scripts) + '\n</body>\n</html>\n')
 open(J('spanish-coast-climate.html'), 'w', encoding='utf-8', newline='\n').write(html)
 print('wrote spanish-coast-climate.html', len(html), 'bytes')
+
+# Landing page (index.html): src/index.html + tokens, with a few figures filled in from the same data.
+# Rideable days a year = mean over years of the 12-month sum, rounded like the dashboard (half-up, 0.1).
+import math
+from collections import defaultdict
+esc = lambda s: s.replace('&', '&amp;').replace('<', '&lt;')
+per_year = defaultdict(lambda: defaultdict(int))
+for r in data['climate']: per_year[r['place']][r['year']] += r['ride']
+ride = {p: math.floor(sum(ys.values()) / len(ys) * 10 + 0.5) / 10 for p, ys in per_year.items()}
+places = sorted(data['places'], key=lambda p: -ride[p['place']])
+top = max(ride.values())
+bars = '\n'.join(
+    f'      <li class="{"lp-uk" if p["region"] == "UK" else ""}"><span class="lp-name">{esc(p["name"])} <span class="lp-reg">· {esc(p["region"])}</span></span>'
+    f'<span class="lp-track"><span class="lp-bar" style="width:{ride[p["place"]] / top * 100:.1f}%"></span></span>'
+    f'<span class="lp-val">{ride[p["place"]]:.0f}</span></li>' for p in places)
+index_src = (read(J('src', 'index.html'))
+             .replace('{{RIDE_BARS}}', bars)
+             .replace('{{SPAIN_COUNT}}', str(sum(p['region'] != 'UK' for p in data['places'])))
+             .replace('{{STATION_COUNT}}', str(len({r['place'] for r in data['stations']}))))
+index_foot = ('<footer class="cb-foot" style="max-width:960px">Weather data: <a href="https://open-meteo.com/">Open-Meteo</a> historical archive (ECMWF analysis, CC BY 4.0). '
+              'Station readings on the Spain dashboard: © Servei Meteorològic de Catalunya (Meteocat), used with permission; © AEMET, Agencia Estatal de Meteorología. '
+              'Source and method: <a href="https://github.com/stuartwmvivers/Destination-Cycling">GitHub</a>.</footer>')
+index = ('<!doctype html>\n<html lang="en-GB">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
+         '<title>Destination Cycling</title>\n<meta name="description" content="Comparing places in Europe as year-round road-cycling bases, starting with nine years of weather on the Spanish coast.">\n'
+         + tokens + '\n</head>\n<body>\n<div id="dash-root">\n' + index_src + '\n' + index_foot + '\n</div>\n</body>\n</html>\n')
+open(J('index.html'), 'w', encoding='utf-8', newline='\n').write(index)
+print('wrote index.html', len(index), 'bytes')
