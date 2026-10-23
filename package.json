@@ -1,0 +1,11 @@
+{
+  "name": "destination-cycling",
+  "private": true,
+  "description": "Static site comparing year-round cycling climate across candidate holiday-home locations",
+  "scripts": {
+    "build": "python3 build/build_standalone.py",
+    "test": "node tests/render_check.js spanish-coast-climate.html"
+  },
+  "dependencies": { "d3": "7.9.0" },
+  "devDependencies": { "playwright": "^1.48.0" }
+}

@@ -1,0 +1,224 @@
+[
+ {
+  "place": "begur",
+  "name": "Begur",
+  "lat": 41.954,
+  "lon": 3.207,
+  "elevation_m": 200,
+  "region": "Costa Brava",
+  "setting": "Coast",
+  "note": "Hilltop village; data at about 200 m"
+ },
+ {
+  "place": "llanca",
+  "name": "Llançà",
+  "lat": 42.36,
+  "lon": 3.15,
+  "elevation_m": 25,
+  "region": "Costa Brava",
+  "setting": "Coast",
+  "note": "North coast, in the Tramuntana corridor"
+ },
+ {
+  "place": "roses",
+  "name": "Roses",
+  "lat": 42.262,
+  "lon": 3.176,
+  "elevation_m": 11,
+  "region": "Costa Brava",
+  "setting": "Coast",
+  "note": "Bay of Roses"
+ },
+ {
+  "place": "lescala",
+  "name": "L'Escala",
+  "lat": 42.124,
+  "lon": 3.131,
+  "elevation_m": 31,
+  "region": "Costa Brava",
+  "setting": "Coast",
+  "note": "Central coast"
+ },
+ {
+  "place": "palamos",
+  "name": "Palamós",
+  "lat": 41.846,
+  "lon": 3.129,
+  "elevation_m": 12,
+  "region": "Costa Brava",
+  "setting": "Coast",
+  "note": "Southern-central coast"
+ },
+ {
+  "place": "tossa",
+  "name": "Tossa de Mar",
+  "lat": 41.72,
+  "lon": 2.93,
+  "elevation_m": 12,
+  "region": "Costa Brava",
+  "setting": "Coast",
+  "note": "South coast"
+ },
+ {
+  "place": "figueres",
+  "name": "Figueres",
+  "lat": 42.267,
+  "lon": 2.961,
+  "elevation_m": 47,
+  "region": "Costa Brava",
+  "setting": "Inland",
+  "note": "Empordà plain"
+ },
+ {
+  "place": "girona",
+  "name": "Girona",
+  "lat": 41.98,
+  "lon": 2.82,
+  "elevation_m": 79,
+  "region": "Costa Brava",
+  "setting": "Inland",
+  "note": "City"
+ },
+ {
+  "place": "olot",
+  "name": "Olot",
+  "lat": 42.18,
+  "lon": 2.49,
+  "elevation_m": 440,
+  "region": "Costa Brava",
+  "setting": "Hills",
+  "note": "Volcanic hills, 440 m"
+ },
+ {
+  "place": "nerja",
+  "name": "Nerja",
+  "lat": 36.746,
+  "lon": -3.876,
+  "elevation_m": 31,
+  "region": "Costa del Sol",
+  "setting": "Coast",
+  "note": "Axarquía coast, east of Málaga"
+ },
+ {
+  "place": "torrox",
+  "name": "Torrox Costa",
+  "lat": 36.728,
+  "lon": -3.955,
+  "elevation_m": 14,
+  "region": "Costa del Sol",
+  "setting": "Coast",
+  "note": "Coast just west of Nerja"
+ },
+ {
+  "place": "frigiliana",
+  "name": "Frigiliana",
+  "lat": 36.791,
+  "lon": -3.896,
+  "elevation_m": 321,
+  "region": "Costa del Sol",
+  "setting": "Hills",
+  "note": "Hill village above Nerja at about 320 m; shares Nerja's rain and wind"
+ },
+ {
+  "place": "marbella",
+  "name": "Marbella",
+  "lat": 36.51,
+  "lon": -4.885,
+  "elevation_m": 31,
+  "region": "Costa del Sol",
+  "setting": "Coast",
+  "note": "Western Costa del Sol"
+ },
+ {
+  "place": "estepona",
+  "name": "Estepona",
+  "lat": 36.426,
+  "lon": -5.146,
+  "elevation_m": 20,
+  "region": "Costa del Sol",
+  "setting": "Coast",
+  "note": "Near Gibraltar; open to the Levante wind"
+ },
+ {
+  "place": "alicante",
+  "name": "Alicante",
+  "lat": 38.345,
+  "lon": -0.481,
+  "elevation_m": 19,
+  "region": "Costa Blanca",
+  "setting": "Coast",
+  "note": "City, southern Costa Blanca"
+ },
+ {
+  "place": "altea",
+  "name": "Altea",
+  "lat": 38.599,
+  "lon": -0.051,
+  "elevation_m": 59,
+  "region": "Costa Blanca",
+  "setting": "Coast",
+  "note": "Below the Sierra de Bernia"
+ },
+ {
+  "place": "javea",
+  "name": "Xàbia (Jávea)",
+  "lat": 38.789,
+  "lon": 0.166,
+  "elevation_m": 35,
+  "region": "Costa Blanca",
+  "setting": "Coast",
+  "note": "Northern Costa Blanca, by Cap de la Nau"
+ },
+ {
+  "place": "palma",
+  "name": "Palma",
+  "lat": 39.57,
+  "lon": 2.65,
+  "elevation_m": 28,
+  "region": "Mallorca",
+  "setting": "Coast",
+  "note": "City, Bay of Palma"
+ },
+ {
+  "place": "soller",
+  "name": "Sóller",
+  "lat": 39.766,
+  "lon": 2.715,
+  "elevation_m": 39,
+  "region": "Mallorca",
+  "setting": "Hills",
+  "note": "Valley in the Serra de Tramuntana; the 9 km grid smooths the mountains"
+ },
+ {
+  "place": "pollensa",
+  "name": "Pollença",
+  "lat": 39.877,
+  "lon": 3.016,
+  "elevation_m": 55,
+  "region": "Mallorca",
+  "setting": "Coast",
+  "note": "North-east; Mallorca's cycling hub"
+ },
+ {
+  "place": "dunning",
+  "name": "Dunning",
+  "lat": 56.31,
+  "lon": -3.58,
+  "elevation_m": 97,
+  "region": "UK",
+  "setting": "Home",
+  "note": "Perthshire, Scotland",
+  "area": "Scotland"
+ },
+ {
+  "place": "bristol",
+  "name": "Bristol",
+  "lat": 51.4545,
+  "lon": -2.5879,
+  "elevation_m": 11,
+  "region": "UK",
+  "setting": "Home",
+  "note": "South-west England",
+  "area": "England"
+ }
+]
