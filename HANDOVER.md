@@ -87,7 +87,7 @@ node tests/render_check.js spanish-coast-climate.html
 - Period **2017-01-01 to 2025-12-31** (9 years, 108 months). 2016 was dropped: the session found a coarser grid behind that year, which blurred neighbouring towns together. Re-verify this against Open-Meteo's model documentation before extending backwards.
 - **`timezone=Europe/Madrid` for every place, including the UK ones.** Keep it, or re-fetch everything.
 - Open-Meteo returns the nearest grid cell and adjusts temperature to the requested point's elevation. The `elevation_m` in `places.json` is the elevation Open-Meteo used.
-- Original fetch: browser JavaScript, 16–17 Oct 2026, because the Claude.ai workspace couldn't reach the API at first. `pipeline/openmeteo_fetch.py` is a faithful port. Its aggregation was **verified identical to the JS on synthetic data**, including JS-style half-up rounding (`jsround`), but it **has not yet been run against the live API**. Before using it for new places, re-fetch one existing place (`python3 pipeline/openmeteo_fetch.py begur`) and diff against the committed rows.
+- Original fetch: browser JavaScript, 16–17 Oct 2026, because the Claude.ai workspace couldn't reach the API at first. `pipeline/openmeteo_fetch.py` is a faithful port. Its aggregation was **verified identical to the JS on synthetic data**, including JS-style half-up rounding (`jsround`), and it was **checked against the live API on 23 Oct 2026** for Begur, Torrox Costa and Dunning: `tmax`, `tmin`, `hot`, `frost` and `tram` match the committed rows exactly in all 108 months. The rain-based measures (`rain`, `wet`, `ride`, `warm`) differ in a minority of months by 1–2 days or a few mm, spread across all years. That points to Open-Meteo having revised its precipitation since the original fetch (not confirmed). Effect on 9-year averages is small (rideable days a year: Begur 190.8 → 191.1, Torrox 294.4 → 295.2, Dunning 91.9 → 92.0), but **a re-fetch no longer reproduces the committed rows exactly**. So: use `python3 pipeline/openmeteo_fetch.py --check <place_id>` to compare without writing; treat the committed file as a snapshot; and if new places are added, re-fetch every place in the same run so all places come from the same data version (then update the reference values in 4.4 and say so).
 - Rate limit: about 5 heavy requests in a row triggered HTTP 429 ("Minutely API request limit exceeded"). The script waits 10 s between places and 65 s after a 429.
 
 ### 4.2 Aggregation (per place, per month)
@@ -342,7 +342,7 @@ Order agreed in principle: all of Spain (including the Canaries) → Portugal �
 - `tram` misses the Levante; the station gust direction differs in definition from the model's dominant direction.
 - Partial station records: Torrox ~50%, Port de Sóller ~60%, Benidorm ~80% (flagged on the page when below 85%).
 - The heatmap is dense at phone width but usable. The map at phone width is small; the slippy map will fix this.
-- `pipeline/openmeteo_fetch.py` hasn't been run against the live API yet (see 4.1).
+- A fresh Open-Meteo fetch differs slightly from the committed rain-based figures (see 4.1); the committed data is a 16–17 Oct 2026 snapshot.
 - `pipeline/maps/mk*.js` are legacy, depend on large npm geodata packages (`@geo-maps/earth-lands-100m` is ~117 MB), and expect intermediate files from the original session (e.g. `land_clip.json`, `data*.json`). Don't revive them; replace them (9.1).
 
 ---
@@ -350,7 +350,7 @@ Order agreed in principle: all of Spain (including the Canaries) → Portugal �
 ## 12. First tasks for Claude Code
 
 1. Read `CLAUDE.md`, this file and `docs/cycling-score-spec.md`. Run `npm ci`, build, and the smoke test, and confirm the output matches the committed `spanish-coast-climate.html`.
-2. Verify `pipeline/openmeteo_fetch.py` against the live API for one place (diff with committed rows).
+2. ~~Verify `pipeline/openmeteo_fetch.py` against the live API for one place.~~ Done 23 Oct 2026 (see 4.1).
 3. Add the root landing page and README update (9.0). Ask the owner before pushing.
 4. Propose the 9.1 refactor as a short plan (layout, data splitting, map library) **before** implementing. The owner likes to see the approach first.
 5. Retry ECA&D. When the CEDA token arrives, add MIDAS stations for Bristol and Dunning.

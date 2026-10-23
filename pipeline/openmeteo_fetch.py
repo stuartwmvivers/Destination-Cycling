@@ -3,18 +3,23 @@
 
 Reproduces the method used to build data/processed/climate-spain-2017-2025.json.
 The original run (16-17 Oct 2026) was done from browser JavaScript; this is a faithful
-Python port of that logic (see pipeline/openmeteo_browser_reference.js). It has NOT yet
-been run end-to-end from Python, so on first use, re-fetch one existing place (e.g. begur)
-and diff against the committed file before trusting it for new places.
+Python port of that logic (see pipeline/openmeteo_browser_reference.js). Verified against
+the live API on 23 Oct 2026 (begur, torrox, dunning): temperatures, hot, frost and tram match
+the committed rows exactly; rain-based measures differ in a minority of months by 1-2 days,
+apparently because Open-Meteo has revised its precipitation since the original fetch.
+So a re-fetch will not reproduce the committed rows exactly: run --check first, and if you
+write, re-fetch every place together so places stay mutually consistent.
 
 Usage:
-  python3 pipeline/openmeteo_fetch.py                 # all places in pipeline/places.json
-  python3 pipeline/openmeteo_fetch.py begur bristol   # only these place ids
+  python3 pipeline/openmeteo_fetch.py --check begur   # compare with committed rows, write nothing
+  python3 pipeline/openmeteo_fetch.py                 # fetch all places in pipeline/places.json and WRITE
+  python3 pipeline/openmeteo_fetch.py begur bristol   # fetch only these place ids and WRITE
 
 Rate limits: the free API allows a limited number of calls per minute/hour/day weighted by
 the size of each request (9 years x 5 variables is a heavy request). In the original run,
 roughly 5 consecutive requests triggered HTTP 429 "Minutely API request limit exceeded".
-This script waits 10 s between places and 65 s after a 429.
+This script waits 10 s between places and 65 s after a 429. An empty or non-JSON response
+(seen once on 23 Oct 2026) or a network error is retried after 20 s.
 """
 import json, math, os, sys, time, urllib.request, urllib.error
 
@@ -26,10 +31,11 @@ def jsround(x, nd=0):
     return int(v) if nd == 0 else v
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PLACES = json.load(open(os.path.join(ROOT, 'pipeline', 'places.json')))
+PLACES = json.load(open(os.path.join(ROOT, 'pipeline', 'places.json'), encoding='utf-8'))
 OUT = os.path.join(ROOT, 'data', 'processed', 'climate-spain-2017-2025.json')
 START, END = '2017-01-01', '2025-12-31'
 VARS = 'temperature_2m_max,temperature_2m_min,precipitation_sum,wind_gusts_10m_max,wind_direction_10m_dominant'
+MEASURES = ['tmax', 'tmin', 'rain', 'wet', 'ride', 'warm', 'hot', 'frost', 'tram']
 # NB: every place, including the UK ones, was fetched with timezone=Europe/Madrid so that
 # day boundaries are consistent. Keep this unless you re-fetch everything.
 TZ = 'Europe%2FMadrid'
@@ -40,16 +46,20 @@ def fetch(lat, lon):
     for attempt in range(6):
         try:
             with urllib.request.urlopen(url, timeout=120) as r:
-                return json.loads(r.read())
+                return json.loads(r.read().decode('utf-8'))
         except urllib.error.HTTPError as e:
             if e.code == 429:
-                time.sleep(65); continue
+                print('  rate-limited, waiting 65 s', flush=True); time.sleep(65); continue
             raise
-    raise RuntimeError('rate-limited too many times')
+        except (json.JSONDecodeError, urllib.error.URLError, TimeoutError) as e:
+            print(f'  bad or empty response ({type(e).__name__}), retrying in 20 s', flush=True); time.sleep(20)
+    raise RuntimeError('no valid response after 6 attempts')
 
 def monthly(place_id, daily):
     """Aggregate daily values to the 9 monthly measures. Thresholds are part of the method;
     changing them changes every number on the site."""
+    gaps = {k: sum(v is None for v in vals) for k, vals in daily.items() if k != 'time'}
+    assert not any(gaps.values()), f'{place_id}: missing daily values {gaps}'
     M = {}
     for i, t in enumerate(daily['time']):
         y, m = int(t[:4]), int(t[5:7])
@@ -72,8 +82,25 @@ def monthly(place_id, daily):
                      'hot': a['hot'], 'frost': a['fr'], 'tram': a['tram']})
     return rows
 
-def main(ids):
-    existing = json.load(open(OUT)) if os.path.exists(OUT) else []
+def compare(place_id, old_rows, new_rows):
+    """Print how freshly fetched rows differ from the committed ones, per measure and as 9-year averages."""
+    old = {(r['year'], r['month']): r for r in old_rows}
+    new = {(r['year'], r['month']): r for r in new_rows}
+    if set(old) != set(new):
+        print(f'  months differ: {len(old)} committed, {len(new)} fetched'); return
+    n_years = len({y for y, _ in old})
+    total = 0
+    for f in MEASURES:
+        ds = [new[k][f] - old[k][f] for k in sorted(old) if new[k][f] != old[k][f]]
+        total += len(ds)
+        o = sum(r[f] for r in old.values()) / n_years; n = sum(r[f] for r in new.values()) / n_years
+        if f in ('tmax', 'tmin'): o, n = o / 12, n / 12   # temperatures: mean of monthly means
+        line = f'  {f:5} {len(ds):3} months differ' + (f', max |diff| {max(map(abs, ds)):g}' if ds else '')
+        print(f'{line:42} 9-yr avg per year: committed {o:.1f}, live {n:.1f}')
+    print(f'  {total} of {len(old) * len(MEASURES)} values differ')
+
+def main(ids, check):
+    existing = json.load(open(OUT, encoding='utf-8')) if os.path.exists(OUT) else []
     keep = [r for r in existing if r['place'] not in ids]
     new = []
     for p in PLACES:
@@ -84,10 +111,18 @@ def main(ids):
         assert len(rows) == 108
         new += rows
         print(p['place'], 'grid point', j['latitude'], j['longitude'], 'elev', j['elevation'], flush=True)
+        if check:
+            compare(p['place'], [r for r in existing if r['place'] == p['place']], rows)
         time.sleep(10)
-    json.dump(keep + new, open(OUT, 'w'), separators=(',', ':'))
+    if check:
+        print('check only: nothing written'); return
+    json.dump(keep + new, open(OUT, 'w', encoding='utf-8'), separators=(',', ':'))
     print('wrote', len(keep + new), 'rows')
 
 if __name__ == '__main__':
-    ids = sys.argv[1:] or [p['place'] for p in PLACES]
-    main(ids)
+    args = sys.argv[1:]
+    check = '--check' in args
+    ids = [a for a in args if a != '--check'] or [p['place'] for p in PLACES]
+    unknown = set(ids) - {p['place'] for p in PLACES}
+    if unknown: sys.exit(f'unknown place id(s): {", ".join(sorted(unknown))}')
+    main(ids, check)

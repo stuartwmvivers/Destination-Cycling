@@ -4,3 +4,4 @@ data/interim/
 .env
 *.key
 render-*.png
+__pycache__/

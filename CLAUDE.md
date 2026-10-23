@@ -20,7 +20,8 @@ Static site comparing year-round cycling climate (and, in future, terrain, roads
 npm ci
 python3 build/build_standalone.py                 # -> spanish-coast-climate.html
 node tests/render_check.js spanish-coast-climate.html
-python3 pipeline/openmeteo_fetch.py <place_id>    # modelled data (verify vs committed rows first)
+python3 pipeline/openmeteo_fetch.py --check <place_id>   # compare live API with committed rows, writes nothing
+python3 pipeline/openmeteo_fetch.py <place_id>    # modelled data: fetch and WRITE (see HANDOVER 4.1 first)
 METEOCAT_API_KEY=... python3 pipeline/meteocat_fetch.py && python3 pipeline/meteocat_aggregate.py
 AEMET_API_KEY=...    python3 pipeline/aemet_fetch.py    && python3 pipeline/aemet_aggregate.py
 python3 pipeline/stations_combine.py
