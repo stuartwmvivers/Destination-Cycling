@@ -8,5 +8,10 @@
     "name": "Agencia Estatal de Meteorología (AEMET)",
     "credit": "Source: Agencia Estatal de Meteorología (AEMET).",
     "terms": "Reuse authorised with the credit © AEMET, Agencia Estatal de Meteorología."
+  },
+  "Met Office": {
+    "name": "Met Office MIDAS Open",
+    "credit": "Source: Met Office MIDAS Open (via CEDA), Open Government Licence v3.",
+    "terms": "Open Government Licence v3. Cite the MIDAS Open dataset version used (dataset-version-202607)."
   }
 }

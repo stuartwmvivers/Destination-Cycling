@@ -585,7 +585,11 @@
           const covN = PERIODS.reduce((t, p) => { const r = sget(P.place, 'all', p); return t + (r && r.tmax_n ? r.tmax_n : 0); }, 0);
           const cov = covN / (YEARS.length * 12);
           const partial = cov < 0.85 ? ' Its record covers about ' + Math.round(cov * 10) * 10 + '% of ' + YEARS_LABEL + ', so averages use only the months it has.' : '';
-          $('#cb-meas-note').textContent = 'Measured at ' + s0.source + '\u2019s ' + s0.station_name + ' station, ' + s0.distance_km + ' km away at ' + d3.format(',.0f')(s0.elevation_m) + ' m' + (s0.gust_height_m ? '.' : '. This station has no wind sensor, so rideable days and wind can\u2019t be checked.') + partial + ' ' + src;
+          const m0 = (v) => d3.format(',.0f')(v) + ' m';
+          $('#cb-meas-note').textContent = (s0.rain_station_name
+            // a paired site: one station for temperature and wind, a nearby gauge for rain
+            ? 'Measured by the ' + s0.source + ': temperature and wind at ' + s0.station_name + ', ' + s0.distance_km + ' km away at ' + m0(s0.elevation_m) + '; rain at ' + s0.rain_station_name + ', ' + s0.rain_distance_km + ' km away at ' + m0(s0.rain_elevation_m) + '.'
+            : 'Measured at ' + s0.source + '\u2019s ' + s0.station_name + ' station, ' + s0.distance_km + ' km away at ' + m0(s0.elevation_m) + (s0.gust_height_m ? '.' : '. This station has no wind sensor, so rideable days and wind can\u2019t be checked.')) + partial + ' ' + src;
           const mrow = get(P.place, P.year, P.period);
           for (const mm of MEASURES) {
             const tr = document.createElement('tr');

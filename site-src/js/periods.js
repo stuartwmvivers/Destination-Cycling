@@ -63,7 +63,8 @@ dash.calc('station_periods', {
     const byPlace = {};
     for (const d of stations) (byPlace[d.place] = byPlace[d.place] || []).push(d);
     for (const [place, list] of Object.entries(byPlace)) {
-      const info = { place, source: list[0].source, station: list[0].station, station_name: list[0].station_name, distance_km: list[0].distance_km, elevation_m: list[0].elevation_m, gust_height_m: list[0].gust_height_m };
+      const info = { place, source: list[0].source, station: list[0].station, station_name: list[0].station_name, distance_km: list[0].distance_km, elevation_m: list[0].elevation_m, gust_height_m: list[0].gust_height_m,
+        rain_station_name: list[0].rain_station_name, rain_distance_km: list[0].rain_distance_km, rain_elevation_m: list[0].rain_elevation_m };
       const years = [...new Set(list.map((d) => String(d.year)))];
       for (const d of list) {
         const row = { ...info, year: String(d.year), period: String(d.month) };

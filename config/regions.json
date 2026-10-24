@@ -4,16 +4,40 @@
     "name": "Spanish coast",
     "title": "Spanish Coast Climate",
     "description": "Nine years of recorded weather for twenty places on the Costa Brava, Costa del Sol, Costa Blanca and Mallorca, compared with Dunning (Perthshire) and Bristol.",
-    "countries": ["ES"],
-    "baselines": ["dunning", "bristol"],
+    "countries": [
+      "ES"
+    ],
+    "baselines": [
+      "dunning",
+      "bristol"
+    ],
     "default_place": "begur",
     "default_compare": "dunning",
-    "overview": {"id": "spain", "label": "All Spain"},
+    "overview": {
+      "id": "spain",
+      "label": "All Spain"
+    },
     "tabs": [
-      {"id": "brava", "label": "Costa Brava", "region": "Costa Brava"},
-      {"id": "sol", "label": "Costa del Sol", "region": "Costa del Sol"},
-      {"id": "blanca", "label": "Costa Blanca", "region": "Costa Blanca"},
-      {"id": "mallorca", "label": "Mallorca", "region": "Mallorca"}
+      {
+        "id": "brava",
+        "label": "Costa Brava",
+        "region": "Costa Brava"
+      },
+      {
+        "id": "sol",
+        "label": "Costa del Sol",
+        "region": "Costa del Sol"
+      },
+      {
+        "id": "blanca",
+        "label": "Costa Blanca",
+        "region": "Costa Blanca"
+      },
+      {
+        "id": "mallorca",
+        "label": "Mallorca",
+        "region": "Mallorca"
+      }
     ],
     "card": {
       "title": "Spanish coast",
@@ -24,6 +48,6 @@
     "station_summary": "At every station checked, the model counts too many wet days (by roughly a third to two-thirds), so real rideable days are as many as modelled or more. Temperatures vary by region: on the Costa Brava, Costa Blanca and around Pollença the model runs 1.5–3°C cool by day; on the Costa del Sol it is about right by day but overstates summer heat, with far fewer real days over 30°C than modelled.",
     "method_places": "Each place is the nearest grid point to the town, adjusted for the town's own height. Begur's figures are for the hilltop village at about 200 m, so its seafront and coves run roughly 1°C warmer. Cadaqués shares a grid point with Roses, so it is not shown. Nerja and Frigiliana share one grid point: Frigiliana's temperatures are adjusted for its 320 m, but its rain and wind are Nerja's. Sóller sits in a steep valley that a 9 km grid cannot resolve, so treat its figures as a rough guide.",
     "method_measures": "Rideable days are dry (under 1 mm), with gusts under 50 km/h and a high of at least 11°C; warm riding days need a high of 14–30°C. North-wind days have gusts of 50 km/h or more from the north or north-west: the Tramuntana on the Costa Brava and in Mallorca. They don't capture the Levante, the easterly that blows through the Strait near Estepona, though strong Levante days still count against rideable days. Modelled gusts tend to understate real coastal gusts, so read wind counts as relative, not absolute.",
-    "credits": "Weather data: <a href=\"https://open-meteo.com/\">Open-Meteo</a> historical archive (ECMWF analysis, CC BY 4.0). Station readings: Costa Brava © Servei Meteorològic de Catalunya (Meteocat), used with permission; Costa del Sol, Costa Blanca and Mallorca © AEMET, Agencia Estatal de Meteorología. Map: © <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors, drawn with <a href=\"https://leafletjs.com/\">Leaflet</a>. Modelled data fetched 16–17 October 2026, covering 2017–2025."
+    "credits": "Weather data: <a href=\"https://open-meteo.com/\">Open-Meteo</a> historical archive (ECMWF analysis, CC BY 4.0). Station readings: Costa Brava © Servei Meteorològic de Catalunya (Meteocat), used with permission; Costa del Sol, Costa Blanca and Mallorca © AEMET, Agencia Estatal de Meteorología. Dunning and Bristol: Met Office MIDAS Open (via CEDA), Open Government Licence v3. Map: © <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors, drawn with <a href=\"https://leafletjs.com/\">Leaflet</a>. Modelled data fetched 16–17 October 2026, covering 2017–2025."
   }
 ]

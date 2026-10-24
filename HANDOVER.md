@@ -62,7 +62,8 @@ pipeline/openmeteo_fetch.py   modelled data: fetch + aggregate (Python port, see
 pipeline/openmeteo_browser_reference.js   the exact JS aggregation originally used
 pipeline/meteocat_fetch.py / meteocat_aggregate.py   Catalan stations (needs METEOCAT_API_KEY)
 pipeline/aemet_fetch.py / aemet_aggregate.py         Spanish national stations (needs AEMET_API_KEY)
-pipeline/stations_combine.py  merges both station sets -> data/processed/stations/<country>.json
+pipeline/midas_fetch.py / midas_aggregate.py         UK baseline stations, Met Office MIDAS Open (needs CEDA_ACCESS_TOKEN)
+pipeline/stations_combine.py  merges station sets -> data/processed/stations/<country>.json (rebuilds only sources whose inputs are present)
 site-src/pages/               index.html (landing), region.html (dashboard template, one page per region), about.html (method, trust, sources)
 site-src/css/                 tokens.css (light + dark design tokens), dashboard.css, landing.css
 site-src/js/                  dash-shim.js (the `dash` API, fetches region data), periods.js (calcs), dashboard.js (UI)
@@ -206,12 +207,26 @@ There are no stations for **Llançà** (nearest is a 198 m mountain pass, unrepr
 
 Frigiliana has no station of its own (it shares Nerja's).
 
+**Met Office MIDAS Open** (via CEDA, `dap.ceda.ac.uk`, dataset version 202607; added 24 Oct 2026) for the UK baselines. No station near either town has temperature, rain and wind for 2017–2025, so each baseline **pairs** a synoptic station (temperature and gusts) with a nearby rain gauge:
+
+| Baseline | Temperature + wind (src_id) | km, m | Rain gauge (src_id) | km, m | Coverage 2017–25 |
+|---|---|---|---|---|---|
+| Dunning | Strathallan Airfield (00212) | 9.3, 35 | Kinkell Bridge No 2 (55762, gauge id 881658) | 9.3, 19 | ~98% |
+| Bristol | Almondsbury (62122) | 10.9, 75 | Clifton, Oakfield Road (09621) | 1.6, 61 | temperature and wind 2018–2025 only (**~80%**) |
+
+The Dunning station itself (00216) has no data after 2016. Filton stops in 2018; Long Ashton and Bristol Weather Centre have nothing recent.
+
 ### 5.3 Station aggregation rules
 
 - Meteocat: a day counts only if its `percentatge` ≥ 80. A measure is valid for a month only if ≥ 90% of days are present. Gusts are m/s × 3.6 → km/h. The **direction used is the direction of the maximum gust**, not the dominant direction as in the model, a known asymmetry for `tram`.
 - AEMET: decimal commas, `prec` "Ip" (trace) = 0.05 mm, "Acum" ignored, `racha` m/s × 3.6, `dir` in tens of degrees (99 = variable, never counts as north). Precipitation is the 07–07 day. The same 90% monthly completeness rule applies.
 - `ride` and `warm` need temperature, rain and gust all present, so stations without wind have no rideable-day figures.
 - Station scripts use Python's `round()` (banker's rounding). The committed station data was made that way, so that's the reference.
+- MIDAS (`midas_aggregate.py`), with the same 90% rule and thresholds:
+  - **Temperature:** the daily max is the 12-hour reading ending 21:00 UTC (09–21) and the min the one ending 09:00 (21–09); rare 24-hour readings fill gaps.
+  - **Rain:** 09–09 UTC totals, credited to the day the period **starts**. MIDAS `ob_date` is the end date; checked against modelled Dunning rain, r 0.61 shifted vs 0.53 unshifted. Multi-day totals are ignored. Kinkell Bridge has two gauges, and the one with most daily records (881658, 96% passing QC) is used.
+  - **Gusts:** hourly max gusts in knots × 1.852; a day's gust is the highest of its UTC hours (needs ≥ 19 of 24) and its direction is that gust's, as for Meteocat.
+  - **Paired stations:** `ride` and `warm` combine one station's temperature and gusts with the other's rain on the same day. Rows carry `rain_station`, `rain_station_name`, `rain_distance_km` and `rain_elevation_m`, and the page names both stations.
 
 Row schema, `data/processed/stations/<country>.json` (1,836 rows):
 `{place, source: "Meteocat"|"AEMET", station, station_name, distance_km, elevation_m, gust_height_m|null, year, month, tmax, tmin, rain, wet, ride, warm, hot, frost, tram}`, with `null` where a measure isn't valid for that month.
@@ -239,11 +254,13 @@ Yearly averages over matched months, station vs model.
 | Palma Puerto | +0.5 | +1.2 | 52/84 | 300/245 | 62/72 |
 | Port de Sóller (partial) | −0.6 | +0.2 | 49/102 | 272/205 | 39/77 |
 | Pollença | +3.3 | −2.2 | 66/92 | 274/214 | 84/25 |
+| Strathallan + Kinkell Br. (Dunning) | +1.0 | +0.2 | 152/171 | 114/91 | 0/0 |
+| Almondsbury + Clifton (Bristol, partial) | +0.8 | −0.1 | 139/162 | 150/116 | 3/1 |
 
 \*Begur's model point is ~200 m higher than Torroella, which explains ≈1.3 °C of its gap.
 
 Conclusions:
-1. **Everywhere, the model overcounts wet days** (by ~30–70%), so **real rideable days are equal to or higher than modelled, never lower**. The model's absolute numbers are pessimistic.
+1. **Everywhere, the model overcounts wet days** (by ~30–70% in Spain, ~12–14% at the UK baselines), so **real rideable days are equal to or higher than modelled, never lower**. The model's absolute numbers are pessimistic, and that holds for the UK baselines too (Dunning 114 real vs 91 modelled rideable days a year, Bristol 150 vs 116), so Spain-vs-UK comparisons aren't skewed by the baselines being treated differently.
 2. **Temperature bias is regional, not uniform.** Costa Brava, Costa Blanca and Pollença: the model is 1.5–3 °C too cool by day and too warm by night. Costa del Sol: about right by day, but it **overstates summer heat** (sea breeze; e.g. Marbella 8 real ≥ 30 °C days a year vs 40 modelled). Coastal Mallorca: close, with the gain coming from fewer wet days.
 3. Rankings between places probably hold, but **a single correction factor is wrong**. One derived from Catalonia would wrongly heat the Costa del Sol.
 
@@ -259,7 +276,7 @@ Conclusions:
 | Meteocat XEMA API | Catalan stations | Owner holds a key (personal citizen plan). Quota 20,000 XEMA calls/month; ~3,300 used on 20 Oct 2026. Host `api.meteo.cat`, header `X-Api-Key` | API terms: personal use, no redistribution, attribute, notify Meteocat of publications. **Written permission (21 Oct 2026) to publish monthly summaries on this site** with attribution. **Never publish or commit raw daily Meteocat data.** Credit: "Servei Meteorològic de Catalunya (Meteocat), used with permission". |
 | AEMET OpenData | Spanish national stations | Owner holds a key (JWT, **expires ~29 Jan 2027**; the owner must re-request at opendata.aemet.es). Header `api_key` | Reuse authorised citing AEMET: "© AEMET, Agencia Estatal de Meteorología". |
 | ECA&D (KNMI) | Planned: station validation across Europe | No registration for station data. `www.ecad.eu` was allowlisted, but the site returned **HTTP 503** on 21 Oct 2026. Retry. Bulk files may be served from another host. | Non-commercial research and education only. Acknowledge data providers; cite Klein Tank et al. (2002), *Int. J. Climatol.* 22, 1441–1453. |
-| Met Office MIDAS Open (via CEDA) | Planned: UK stations (Bristol, Dunning) | The owner applied for a CEDA account (pending). Needs an **access token** (not a password) for scripted downloads. Host `dap.ceda.ac.uk` | Open Government Licence v3. Cite the dataset DOI shown on the CEDA catalogue page (Met Office, MIDAS Open: UK daily weather observation data). |
+| Met Office MIDAS Open (via CEDA) | UK baseline stations (Dunning, Bristol), since 24 Oct 2026 | The owner has a CEDA account. Scripted downloads need a short-lived **access token** in `CEDA_ACCESS_TOKEN` (in the git-ignored `.env`); directory listings are public. Host `dap.ceda.ac.uk`, dataset version 202607 (daily temperature, daily rain, hourly mean wind). | Open Government Licence v3. Credited on the page, footer and About page. Before any formal publication, add the dataset DOIs from the CEDA catalogue for version 202607 (not yet recorded here). |
 | OpenStreetMap tiles (`tile.openstreetmap.org`) | Map background, via Leaflet 1.9.4 (vendored) | No key. The [tile usage policy](https://operations.osmfoundation.org/policies/tiles/) allows light use like this site with visible attribution; no bulk or automated downloading (the tests serve blank tiles instead). If traffic grows, switch to a tile provider: change the URL in `initMap` in `site-src/js/dashboard.js`. | Data © OpenStreetMap contributors, ODbL; attribution shown on the map and in the footer. Leaflet is BSD-2. (The geo-maps / Natural Earth / es-atlas outlines used until 24 Oct 2026 are gone.) |
 
 **Secrets:** keys go in environment variables (`METEOCAT_API_KEY`, `AEMET_API_KEY`, `CEDA_ACCESS_TOKEN`) or a git-ignored `.env`. Never in code, commits, the built page or issues. **Ask the owner for keys; they're not in this repo.**
@@ -336,7 +353,7 @@ All four phases are done; see `docs/refactor-plan.md` and section 7.1 for adding
 ### 9.2 Station validation everywhere
 - **AEMET:** more stations across all Spanish candidate areas (the inventory is in `data/reference/`).
 - **ECA&D:** daily station series for Portugal, France, Italy, Croatia, Slovenia and the UK. Same measures, same completeness rules.
-- **MIDAS Open:** Bristol and Dunning stations once the CEDA token arrives.
+- ~~**MIDAS Open:** Bristol and Dunning stations~~ Done 24 Oct 2026 (5.2).
 - Output a **per-region model-bias table**. Only then consider an optional, clearly labelled, per-region adjusted layer (section 5.4 decision).
 
 ### 9.3 Cycling-base score
@@ -371,7 +388,8 @@ Order agreed in principle: all of Spain (including the Canaries) → Portugal �
 - Nerja and Frigiliana share rain and wind; Cadaqués is omitted (same cell as Roses).
 - Sóller's terrain is unresolved by the model; treat its figures as indicative only.
 - `tram` misses the Levante; the station gust direction differs in definition from the model's dominant direction.
-- Partial station records: Torrox ~50%, Port de Sóller ~60%, Benidorm ~80% (flagged on the page when below 85%).
+- Partial station records: Torrox ~50%, Port de Sóller ~60%, Benidorm ~80%, Bristol ~80% (flagged on the page when below 85%).
+- The UK baselines' station figures come from paired stations ~9–11 km from the towns (Bristol's temperature from Almondsbury, north of the city), and MIDAS days run 09–09 UTC rather than midnight to midnight.
 - The heatmap is dense at phone width but usable. On the map, labels in tight clusters (Nerja / Frigiliana / Torrox) hide each other until you zoom in.
 - A fresh Open-Meteo fetch differs slightly from the committed rain-based figures (see 4.1); the committed data is a 16–17 Oct 2026 snapshot.
 

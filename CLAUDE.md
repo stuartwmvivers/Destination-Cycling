@@ -30,5 +30,6 @@ python3 pipeline/openmeteo_fetch.py --check <place_id>   # compare live API with
 python3 pipeline/openmeteo_fetch.py <place_id>    # modelled data: fetch and WRITE (see HANDOVER 4.1 first)
 METEOCAT_API_KEY=... python3 pipeline/meteocat_fetch.py && python3 pipeline/meteocat_aggregate.py
 AEMET_API_KEY=...    python3 pipeline/aemet_fetch.py    && python3 pipeline/aemet_aggregate.py
-python3 pipeline/stations_combine.py
+python3 pipeline/midas_fetch.py && python3 pipeline/midas_aggregate.py   # needs CEDA_ACCESS_TOKEN in .env
+python3 pipeline/stations_combine.py              # rebuilds only sources whose inputs are present
 ```

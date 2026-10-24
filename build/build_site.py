@@ -26,7 +26,8 @@ read = lambda p: open(p, encoding='utf-8').read()
 load = lambda p: json.load(open(p, encoding='utf-8'))
 esc = lambda s: s.replace('&', '&amp;').replace('<', '&lt;').replace('"', '&quot;')
 MEASURES = ['tmax', 'tmin', 'rain', 'wet', 'ride', 'warm', 'hot', 'frost', 'tram']
-STATION_INFO = ['source', 'station', 'station_name', 'distance_km', 'elevation_m', 'gust_height_m']
+STATION_INFO = ['source', 'station', 'station_name', 'distance_km', 'elevation_m', 'gust_height_m',
+                'rain_station', 'rain_station_name', 'rain_distance_km', 'rain_elevation_m']   # rain_*: paired gauge (Met Office), else absent
 D3 = '7.9.0'
 LEAFLET = '1.9.4'
 
@@ -94,8 +95,8 @@ for reg in regions:
     for p in members:
         if p['place'] in stations:
             rs = stations[p['place']]
-            info = {k: rs[0][k] for k in STATION_INFO}
-            assert all({k: r[k] for k in STATION_INFO} == info for r in rs), f"{p['place']}: station details vary"
+            info = {k: rs[0][k] for k in STATION_INFO if k in rs[0]}
+            assert all({k: r[k] for k in STATION_INFO if k in r} == info for r in rs), f"{p['place']}: station details vary"
             st[p['place']] = {**info, 'series': columns(rs)}
     data = {'id': reg['id'], 'name': reg['name'], 'years': years, 'places': members,
             'climate': {p['place']: columns(climate[p['place']]) for p in members}, 'stations': st}
@@ -196,7 +197,8 @@ page('index.html', 'Destination Cycling',
      'Comparing places in Europe as year-round road-cycling bases, starting with nine years of weather on the Spanish coast.',
      ['landing'], index_body,
      'Weather data: <a href="https://open-meteo.com/">Open-Meteo</a> historical archive (ECMWF analysis, CC BY 4.0). '
-     'Station readings on the Spain dashboard: © Servei Meteorològic de Catalunya (Meteocat), used with permission; © AEMET, Agencia Estatal de Meteorología. '
+     'Station readings: © Servei Meteorològic de Catalunya (Meteocat), used with permission; © AEMET, Agencia Estatal de Meteorología; '
+     'UK baselines: Met Office MIDAS Open (via CEDA), Open Government Licence v3. '
      'Source and method: <a href="https://github.com/stuartwmvivers/Destination-Cycling">GitHub</a>.' + ABOUT_LINK)
 
 # ---------- redirects: old URLs that must keep working ----------

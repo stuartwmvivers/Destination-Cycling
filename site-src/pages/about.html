@@ -26,9 +26,9 @@
 
   <section class="lp-card" aria-labelledby="ab-trust">
     <h2 id="ab-trust">How far to trust them</h2>
-    <p>To see how far the model can be trusted, towns are paired with the nearest suitable real weather station and the same measures are worked out from the station's own daily readings. A station's month only counts if at least 90% of its days were recorded. Three things stand out so far:</p>
+    <p>To see how far the model can be trusted, towns and the two UK baselines are paired with the nearest suitable real weather station and the same measures are worked out from the station's own daily readings. A station's month only counts if at least 90% of its days were recorded. Three things stand out so far:</p>
     <ol class="ab-list">
-      <li><b>The model overcounts wet days everywhere</b>, by roughly a third to two-thirds. So real rideable days are as many as modelled or more, never fewer: the modelled figures are on the pessimistic side.</li>
+      <li><b>The model overcounts wet days everywhere</b>: by roughly a third to two-thirds in Spain, and by about an eighth at the UK baselines. So real rideable days are as many as modelled or more, never fewer. The modelled figures are on the pessimistic side, in the UK as well as in Spain.</li>
       <li><b>Temperature bias depends on the region.</b> On the Costa Brava, the Costa Blanca and around Pollença the model runs 1.5–3°C too cool by day and too warm by night. On the Costa del Sol it is about right by day but overstates summer heat. Coastal Mallorca is close.</li>
       <li><b>Rankings between places probably hold</b>, but no single correction would be right everywhere. So no correction is applied: each dashboard shows the model and the station side by side where a station exists.</li>
     </ol>
@@ -41,6 +41,7 @@
       <li><b>Modelled weather:</b> <a href="https://open-meteo.com/">Open-Meteo</a> historical weather API (ECMWF analysis), CC BY 4.0.</li>
       <li><b>Costa Brava stations:</b> © Servei Meteorològic de Catalunya (Meteocat). Monthly summaries are published with Meteocat's permission; daily readings are not republished.</li>
       <li><b>Other Spanish stations:</b> © AEMET, Agencia Estatal de Meteorología.</li>
+      <li><b>UK stations (Dunning, Bristol):</b> Met Office MIDAS Open, via <a href="https://catalogue.ceda.ac.uk/">CEDA</a>, under the Open Government Licence v3. Each baseline pairs a station for temperature and wind with a nearby rain gauge.</li>
       <li><b>Maps:</b> © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors (ODbL), drawn with <a href="https://leafletjs.com/">Leaflet</a>.</li>
       <li><b>Charts:</b> <a href="https://d3js.org/">d3</a>.</li>
     </ul>

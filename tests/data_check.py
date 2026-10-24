@@ -45,8 +45,9 @@ for sub, key in [('climate', 'climate'), ('stations', 'stations')]:
                 seen.add(k)
                 if vals != {m: src[k][m] for m in MEASURES}: fails.append(f'{f}: {key} {k} differs from data/processed')
                 if sub == 'stations':
-                    for m in ['source', 'station', 'station_name', 'distance_km', 'elevation_m', 'gust_height_m']:
-                        if s[m] != src[k][m]: fails.append(f'{f}: station {k} {m} differs')
+                    for m in ['source', 'station', 'station_name', 'distance_km', 'elevation_m', 'gust_height_m',
+                              'rain_station', 'rain_station_name', 'rain_distance_km', 'rain_elevation_m']:
+                        if s.get(m) != src[k].get(m): fails.append(f'{f}: station {k} {m} differs')
     in_places = {p['place'] for p in load(J('config', 'places.json'))}
     missing = {k for k in src if k[0] in in_places} - seen
     if missing: fails.append(f'{sub}: {len(missing)} source rows not in any region file, e.g. {sorted(missing)[:3]}')
