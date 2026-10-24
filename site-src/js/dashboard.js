@@ -1,4 +1,6 @@
 (() => {
+  // Region settings come from config/regions.json via the build (window.DC_PAGE).
+  const CFG = window.DC_PAGE;
   const MEASURES = [
     { id: 'tmax', label: 'Daytime high', short: 'High', unit: '°C', temp: true, def: 'Average of the daily maximum temperature.' },
     { id: 'tmin', label: 'Night low', short: 'Low', unit: '°C', temp: true, def: 'Average of the daily minimum temperature.' },
@@ -6,19 +8,22 @@
     { id: 'warm', label: 'Warm riding days', short: 'Warm ride', unit: 'days', def: 'Dry, gusts under 50 km/h and a high between 14°C and 30°C.' },
     { id: 'rain', label: 'Rainfall', short: 'Rain', unit: 'mm', def: 'Total rain and snow, as water.' },
     { id: 'wet', label: 'Wet days', short: 'Wet', unit: 'days', def: 'Days with 1 mm of rain or more.' },
-    { id: 'tram', label: 'North-wind days', short: 'N wind', unit: 'days', def: 'Days with gusts of 50 km/h or more from the north or north-west (the Tramuntana on the Costa Brava and in Mallorca).' },
+    { id: 'tram', label: 'North-wind days', short: 'N wind', unit: 'days', def: 'Days with gusts of 50 km/h or more from the north or north-west' + (CFG.tram_note ? ' (' + CFG.tram_note + ').' : '.') },
     { id: 'hot', label: 'Hot days', short: 'Hot', unit: 'days', def: 'Days with a high of 30°C or more.' },
     { id: 'frost', label: 'Frost nights', short: 'Frost', unit: 'days', def: 'Nights with a low of 0°C or below.' },
   ];
   const BY = Object.fromEntries(MEASURES.map((m) => [m.id, m]));
   const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   const MONTH = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  const YEARS = ['2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025'];
+  const YEARS = CFG.years;
+  const YEARS_LABEL = YEARS[0] + '\u2013' + YEARS[YEARS.length - 1];
+  const YEAR_ALL = String(+YEARS[0] - 1);   // the year slider's leftmost stop means 'all years'
   const PERIODS = MON.map((_, i) => String(i + 1));
-  const DEFAULTS = { place: 'begur', compare: 'dunning', measure: 'tmax', year: 'all', period: '1', frame: 'auto', region: 'all' };
-  const REGIONS = ['Costa Brava', 'Costa del Sol', 'Costa Blanca', 'Mallorca', 'UK'];
-  const REGION_FRAME = { 'Costa Brava': 'brava', 'Costa del Sol': 'sol', 'Costa Blanca': 'blanca', 'Mallorca': 'mallorca', 'UK': 'spain' };
-  const FRAMES = [['spain', 'All Spain'], ['brava', 'Costa Brava'], ['sol', 'Costa del Sol'], ['blanca', 'Costa Blanca'], ['mallorca', 'Mallorca']];
+  const DEFAULTS = { ...CFG.defaults, measure: 'tmax', year: 'all', period: '1', frame: 'auto', region: 'all' };
+  const REGIONS = CFG.groups;   // place groups, in order: map-tab regions, then the rest (UK baselines)
+  const OVERVIEW = CFG.overview.id;
+  const REGION_FRAME = Object.fromEntries(CFG.tabs.map((t) => [t.region, t.id]));   // other regions use the overview
+  const FRAMES = [[OVERVIEW, CFG.overview.label], ...CFG.tabs.map((t) => [t.id, t.label])];
   const sortState = { field: 'tmax', dir: -1 };
   let drawTable = () => {};
 
@@ -40,7 +45,7 @@
   };
   const periodName = (p) => (p === 'year' ? 'the whole year' : MONTH[+p - 1]);
   const periodShort = (p) => (p === 'year' ? 'Whole year' : MONTH[+p - 1]);
-  const yearName = (y) => (y === 'all' ? '2017–2025 average' : y);
+  const yearName = (y) => (y === 'all' ? YEARS_LABEL + ' average' : y);
   const resolve = (c) => {
     const s = document.createElement('span');
     s.style.color = c;
@@ -103,7 +108,7 @@
   }
   $('#cb-compare').addEventListener('change', (e) => set({ compare: e.target.value || 'none' }));
   $('#cb-month').addEventListener('input', (e) => { stopPlay(); set({ period: e.target.value === '13' ? 'year' : e.target.value }); });
-  $('#cb-year').addEventListener('input', (e) => set({ year: e.target.value === '2016' ? 'all' : e.target.value }));
+  $('#cb-year').addEventListener('input', (e) => set({ year: e.target.value === YEAR_ALL ? 'all' : e.target.value }));
   let timer = null;
   const playBtn = $('#cb-play');
   function stopPlay() { if (timer) { clearInterval(timer); timer = null; playBtn.textContent = 'Play'; } }
@@ -182,7 +187,7 @@
     $('#cb-def').textContent = M.label + ': ' + M.def;
     $('#cb-month').value = P.period === 'year' ? '13' : P.period;
     $('#cb-month-out').textContent = periodShort(P.period);
-    $('#cb-year').value = P.year === 'all' ? '2016' : P.year;
+    $('#cb-year').value = P.year === 'all' ? YEAR_ALL : P.year;
     $('#cb-year-out').textContent = P.year === 'all' ? 'All (average)' : P.year;
     const accent = resolve(dash.colors[0]);
     const muted = resolve('var(--cds-chart-muted)');
@@ -302,18 +307,18 @@
     {
       const box = $('#cb-map');
       const regionOf = Object.fromEntries(places.map((p) => [p.place, p.region]));
-      const frame = P.frame && P.frame !== 'auto' ? P.frame : (REGION_FRAME[regionOf[P.place]] || 'spain');
+      const frame = P.frame && P.frame !== 'auto' ? P.frame : (REGION_FRAME[regionOf[P.place]] || OVERVIEW);
       $('#cb-frames').querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.f === frame)));
       $('#cb-map-title').textContent = M.label + ' · ' + periodShort(P.period) + ' · ' + yearName(P.year);
       if (typeof L === 'undefined') { failBox(box, 'error'); }
       else {
-        const homes = places.filter((p) => p.region === 'UK');
-        const onMap = places.filter((p) => p.region !== 'UK');
+        const homes = places.filter((p) => p.baseline);
+        const onMap = places.filter((p) => !p.baseline);
         if (!mapState) { mapState = initMap(box, onMap); mapState.key = $('#cb-mapkey'); }
         const st = mapState, map = st.map;
         map.invalidateSize();
         // places in the chosen frame set the colour scale (as on the old hand-drawn map) and the view
-        const inFrame = frame === 'spain' ? onMap : onMap.filter((p) => REGION_FRAME[p.region] === frame);
+        const inFrame = frame === OVERVIEW || !CFG.tabs.some((t) => t.id === frame) ? onMap : onMap.filter((p) => REGION_FRAME[p.region] === frame);
         if (frame !== st.frame) {
           // no animation: restyling markers mid-zoom leaves Leaflet's paths blank. Extra padding on the right
           // leaves room for the labels, which sit to the right of each dot.
@@ -416,7 +421,7 @@
       const box = $('#cb-season');
       box.replaceChildren();
       $('#cb-season-title').textContent = M.label + ' through the year';
-      $('#cb-season-note').textContent = (avg ? 'Line: 2017–2025 average. ' : 'Line: ' + P.year + '. Dashed: 2017–2025 average. ') + 'Shading: lowest to highest year.' + (cmp ? ' Grey: ' + nameOf[cmp] + '.' : '') + ' Click a month to select it.';
+      $('#cb-season-note').textContent = (avg ? 'Line: ' + YEARS_LABEL + ' average. ' : 'Line: ' + P.year + '. Dashed: ' + YEARS_LABEL + ' average. ') + 'Shading: lowest to highest year.' + (cmp ? ' Grey: ' + nameOf[cmp] + '.' : '') + ' Click a month to select it.';
       const W = Math.max(300, box.clientWidth || 600), H = 290;
       const m = M.id;
       const aRows = PERIODS.map((p) => get(P.place, 'all', p));
@@ -522,7 +527,7 @@
       const box = $('#cb-years');
       box.replaceChildren();
       $('#cb-year-title').textContent = M.label + ' in ' + periodName(P.period) + ', year by year';
-      $('#cb-year-note').textContent = 'Bars: ' + nameOf[P.place] + '. Dashed line: its 2017–2025 average.' + (cmp ? ' Grey marks: ' + nameOf[cmp] + '.' : '') + ' Click a bar to select that year.';
+      $('#cb-year-note').textContent = 'Bars: ' + nameOf[P.place] + '. Dashed line: its ' + YEARS_LABEL + ' average.' + (cmp ? ' Grey marks: ' + nameOf[cmp] + '.' : '') + ' Click a bar to select that year.';
       const W = Math.max(300, box.clientWidth || 600), H = 290;
       const m = M.id;
       const pr = YEARS.map((yr) => get(P.place, yr, P.period));
@@ -562,8 +567,6 @@
       const hasAny = !!srows;
       sec.hidden = !hasAny;
       if (hasAny) {
-        const withMc = srows.some((r) => r.source === 'Meteocat');
-        $('#cb-meas-summary').textContent = 'At every station checked, the model counts too many wet days (by roughly a third to two-thirds), so real rideable days are as many as modelled or more. Temperatures vary by region: ' + (withMc ? 'on the Costa Brava, Costa Blanca and around Pollença' : 'on the Costa Blanca and around Pollença') + ' the model runs 1.5–3°C cool by day; on the Costa del Sol it is about right by day but overstates summer heat, with far fewer real days over 30°C than modelled.';
         const sget = (place, year, period) => srows.find((r) => r.place === place && r.year === year && r.period === period);
         const s0 = sget(P.place, P.year, P.period);
         const tb = $('#cb-meas-body');
@@ -578,10 +581,10 @@
         } else {
           $('#cb-meas-grid').hidden = false;
           $('#cb-meas-title').textContent = 'Modelled vs measured · ' + nameOf[P.place] + ' · ' + periodShort(P.period) + ' · ' + yearName(P.year);
-          const src = s0.source === 'AEMET' ? 'Source: Agencia Estatal de Meteorología (AEMET).' : 'Source: Servei Meteorològic de Catalunya (Meteocat), used with permission.';
+          const src = CFG.sources[s0.source] || 'Source: ' + s0.source + '.';
           const covN = PERIODS.reduce((t, p) => { const r = sget(P.place, 'all', p); return t + (r && r.tmax_n ? r.tmax_n : 0); }, 0);
-          const cov = covN / 108;
-          const partial = cov < 0.85 ? ' Its record covers about ' + Math.round(cov * 10) * 10 + '% of 2017\u20132025, so averages use only the months it has.' : '';
+          const cov = covN / (YEARS.length * 12);
+          const partial = cov < 0.85 ? ' Its record covers about ' + Math.round(cov * 10) * 10 + '% of ' + YEARS_LABEL + ', so averages use only the months it has.' : '';
           $('#cb-meas-note').textContent = 'Measured at ' + s0.source + '\u2019s ' + s0.station_name + ' station, ' + s0.distance_km + ' km away at ' + d3.format(',.0f')(s0.elevation_m) + ' m' + (s0.gust_height_m ? '.' : '. This station has no wind sensor, so rideable days and wind can\u2019t be checked.') + partial + ' ' + src;
           const mrow = get(P.place, P.year, P.period);
           for (const mm of MEASURES) {

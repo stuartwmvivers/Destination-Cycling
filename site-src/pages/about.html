@@ -1,0 +1,49 @@
+<main class="lp lp-about">
+  <header class="lp-head">
+    <p class="lp-note"><a href="{{ROOT}}">← Destination Cycling</a></p>
+    <h1 class="lp-title">About the figures</h1>
+    <p class="lp-lede">How the numbers on this site are made, how far to trust them, and where the data come from.</p>
+  </header>
+
+  <section class="lp-card" aria-labelledby="ab-source">
+    <h2 id="ab-source">Where the weather figures come from</h2>
+    <p>Every place's figures come from the <a href="https://open-meteo.com/">Open-Meteo</a> historical archive, which serves ECMWF's model analysis of past weather on a grid of about 9 km. The analysis is built from real observations (weather stations, satellites, buoys), but it is not a single thermometer reading: each place gets the nearest grid point, with temperatures adjusted for the place's own height.</p>
+    <p>The figures cover {{YEARS}}, daily, summed or averaged to months. Earlier years are left out because only a coarser 25 km grid covers them, which blurs neighbouring towns together. The same method is used everywhere, including the two UK baselines (Dunning in Perthshire and Bristol), so places can be compared fairly.</p>
+  </section>
+
+  <section class="lp-card" aria-labelledby="ab-measures">
+    <h2 id="ab-measures">What each measure means</h2>
+    <dl class="ab-defs">
+      <dt>Rideable day</dt><dd>Dry (under 1 mm of rain), with gusts under 50 km/h and a high of at least 11°C.</dd>
+      <dt>Warm riding day</dt><dd>Dry, gusts under 50 km/h and a high between 14°C and 30°C.</dd>
+      <dt>Daytime high, night low</dt><dd>The average of the daily maximum and minimum temperatures.</dd>
+      <dt>Rainfall, wet days</dt><dd>Total rain and snow as water; days with 1 mm or more.</dd>
+      <dt>North-wind day</dt><dd>Gusts of 50 km/h or more from the north or north-west, such as the Tramuntana. Easterlies such as the Levante aren't counted here, though any strong-wind day still counts against rideable days.</dd>
+      <dt>Hot day, frost night</dt><dd>A high of 30°C or more; a low of 0°C or below.</dd>
+    </dl>
+    <p class="lp-note">"{{YEARS}} average" is the mean of the {{N_YEARS}} years. Whole-year temperatures are the mean of the twelve monthly values; day counts and rainfall are totals.</p>
+  </section>
+
+  <section class="lp-card" aria-labelledby="ab-trust">
+    <h2 id="ab-trust">How far to trust them</h2>
+    <p>To see how far the model can be trusted, towns are paired with the nearest suitable real weather station and the same measures are worked out from the station's own daily readings. A station's month only counts if at least 90% of its days were recorded. Three things stand out so far:</p>
+    <ol class="ab-list">
+      <li><b>The model overcounts wet days everywhere</b>, by roughly a third to two-thirds. So real rideable days are as many as modelled or more, never fewer: the modelled figures are on the pessimistic side.</li>
+      <li><b>Temperature bias depends on the region.</b> On the Costa Brava, the Costa Blanca and around Pollença the model runs 1.5–3°C too cool by day and too warm by night. On the Costa del Sol it is about right by day but overstates summer heat. Coastal Mallorca is close.</li>
+      <li><b>Rankings between places probably hold</b>, but no single correction would be right everywhere. So no correction is applied: each dashboard shows the model and the station side by side where a station exists.</li>
+    </ol>
+    <p class="lp-note">Gusts in the model tend to be lower than real coastal gusts, so wind counts are best read as relative. Steep valleys and hilltops that a 9 km grid can't resolve are flagged on each dashboard.</p>
+  </section>
+
+  <section class="lp-card" aria-labelledby="ab-sources">
+    <h2 id="ab-sources">Data sources and licences</h2>
+    <ul class="ab-list">
+      <li><b>Modelled weather:</b> <a href="https://open-meteo.com/">Open-Meteo</a> historical weather API (ECMWF analysis), CC BY 4.0.</li>
+      <li><b>Costa Brava stations:</b> © Servei Meteorològic de Catalunya (Meteocat). Monthly summaries are published with Meteocat's permission; daily readings are not republished.</li>
+      <li><b>Other Spanish stations:</b> © AEMET, Agencia Estatal de Meteorología.</li>
+      <li><b>Maps:</b> © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors (ODbL), drawn with <a href="https://leafletjs.com/">Leaflet</a>.</li>
+      <li><b>Charts:</b> <a href="https://d3js.org/">d3</a>.</li>
+    </ul>
+    <p class="lp-note">The method, the data-processing scripts and every number's source are public on <a href="https://github.com/stuartwmvivers/Destination-Cycling">GitHub</a>.</p>
+  </section>
+</main>

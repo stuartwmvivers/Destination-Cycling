@@ -9,7 +9,7 @@
   const calcs = {};
   const cache = {};
   const listeners = [];
-  const DEFAULTS = { place: 'begur', compare: 'dunning', measure: 'tmax', year: 'all', period: '1', frame: 'auto', region: 'all' };
+  const DEFAULTS = { ...(PAGE.defaults || {}), measure: 'tmax', year: 'all', period: '1', frame: 'auto', region: 'all' };
   const KEY = 'dc-params-' + (PAGE.region || 'site');
   let params = { ...DEFAULTS };
   try { const s = JSON.parse(localStorage.getItem(KEY) || 'null'); if (s && typeof s === 'object') params = { ...params, ...s }; } catch (e) {}

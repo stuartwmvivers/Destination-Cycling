@@ -34,3 +34,10 @@ a.lp-card:focus-visible { outline: 2px solid var(--color-fg); outline-offset: 2p
 .lp a { color: var(--dash-c0); }
 .lp a.lp-card { color: inherit; }
 .cb-foot { max-width: 960px; }
+.lp-about .lp-card p { margin: 0; font-size: var(--cds-font-size-body); color: var(--color-fg); max-width: 72ch; }
+.lp-about .lp-card .lp-note { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+.ab-defs { display: grid; grid-template-columns: max-content 1fr; gap: 6px var(--cds-gap-md); margin: 0; font-size: var(--cds-font-size-body); }
+.ab-defs dt { font-weight: var(--cds-font-weight-medium); }
+.ab-defs dd { margin: 0; color: var(--color-fg-muted); }
+@media (max-width: 520px) { .ab-defs { grid-template-columns: 1fr; } .ab-defs dd { margin-bottom: 6px; } }
+.ab-list { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 6px; font-size: var(--cds-font-size-body); max-width: 72ch; line-height: 1.5; }

@@ -1,7 +1,7 @@
 dash.calc('periods', {
   inputs: ['climate', 'places'],
   title: 'Monthly, yearly and 9-year figures',
-  description: 'Each place, with its region, by month and whole year, for each year and averaged over 2017–2025, with the lowest and highest year.',
+  description: 'Each place, with its region, by month and whole year, for each year and averaged over all years, with the lowest and highest year.',
   fn: (climate, places) => {
     const measures = ['tmax', 'tmin', 'rain', 'wet', 'ride', 'warm', 'hot', 'frost', 'tram'];
     const averaged = ['tmax', 'tmin'];
@@ -63,7 +63,7 @@ dash.calc('station_periods', {
     const byPlace = {};
     for (const d of stations) (byPlace[d.place] = byPlace[d.place] || []).push(d);
     for (const [place, list] of Object.entries(byPlace)) {
-      const info = { place, source: list[0].source || 'Meteocat', station: list[0].station, station_name: list[0].station_name, distance_km: list[0].distance_km, elevation_m: list[0].elevation_m, gust_height_m: list[0].gust_height_m };
+      const info = { place, source: list[0].source, station: list[0].station, station_name: list[0].station_name, distance_km: list[0].distance_km, elevation_m: list[0].elevation_m, gust_height_m: list[0].gust_height_m };
       const years = [...new Set(list.map((d) => String(d.year)))];
       for (const d of list) {
         const row = { ...info, year: String(d.year), period: String(d.month) };

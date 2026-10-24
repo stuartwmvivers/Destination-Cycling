@@ -34,12 +34,16 @@ const pagesIn = (dir) => fs.readdirSync(dir, { recursive: true }).filter((f) => 
         if (!(await p.$('#cb-tbody tr'))) errs.push(`${name} ${w}: places table is empty`);
         const dots = await p.locator('#cb-map path.leaflet-interactive').count();
         if (!dots) errs.push(`${name} ${w}: map has no place markers`);
-        for (const f of ['spain', 'brava', 'sol', 'blanca', 'mallorca']) { await p.click(`#cb-frames button[data-f="${f}"]`); await p.waitForTimeout(100); }
-        for (const pl of ['begur', 'nerja', 'bristol', 'torrox']) { await p.selectOption('#cb-place', pl); await p.waitForTimeout(100); }
+        // every map tab, then a spread of places, whatever this region's config defines
+        for (const f of await p.$$eval('#cb-frames button', (bs) => bs.map((b) => b.dataset.f))) { await p.click(`#cb-frames button[data-f="${f}"]`); await p.waitForTimeout(100); }
+        const opts = await p.$$eval('#cb-place option', (os) => os.map((o) => o.value));
+        for (const pl of [opts[0], opts[Math.floor(opts.length / 2)], opts[opts.length - 1], opts[1]]) { await p.selectOption('#cb-place', pl); await p.waitForTimeout(100); }
         // clicking a visible marker (other than the selected one) must change the selected place
         const before = await p.inputValue('#cb-place');
+        await p.locator('#cb-map').scrollIntoViewIfNeeded();
         const target = await p.evaluate(() => {
-          const box = document.querySelector('#cb-map').getBoundingClientRect();
+          const m = document.querySelector('#cb-map').getBoundingClientRect();
+          const box = { left: m.left, right: m.right, top: Math.max(m.top, 0), bottom: Math.min(m.bottom, innerHeight) };   // only what's on screen
           const dots = [...document.querySelectorAll('#cb-map path.leaflet-interactive')].map((el) => el.getBoundingClientRect())
             .filter((r) => r.left > box.left + 20 && r.right < box.right - 240 && r.top > box.top + 20 && r.bottom < box.bottom - 20);
           const r = dots.find((d) => d.width < 22) || dots[0];   // unselected markers are smaller

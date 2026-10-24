@@ -2,7 +2,7 @@
 
 Static site comparing year-round cycling climate (and, in future, terrain, roads and airport access) for candidate holiday-home locations. Hosted on GitHub Pages from this **public** repo.
 
-**Start by reading `HANDOVER.md`** (full history, data method, decisions, roadmap), `docs/refactor-plan.md` (the multi-region refactor in progress) and `docs/cycling-score-spec.md` (the planned ranking).
+**Start by reading `HANDOVER.md`** (full history, data method, decisions, roadmap; 7.1 says how to add a region), `docs/refactor-plan.md` (the multi-region refactor, now complete) and `docs/cycling-score-spec.md` (the planned ranking).
 
 ## Rules
 
@@ -25,6 +25,7 @@ node tests/render_check.js _site
 node tests/serve.js _site 8000                    # preview at http://127.0.0.1:8000/ (file:// won't load data)
 git show 052c30e:spanish-coast-climate.html > /tmp/old.html   # last single-file page, for before/after comparisons
 node tests/compare_pages.js /tmp/old.html spain-climate-params _site spain-coast --skip-map   # map card differs since phase B
+node tests/compare_pages.js /tmp/old_site dc-params-spain-coast _site spain-coast   # old = an earlier _site build, map included
 python3 pipeline/openmeteo_fetch.py --check <place_id>   # compare live API with committed rows, writes nothing
 python3 pipeline/openmeteo_fetch.py <place_id>    # modelled data: fetch and WRITE (see HANDOVER 4.1 first)
 METEOCAT_API_KEY=... python3 pipeline/meteocat_fetch.py && python3 pipeline/meteocat_aggregate.py

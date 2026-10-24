@@ -1,10 +1,10 @@
 // Before/after check for refactors: render the same settings in two versions of a dashboard and require
 // identical page markup (text, tables, chart geometry). Settings are injected through the page's saved params.
-// Usage: node tests/compare_pages.js <old .html file> <old params key> <new site dir> <region> [new params key]
+// Usage: node tests/compare_pages.js <old .html file or old site dir> <old params key> <new site dir> <region> [new params key]
 // e.g.   node tests/compare_pages.js old.html spain-climate-params _site spain-coast --skip-map
 // --skip-map leaves the map card out of the comparison (the map itself is meant to differ since phase B).
 const { chromium } = require('playwright');
-const path = require('path');
+const fs = require('fs'), path = require('path');
 const { serve, stubTiles } = require('./serve');
 
 const SKIP_MAP = process.argv.includes('--skip-map');
@@ -21,7 +21,9 @@ const combos = [
   const args = process.argv.slice(2).filter((a) => a !== '--skip-map');
   const [oldFile, oldKey, newDir, region, newKey = 'dc-params-' + region] = args;
   const server = await serve(newDir);
-  const sides = [['old', 'file://' + path.resolve(oldFile), oldKey], ['new', server.url + region + '/', newKey]];
+  const oldServer = fs.statSync(oldFile).isDirectory() ? await serve(oldFile) : null;   // an earlier build, served the same way
+  const oldUrl = oldServer ? oldServer.url + region + '/' : 'file://' + path.resolve(oldFile);
+  const sides = [['old', oldUrl, oldKey], ['new', server.url + region + '/', newKey]];
   const b = await chromium.launch();
   let bad = 0;
   for (const [i, c] of combos.entries()) {
@@ -43,7 +45,7 @@ const combos = [
       console.log(`DIFF #${i} ${JSON.stringify(c)}\n  old: …${got.old.slice(Math.max(0, j - 80), j + 120)}\n  new: …${got.new.slice(Math.max(0, j - 80), j + 120)}`);
     }
   }
-  await b.close(); server.close();
+  await b.close(); server.close(); if (oldServer) oldServer.close();
   console.log(bad ? `${bad} of ${combos.length} settings differ` : `ok: all ${combos.length} settings render identically`);
   process.exit(bad ? 1 : 0);
 })();

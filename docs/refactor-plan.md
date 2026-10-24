@@ -1,6 +1,6 @@
 # Refactor plan: from one Spain page to a multi-region site
 
-Status: **approved 23 October 2026** as written (drop offline, deploy with Actions, `/spain-coast/` URLs, one page per country). **Phases A and D done 23 Oct 2026, B done 24 Oct 2026** (see the end of this file); C to do.
+Status: **approved 23 October 2026** as written (drop offline, deploy with Actions, `/spain-coast/` URLs, one page per country). **Complete:** A and D done 23 Oct 2026, B and C done 24 Oct 2026 (see the end of this file).
 
 Goal (HANDOVER 9.1): adding a region should mean adding places to a config file and re-running the pipeline and build, with no edits to page code. The numbers on the page must not change as a side effect: the reference values in HANDOVER 4.4 are the test.
 
@@ -139,3 +139,21 @@ After this, adding a region means: add places to `config/places.json` and a row 
   - `compare_pages.js --skip-map` confirms everything outside the map card is still identical to the old page across 31 settings;
   - a check of every frame at 400 and 1280 px found no labels clipped at the map edge.
 - Credits updated in `config/regions.json` (page footer), README and HANDOVER section 6.
+
+## Phase C: done (24 October 2026)
+
+- **Settings moved to config:** `config/regions.json` now holds each region's overview and map tabs, landing card, north-wind note, station summary, and the region-specific method paragraphs. New `config/sources.json` holds the station-source credit lines.
+- **How they reach the page:** the build passes the settings to the page as `window.DC_PAGE`, together with the years, defaults and place groups. It fills the template's `{{…}}` placeholders and fails if any are left unfilled.
+- **Code:** `dashboard.js` and the shim no longer hard-code regions, tabs, years, defaults, place ids or source names. Baselines are the places with `baseline: true`. The year-slider sentinel and coverage maths are derived from the years.
+- **Landing page:** its region cards are generated from config.
+- **About page:** `/about/` covers the method, how far to trust the figures (the station findings) and every data source and licence. It is linked from every page footer.
+- **Footer correction:** the "Snapshot built 17 October 2026" footer is corrected to say when the modelled data were fetched.
+- **Checks:**
+  - data files and the landing-page body are byte-identical to the phase B build; only the footers and the settings block changed;
+  - `compare_pages.js` shows identical markup to the phase B build with the map included, and to the original page with `--skip-map` (31 settings each);
+  - `render_check.js` no longer assumes Spain's tab ids and places, and scrolls the map into view before clicking a marker;
+  - a made-up second region built from config alone in a scratch clone rendered correctly and passed the smoke test.
+- **Tests:** `compare_pages.js` now also accepts an earlier `_site` folder as the "old" side.
+- **Still not generic, by choice:**
+  - the method's "2016 is left out" sentence and the 9 km grid description are project-wide facts, not region settings;
+  - the landing page's "More of Europe" card is hand-written.

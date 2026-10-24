@@ -7,7 +7,8 @@ A free, static website comparing places in Europe as **year-round road-cycling b
 | Page | What it shows |
 |---|---|
 | [Landing page](https://stuartwmvivers.github.io/Destination-Cycling/) | What the site is, regions covered, rideable days a year for every place |
-| [Spanish coast](https://stuartwmvivers.github.io/Destination-Cycling/spanish-coast-climate.html) | 20 places on the Costa Brava, Costa del Sol, Costa Blanca and Mallorca, 2017–2025: map, seasonal charts, every month of every year, and a model-vs-weather-station comparison for 17 towns |
+| [Spanish coast](https://stuartwmvivers.github.io/Destination-Cycling/spain-coast/) | 20 places on the Costa Brava, Costa del Sol, Costa Blanca and Mallorca, 2017–2025: map, seasonal charts, every month of every year, and a model-vs-weather-station comparison for 17 towns |
+| [About](https://stuartwmvivers.github.io/Destination-Cycling/about/) | How the figures are made, how far to trust them, and every data source |
 
 ## How the figures are made
 
@@ -35,9 +36,9 @@ node tests/render_check.js _site    # every page, desktop and phone
 node tests/serve.js _site 8000      # preview at http://127.0.0.1:8000/
 ```
 
-What to build comes from `config/places.json` and `config/regions.json`; monthly data from `data/processed/`; page templates, styles and scripts from `site-src/`. Pages fetch their data, so preview them through the local server rather than opening the files directly.
+What to build comes from `config/` (places, regions and station sources; adding a region needs no code changes, see HANDOVER 7.1); monthly data from `data/processed/`; page templates, styles and scripts from `site-src/`. Pages fetch their data, so preview them through the local server rather than opening the files directly.
 
-Every push to `main` is built and checked by GitHub Actions ([.github/workflows/deploy.yml](.github/workflows/deploy.yml)) and published to GitHub Pages only if the checks pass. Built files aren't committed. A refactor towards multiple regions is in progress ([docs/refactor-plan.md](docs/refactor-plan.md)).
+Every push to `main` is built and checked by GitHub Actions ([.github/workflows/deploy.yml](.github/workflows/deploy.yml)) and published to GitHub Pages only if the checks pass. Built files aren't committed. The multi-region refactor is complete ([docs/refactor-plan.md](docs/refactor-plan.md)).
 
 Data pipeline scripts are in `pipeline/`; see HANDOVER.md for how to run them (station data needs API keys, which are never committed).
 

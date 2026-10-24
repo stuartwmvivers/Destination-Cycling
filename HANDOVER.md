@@ -52,7 +52,8 @@ HANDOVER.md                   this file
 docs/cycling-score-spec.md    the agreed design for the future cycling-base score
 docs/refactor-plan.md         the multi-region refactor (phases A-D; A and D done 23 Oct 2026)
 config/places.json            every place (id, name, country, region, lat/lon, model elevation, setting, note, baseline)
-config/regions.json           one entry per dashboard page: countries, UK baselines, defaults, title, credits
+config/regions.json           one entry per dashboard page: countries, baselines, defaults, map tabs, landing card, prose, credits (see 7.1)
+config/sources.json           station data sources: credit line shown under each station comparison
 data/processed/climate/<country>.json    modelled monthly rows (4.2), one file per country (ES, GB)
 data/processed/stations/<country>.json   station monthly rows (5.3)
 data/reference/aemet-station-inventory.json   AEMET station list (public, reusable)
@@ -62,7 +63,7 @@ pipeline/openmeteo_browser_reference.js   the exact JS aggregation originally us
 pipeline/meteocat_fetch.py / meteocat_aggregate.py   Catalan stations (needs METEOCAT_API_KEY)
 pipeline/aemet_fetch.py / aemet_aggregate.py         Spanish national stations (needs AEMET_API_KEY)
 pipeline/stations_combine.py  merges both station sets -> data/processed/stations/<country>.json
-site-src/pages/               index.html (landing), region.html (dashboard template, one page per region)
+site-src/pages/               index.html (landing), region.html (dashboard template, one page per region), about.html (method, trust, sources)
 site-src/css/                 tokens.css (light + dark design tokens), dashboard.css, landing.css
 site-src/js/                  dash-shim.js (the `dash` API, fetches region data), periods.js (calcs), dashboard.js (UI)
 build/build_site.py           -> _site/: pages, columnar data files per region, summary.json, vendored d3
@@ -277,7 +278,25 @@ Conclusions:
 - **Params:** `place` (default `begur`), `compare` (`dunning`), `measure` (`tmax`), `year` (`all`), `period` (`'1'`), `frame` (`auto` | `spain` | `brava` | `sol` | `blanca` | `mallorca`), `region` (`all` | region name).
 - **Map:** Leaflet 1.9.4 with OpenStreetMap raster tiles, built once by `initMap` in `dashboard.js`; each redraw restyles the circle markers and updates the key strip (`#cb-mapkey`). A frame (`P.frame`, or the selected place's region) is fitted to that region's places, only when the frame changes, so changing measure doesn't undo panning. Region moves aren't animated: restyling markers during Leaflet's zoom animation left their paths blank. Dark mode inverts the tiles with a CSS filter. Scroll-wheel zoom is off (page scrolling stays normal) and one-finger dragging is off on touch devices (pinch zooms). Markers are keyboard-focusable (Enter selects).
 - Styling: CSS custom properties (`--cds-*`, `--color-*`, `--font-anthropic-*`) from `site-src/css/tokens.css`, with light and dark themes. Charts are d3 v7. The layout works at 400 px with no horizontal scroll, and the smoke test checks this.
-- Still hard-coded in `dashboard.js` until refactor phase C: `REGIONS`, `REGION_FRAME`, `FRAMES`, `YEARS`, `DEFAULTS` and the Spain-specific prose.
+- **Region settings** (since phase C): `build_site.py` writes each region's settings into `window.DC_PAGE` (years, defaults, overview and tabs, place groups, north-wind note, station source credits) and fills the template's `{{…}}` prose placeholders from `config/regions.json`. Baselines are the places with `baseline: true`. Nothing Spain-specific is left in `site-src/js/` or `region.html`.
+
+### 7.1 Adding a region (since refactor phase C, 24 Oct 2026)
+
+No page code changes are needed:
+
+1. **Places:** add them to `config/places.json` with `place` (id), `name`, `country` (ISO code; data files are per country), `region` (the sub-region shown in groups and filters), `lat`, `lon`, `elevation_m`, `note`.
+2. **Region:** add an entry to `config/regions.json`. It needs:
+   - `id` (the URL: `/<id>/`), `name`, `title`, `description` and `countries`;
+   - `baselines` (place ids, normally `["dunning", "bristol"]`), `default_place` and `default_compare`;
+   - `overview` (`{id, label}` for the all-places map view) and `tabs` (`[{id, label, region}]`, one map tab per sub-region; any other region falls back to the overview);
+   - `card` (`{title, text, link}`, the landing-page card; `text` may use `{places}`, `{years}` and `{stations}`);
+   - `tram_note` (optional local name for north winds);
+   - `station_summary`, `method_places`, `method_measures` (region prose on the dashboard) and `credits` (footer HTML).
+3. **Modelled data:** fetch it. `openmeteo_fetch.py` re-fetches **every** place in one run (HANDOVER 4.1), then check the 4.4 reference values and say if they moved.
+4. **Stations:** optional. Run the station scripts and add any new station source to `config/sources.json`.
+5. **Build and check:** `build_site.py`, `data_check.py` and `render_check.js _site`.
+
+The build fails on any `{{PLACEHOLDER}}` left unfilled, so a missing prose field can't reach a page. This was checked with a made-up second region in a scratch clone on 24 Oct 2026: the page, tabs, groups, defaults, baselines, prose and landing card all came from config.
 
 ---
 
@@ -306,7 +325,8 @@ Conclusions:
 - Update README with what the site is, sources and credits, and how to build.
 - Commit this repo structure (the owner currently has only the built file and a two-line README in the repo).
 
-### 9.1 Architecture refactor (before adding countries)
+### 9.1 Architecture refactor (before adding countries) — done 23–24 Oct 2026
+All four phases are done; see `docs/refactor-plan.md` and section 7.1 for adding a region. The original aims, kept for reference:
 - **Build pipeline:** `pipeline/` scripts → `data/processed/` → site. Adding a region should mean adding rows to a places config and re-running, with no page surgery.
 - **Per-country (or per-region) data files** loaded on demand, plus a small **summary file** (place × month aggregates for every place) for search and ranking. Keep it static; GitHub Pages is fine at this scale.
 - ~~**Replace the hand-built SVG maps with a zoomable slippy map**~~ Done 24 Oct 2026 (Leaflet + OpenStreetMap tiles; see section 7).

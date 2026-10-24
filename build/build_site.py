@@ -18,7 +18,7 @@ summary.json matches the dashboard's (JavaScript Math.round, halves up).
 
 Usage: python3 build/build_site.py   (needs node_modules/d3 from `npm ci`)
 """
-import glob, json, math, os, shutil
+import glob, json, math, os, re, shutil
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 J = lambda *p: os.path.join(ROOT, *p)
 OUT = J('_site')
@@ -48,10 +48,22 @@ def rows_by_place(sub):
 
 places = load(J('config', 'places.json'))
 regions = load(J('config', 'regions.json'))
+sources = load(J('config', 'sources.json'))
 climate = rows_by_place('climate')
 stations = rows_by_place('stations')
 years = sorted({r['year'] for rs in climate.values() for r in rs})
 months = [(y, m) for y in years for m in range(1, 13)]
+YEARS_LABEL = f'{years[0]}–{years[-1]}'
+NUMBER_WORDS = 'zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen'.split()
+N_YEARS = NUMBER_WORDS[len(years)] if len(years) < len(NUMBER_WORDS) else str(len(years))
+member = lambda reg, p: p['country'] in reg['countries'] or p['place'] in reg['baselines']
+
+def fill(template, values):
+    """Replace {{KEY}} placeholders; fail if any are left, so a missing config value can't reach the page."""
+    for k, v in values.items(): template = template.replace('{{' + k + '}}', v)
+    left = sorted(set(re.findall(r'\{\{([A-Z_]+)\}\}', template)) - {'ROOT'})
+    assert not left, f'unfilled placeholders: {left}'
+    return template
 
 def columns(rows):
     """One array per measure over the full year-month grid; null where a month is absent."""
@@ -77,7 +89,7 @@ def clean(path):
 clean(OUT)
 sizes = {}
 for reg in regions:
-    members = [p for p in places if p['country'] in reg['countries'] or p['place'] in reg['baselines']]
+    members = [p for p in places if member(reg, p)]
     st = {}
     for p in members:
         if p['place'] in stations:
@@ -104,7 +116,7 @@ def averages(rows):
 summary = {'years': years, 'periods': [str(i) for i in range(1, 13)] + ['year'], 'places': [
     {**{k: p[k] for k in ['place', 'name', 'country', 'region', 'lat', 'lon', 'elevation_m'] if k in p},
      'baseline': bool(p.get('baseline')),
-     'regions': [r['id'] for r in regions if p['country'] in r['countries'] or p['place'] in r['baselines']],
+     'regions': [r['id'] for r in regions if member(r, p)],
      'avg': averages(climate[p['place']])} for p in places]}
 sizes['data/summary.json'] = write('data/summary.json', json.dumps(summary, ensure_ascii=False, separators=(',', ':')))
 
@@ -128,20 +140,41 @@ def page(rel, title, description, css, body, foot, scripts=()):
             f'<title>{esc(title)}</title>\n<meta name="description" content="{esc(description)}">\n'
             + ''.join(f'<link rel="stylesheet" href="{root}{c if "/" in c else f"css/{c}.css"}">\n' for c in ['tokens'] + css)
             + '</head>\n<body>\n<div id="dash-root">\n' + body + f'\n<footer class="cb-foot">{foot}</footer>\n</div>\n'
-            + ''.join(s.replace('{{ROOT}}', root) + '\n' for s in scripts)
-            + '</body>\n</html>\n')
+            + ''.join(s + '\n' for s in scripts)
+            + '</body>\n</html>\n').replace('{{ROOT}}', root)
     sizes[rel] = write(rel, html)
 
+ABOUT_LINK = ' <a href="{{ROOT}}about/">About the figures and sources</a>.'
+
 # ---------- region pages ----------
+# Everything region-specific comes from config/regions.json: prose into the template, settings into
+# window.DC_PAGE for the scripts (tabs, place groups, defaults, years, station source credits).
 region_body = read(J('site-src', 'pages', 'region.html'))
 for reg in regions:
-    page(f"{reg['id']}/index.html", reg['title'], reg['description'], [f'vendor/leaflet-{LEAFLET}/leaflet.css', 'dashboard'], region_body, reg['credits'], [
+    members = [p for p in places if member(reg, p)]
+    tab_regions = [t['region'] for t in reg['tabs']]
+    groups = tab_regions + [r for r in dict.fromkeys(p['region'] for p in members) if r not in tab_regions]
+    cfg = {'region': reg['id'], 'root': '{{ROOT}}', 'years': [str(y) for y in years],
+           'defaults': {'place': reg['default_place'], 'compare': reg['default_compare']},
+           'overview': reg['overview'], 'tabs': reg['tabs'], 'groups': groups, 'tram_note': reg.get('tram_note', ''),
+           'sources': {k: v['credit'] for k, v in sources.items()}}
+    body = fill(region_body, {'TITLE': esc(reg['title']), 'YEARS': YEARS_LABEL, 'N_YEARS': N_YEARS,
+                              'YEAR_BEFORE': str(years[0] - 1), 'YEAR_LAST': str(years[-1]),
+                              'STATION_SUMMARY': reg['station_summary'], 'METHOD_PLACES': reg['method_places'],
+                              'METHOD_MEASURES': reg['method_measures']})
+    page(f"{reg['id']}/index.html", reg['title'], reg['description'], [f'vendor/leaflet-{LEAFLET}/leaflet.css', 'dashboard'], body,
+         reg['credits'] + ABOUT_LINK, [
         f'<script src="{{{{ROOT}}}}vendor/d3-{D3}.min.js"></script>',
         f'<script src="{{{{ROOT}}}}vendor/leaflet-{LEAFLET}/leaflet.js"></script>',
-        '<script>window.DC_PAGE = ' + json.dumps({'region': reg['id'], 'root': '{{ROOT}}'}) + ';</script>',
+        '<script>window.DC_PAGE = ' + json.dumps(cfg, ensure_ascii=False) + ';</script>',
         '<script src="{{ROOT}}js/dash-shim.js"></script>',
         '<script src="{{ROOT}}js/periods.js"></script>',
         '<script src="{{ROOT}}js/dashboard.js"></script>'])
+
+# ---------- about page ----------
+page('about/index.html', 'About Destination Cycling', 'How the Destination Cycling figures are made, how far to trust them, and where the data come from.',
+     ['landing'], fill(read(J('site-src', 'pages', 'about.html')), {'YEARS': YEARS_LABEL, 'N_YEARS': N_YEARS}),
+     'Source and method: <a href="https://github.com/stuartwmvivers/Destination-Cycling">GitHub</a>.')
 
 # ---------- landing page ----------
 ride = {p['place']: p['avg']['ride'][12] for p in summary['places']}
@@ -151,17 +184,20 @@ bars = '\n'.join(
     f'      <li class="{"lp-uk" if p.get("baseline") else ""}"><span class="lp-name">{esc(p["name"])} <span class="lp-reg">· {esc(p["region"])}</span></span>'
     f'<span class="lp-track"><span class="lp-bar" style="width:{ride[p["place"]] / top * 100:.1f}%"></span></span>'
     f'<span class="lp-val">{ride[p["place"]]:.0f}</span></li>' for p in ranked)
-spain = next(r for r in regions if r['id'] == 'spain-coast')
-index_body = (read(J('site-src', 'pages', 'index.html'))
-              .replace('{{RIDE_BARS}}', bars)
-              .replace('{{SPAIN_COUNT}}', str(sum(p['country'] in spain['countries'] for p in places)))
-              .replace('{{STATION_COUNT}}', str(sum(p['place'] in stations for p in places if p['country'] in spain['countries']))))
+def card(reg):
+    own = [p for p in places if p['country'] in reg['countries']]
+    text = reg['card']['text'].format(places=len(own), years=YEARS_LABEL, stations=sum(p['place'] in stations for p in own))
+    return (f'      <a class="lp-card" href="{reg["id"]}/">\n        <span class="lp-tag">Available</span>\n'
+            f'        <h3>{esc(reg["card"]["title"])}</h3>\n        <p>{esc(text)}</p>\n'
+            f'        <span class="lp-go">{esc(reg["card"]["link"])}</span>\n      </a>')
+index_body = fill(read(J('site-src', 'pages', 'index.html')),
+                  {'RIDE_BARS': bars, 'REGION_CARDS': '\n'.join(card(r) for r in regions), 'YEARS': YEARS_LABEL})
 page('index.html', 'Destination Cycling',
      'Comparing places in Europe as year-round road-cycling bases, starting with nine years of weather on the Spanish coast.',
      ['landing'], index_body,
      'Weather data: <a href="https://open-meteo.com/">Open-Meteo</a> historical archive (ECMWF analysis, CC BY 4.0). '
      'Station readings on the Spain dashboard: © Servei Meteorològic de Catalunya (Meteocat), used with permission; © AEMET, Agencia Estatal de Meteorología. '
-     'Source and method: <a href="https://github.com/stuartwmvivers/Destination-Cycling">GitHub</a>.')
+     'Source and method: <a href="https://github.com/stuartwmvivers/Destination-Cycling">GitHub</a>.' + ABOUT_LINK)
 
 # ---------- redirects: old URLs that must keep working ----------
 for old, new in [('spanish-coast-climate.html', 'spain-coast/')]:

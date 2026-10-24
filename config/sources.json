@@ -1,0 +1,12 @@
+{
+  "Meteocat": {
+    "name": "Servei Meteorològic de Catalunya (Meteocat)",
+    "credit": "Source: Servei Meteorològic de Catalunya (Meteocat), used with permission.",
+    "terms": "Monthly summaries published with written permission (21 October 2026); raw daily data is never published."
+  },
+  "AEMET": {
+    "name": "Agencia Estatal de Meteorología (AEMET)",
+    "credit": "Source: Agencia Estatal de Meteorología (AEMET).",
+    "terms": "Reuse authorised with the credit © AEMET, Agencia Estatal de Meteorología."
+  }
+}

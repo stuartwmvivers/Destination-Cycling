@@ -1,6 +1,6 @@
 <div class="cb">
   <header class="cb-head" id="overview">
-    <h1 class="cb-title">Spanish Coast Climate</h1>
+    <h1 class="cb-title">{{TITLE}}</h1>
     <p class="cb-take dash-skeleton" id="cb-take" data-source="periods">—</p>
   </header>
 
@@ -24,7 +24,7 @@
     <div class="cb-ctl">
       <label class="cb-lab" for="cb-year">Year</label>
       <div class="cb-slide">
-        <input type="range" id="cb-year" min="2016" max="2025" step="1" aria-describedby="cb-year-out">
+        <input type="range" id="cb-year" min="{{YEAR_BEFORE}}" max="{{YEAR_LAST}}" step="1" aria-describedby="cb-year-out">
         <output id="cb-year-out" for="cb-year"></output>
       </div>
     </div>
@@ -77,7 +77,7 @@
       </div>
       <div class="cb-chart" id="cb-meas-chart" data-source="stations periods" style="min-height:250px"></div>
     </div>
-    <p class="cb-note" id="cb-meas-summary">At every station checked, the model counts too many wet days (by roughly a third to two-thirds), so real rideable days are as many as modelled or more. Temperatures vary by region: on the Costa Brava, Costa Blanca and around Pollença the model runs 1.5–3°C cool by day; on the Costa del Sol it is about right by day but overstates summer heat, with far fewer real days over 30°C than modelled.</p>
+    <p class="cb-note" id="cb-meas-summary">{{STATION_SUMMARY}}</p>
   </section>
 
   <section class="cb-card" id="compare-all">
@@ -95,10 +95,10 @@
   <section class="cb-card" id="method">
     <h2>How these figures were made</h2>
     <div class="cb-method">
-      <p><b>Source.</b> Daily weather for 2017–2025 from Open-Meteo's historical archive, which serves ECMWF's model analysis of past weather on a grid of about 9 km. It is built from real observations (stations, satellites, buoys) but it is not a single thermometer reading. 2016 is left out because only a coarser 25 km grid covers that year, which blurs neighbouring towns together.</p>
-      <p><b>Places.</b> Each place is the nearest grid point to the town, adjusted for the town's own height. Begur's figures are for the hilltop village at about 200 m, so its seafront and coves run roughly 1°C warmer. Cadaqués shares a grid point with Roses, so it is not shown. Nerja and Frigiliana share one grid point: Frigiliana's temperatures are adjusted for its 320 m, but its rain and wind are Nerja's. Sóller sits in a steep valley that a 9 km grid cannot resolve, so treat its figures as a rough guide.</p>
-      <p><b>Measures.</b> Rideable days are dry (under 1 mm), with gusts under 50 km/h and a high of at least 11°C; warm riding days need a high of 14–30°C. North-wind days have gusts of 50 km/h or more from the north or north-west: the Tramuntana on the Costa Brava and in Mallorca. They don't capture the Levante, the easterly that blows through the Strait near Estepona, though strong Levante days still count against rideable days. Modelled gusts tend to understate real coastal gusts, so read wind counts as relative, not absolute.</p>
-      <p><b>Averages.</b> "2017–2025 average" is the mean of the nine years; the shaded band in the seasonal chart runs from the lowest to the highest year. Whole-year temperatures are the mean of the twelve monthly values; day counts and rainfall are totals.</p>
+      <p><b>Source.</b> Daily weather for {{YEARS}} from Open-Meteo's historical archive, which serves ECMWF's model analysis of past weather on a grid of about 9 km. It is built from real observations (stations, satellites, buoys) but it is not a single thermometer reading. 2016 is left out because only a coarser 25 km grid covers that year, which blurs neighbouring towns together.</p>
+      <p><b>Places.</b> {{METHOD_PLACES}}</p>
+      <p><b>Measures.</b> {{METHOD_MEASURES}}</p>
+      <p><b>Averages.</b> "{{YEARS}} average" is the mean of the {{N_YEARS}} years; the shaded band in the seasonal chart runs from the lowest to the highest year. Whole-year temperatures are the mean of the twelve monthly values; day counts and rainfall are totals.</p>
     </div>
   </section>
 </div>
