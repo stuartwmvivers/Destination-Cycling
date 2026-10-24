@@ -63,6 +63,7 @@ pipeline/openmeteo_browser_reference.js   the exact JS aggregation originally us
 pipeline/meteocat_fetch.py / meteocat_aggregate.py   Catalan stations (needs METEOCAT_API_KEY)
 pipeline/aemet_fetch.py / aemet_aggregate.py         Spanish national stations (needs AEMET_API_KEY)
 pipeline/midas_fetch.py / midas_aggregate.py         UK baseline stations, Met Office MIDAS Open (needs CEDA_ACCESS_TOKEN)
+pipeline/score/               cycling-base score pipeline (docs/score-prototype-plan.md): own venv and large inputs in DC_CACHE, outside OneDrive and git
 pipeline/stations_combine.py  merges station sets -> data/processed/stations/<country>.json (rebuilds only sources whose inputs are present)
 site-src/pages/               index.html (landing), region.html (dashboard template, one page per region), about.html (method, trust, sources)
 site-src/css/                 tokens.css (light + dark design tokens), dashboard.css, landing.css

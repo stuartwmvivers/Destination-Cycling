@@ -1,0 +1,11 @@
+# Packages for the cycling-base score pipeline (pipeline/score/) only; the site build doesn't need them.
+# Install into a separate virtual environment in the cache folder, never the global Python:
+#   python -m venv %DC_CACHE%\venv
+#   %DC_CACHE%\venv\Scripts\python -m pip install -r pipeline/score/requirements.txt
+numpy==2.5.4
+scipy==1.18.1
+osmium==4.3.2
+rasterio==1.5.2
+shapely==2.2.0
+pyproj==3.8.0
+python-igraph==1.0.0
