@@ -19,16 +19,6 @@
   const REGIONS = ['Costa Brava', 'Costa del Sol', 'Costa Blanca', 'Mallorca', 'UK'];
   const REGION_FRAME = { 'Costa Brava': 'brava', 'Costa del Sol': 'sol', 'Costa Blanca': 'blanca', 'Mallorca': 'mallorca', 'UK': 'spain' };
   const FRAMES = [['spain', 'All Spain'], ['brava', 'Costa Brava'], ['sol', 'Costa del Sol'], ['blanca', 'Costa Blanca'], ['mallorca', 'Mallorca']];
-  const FRAME_NAME = Object.fromEntries(FRAMES);
-  const FRAME_LABELS = {
-    brava: [[24, 40, 'FRANCE'], [24, 735, 'BARCELONA PROVINCE'], [850, 420, 'Mediterranean', 'end', true]],
-    spain: [[40, 330, 'PORTUGAL'], [560, 40, 'FRANCE'], [30, 560, 'Atlantic', 'start', true], [690, 470, 'Mediterranean', 'end', true]],
-    sol: [[40, 40, 'MÁLAGA PROVINCE'], [420, 380, 'Mediterranean', 'middle', true]],
-    blanca: [[40, 40, 'VALENCIA REGION'], [660, 520, 'Mediterranean', 'middle', true]],
-    mallorca: [[60, 120, 'Mediterranean', 'start', true]],
-  };
-  const LABEL_SIDE = { brava: { figueres: 'left', tossa: 'left', palamos: 'left' }, sol: { torrox: 'left', frigiliana: 'top' }, blanca: { javea: 'left', altea: 'left' }, mallorca: {} };
-  const REGION_TAGS = [['Costa Brava', 'brava', -40, -46, 'end'], ['Costa del Sol', 'sol', 0, 44, 'middle'], ['Costa Blanca', 'blanca', -26, 6, 'end'], ['Mallorca', 'mallorca', 0, -34, 'middle']];
   const sortState = { field: 'tmax', dir: -1 };
   let drawTable = () => {};
 
@@ -101,7 +91,7 @@
   for (const [id, name] of FRAMES) {
     const b = document.createElement('button');
     b.type = 'button'; b.textContent = name; b.dataset.f = id;
-    b.addEventListener('click', () => set({ frame: id }));
+    b.addEventListener('click', () => { if (mapState) mapState.frame = null; set({ frame: id }); });   // re-centre even if already chosen
     frameSeg.appendChild(b);
   }
   const regSeg = $('#cb-regions');
@@ -155,13 +145,37 @@
     };
   };
 
+  // ---------- map, built once; markers are restyled on every draw ----------
+  let mapState = null;
+  const initMap = (box, onMap) => {
+    box.replaceChildren();
+    // a starting view is needed before markers get their SVG elements; the first draw then fits the frame
+    const map = L.map(box, { scrollWheelZoom: false, dragging: !L.Browser.mobile, zoomSnap: 0.25 }).setView([40, -3], 5);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(map);
+    const st = { map, frame: null, markers: new Map(), labels: () => {}, showTip: () => {}, hideTip: () => {} };
+    for (const p of onMap) {
+      const mk = L.circleMarker([p.lat, p.lon], { bubblingMouseEvents: false }).addTo(map);
+      mk.bindTooltip('', { permanent: true, direction: 'right', offset: [10, 0], className: 'cb-maplabel' });
+      const pick = () => set({ place: p.place, frame: 'auto' });
+      mk.on('click', pick).on('mousemove', (e) => st.showTip(e.originalEvent, p)).on('mouseout', () => st.hideTip());
+      const el = mk.getElement();
+      el.setAttribute('tabindex', '0');
+      el.setAttribute('role', 'button');
+      el.addEventListener('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); pick(); } });
+      st.markers.set(p.place, mk);
+    }
+    map.on('zoomend', () => st.labels());
+    return st;
+  };
+
   // ---------- draw ----------
   dash.onData(() => {
     const P = params();
     const M = BY[P.measure] || BY.tmax;
     const pl = dash.data('places');
     const pe = dash.data('periods');
-    const ou = dash.data('outlines');
 
     // controls state
     seg.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.m === M.id)));
@@ -284,110 +298,116 @@
     const ramp = (t) => d3.interpolateRgb(d3.interpolateRgb(bg, accent)(0.12), accent)(Math.max(0, Math.min(1, t)));
     const inkOn = (t) => (t > 0.55 ? 'var(--color-bg)' : 'var(--color-fg)');
 
-    // ---- map ----
+    // ---- map (Leaflet, OpenStreetMap tiles) ----
     {
       const box = $('#cb-map');
       const regionOf = Object.fromEntries(places.map((p) => [p.place, p.region]));
       const frame = P.frame && P.frame !== 'auto' ? P.frame : (REGION_FRAME[regionOf[P.place]] || 'spain');
       $('#cb-frames').querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.f === frame)));
       $('#cb-map-title').textContent = M.label + ' · ' + periodShort(P.period) + ' · ' + yearName(P.year);
-      if (ou.status !== 'ok') { failBox(box, ou.status); }
+      if (typeof L === 'undefined') { failBox(box, 'error'); }
       else {
-        box.replaceChildren();
-        const rowsF = ou.data.filter((r) => r.frame === frame);
-        const layers = Object.fromEntries(rowsF.map((r) => [r.layer, r]));
-        const f = rowsF[0];
-        const overview = frame === 'spain';
-        const VW = Number(f.width) + 70, VH = Number(f.height);
-        const proj = (lon, lat) => [(lon - f.W) * f.k * f.scale, (f.N - lat) * f.scale];
-        const svg = d3.select(box).append('svg').attr('viewBox', `0 0 ${VW} ${VH}`).attr('width', '100%').attr('role', 'img').attr('aria-label', 'Map of ' + FRAME_NAME[frame] + ' with the places compared');
-        svg.append('rect').attr('width', VW).attr('height', VH).attr('rx', 6).attr('fill', 'var(--cds-chart-grid)');
-        svg.append('rect').attr('width', VW).attr('height', VH).attr('rx', 6).attr('fill', accent).attr('fill-opacity', 0.1);
-        if (layers.others) svg.append('path').attr('d', layers.others.path).attr('fill', 'var(--color-panel)').attr('stroke', 'var(--cds-chart-axis)').attr('stroke-width', 0.8);
-        if (layers.spain) svg.append('path').attr('d', layers.spain.path).attr('fill', 'var(--color-bg)').attr('stroke', 'var(--cds-chart-axis)').attr('stroke-width', 1).attr('stroke-linejoin', 'round');
-        if (layers.borders) svg.append('path').attr('d', layers.borders.path).attr('fill', 'none').attr('stroke', 'var(--cds-chart-reference)').attr('stroke-width', 1.2).attr('stroke-dasharray', '5 4');
-        if (layers.land) svg.append('path').attr('d', layers.land.path).attr('fill', 'var(--color-bg)').attr('stroke', frame === 'brava' ? 'none' : 'var(--cds-chart-axis)').attr('stroke-width', 1.2).attr('stroke-linejoin', 'round');
-        if (layers.coast) svg.append('path').attr('d', layers.coast.path).attr('fill', 'none').attr('stroke', 'var(--cds-chart-axis)').attr('stroke-width', 1.2).attr('stroke-linejoin', 'round');
-        if (layers.border) svg.append('path').attr('d', layers.border.path).attr('fill', 'none').attr('stroke', 'var(--cds-chart-reference)').attr('stroke-width', 1.5).attr('stroke-dasharray', '7 5');
-        if (layers.prov) svg.append('path').attr('d', layers.prov.path).attr('fill', 'none').attr('stroke', 'var(--cds-chart-reference)').attr('stroke-width', 1).attr('stroke-dasharray', '2 4');
-        const lbl = (x, y, t, anchor, italic) => svg.append('text').attr('x', x).attr('y', y).attr('text-anchor', anchor || 'start').attr('font-size', 18).attr('letter-spacing', '.12em').attr('font-style', italic ? 'italic' : null).attr('fill', 'var(--color-fg-muted)').text(t);
-        for (const [x, y, t, a, i] of FRAME_LABELS[frame] || []) lbl(x, y, t, a, i);
-
         const homes = places.filter((p) => p.region === 'UK');
-        const inMap = places.filter((p) => p.region !== 'UK' && p.lon >= f.W && p.lon <= f.E && p.lat >= f.S && p.lat <= f.N);
-        const vals = inMap.map((p) => { const r = get(p.place, P.year, P.period); return r ? r[M.id] : null; }).filter((v) => v != null);
-        const homeVals = homes.filter((h) => h.place === P.place || h.place === cmp).map((h) => get(h.place, P.year, P.period)).filter(Boolean).map((r) => r[M.id]);
+        const onMap = places.filter((p) => p.region !== 'UK');
+        if (!mapState) { mapState = initMap(box, onMap); mapState.key = $('#cb-mapkey'); }
+        const st = mapState, map = st.map;
+        map.invalidateSize();
+        // places in the chosen frame set the colour scale (as on the old hand-drawn map) and the view
+        const inFrame = frame === 'spain' ? onMap : onMap.filter((p) => REGION_FRAME[p.region] === frame);
+        if (frame !== st.frame) {
+          // no animation: restyling markers mid-zoom leaves Leaflet's paths blank. Extra padding on the right
+          // leaves room for the labels, which sit to the right of each dot.
+          map.fitBounds(L.latLngBounds(inFrame.map((p) => [p.lat, p.lon])), {
+            maxZoom: 11, animate: false, paddingTopLeft: [30, 30], paddingBottomRight: [box.clientWidth < 500 ? 145 : 150, 30],
+          });
+          st.frame = frame;
+        }
+        const valOf = (p) => { const r = get(p.place, P.year, P.period); return r ? r[M.id] : null; };
+        const vals = inFrame.map(valOf).filter((v) => v != null);
+        const homeVals = homes.filter((h) => h.place === P.place || h.place === cmp).map(valOf).filter((v) => v != null);
         const ext = d3.extent(vals.concat(homeVals));
         const sc = d3.scaleLinear().domain(ext[0] === ext[1] ? [ext[0] - 1, ext[1] + 1] : ext).range([0, 1]);
-        const tip = tipFor(box);
         const unitTag = M.unit === '°C' ? '°C' : ' ' + (M.unit === 'mm' ? 'mm' : 'd');
-        const showTip = (ev, p) => {
-          const r = get(p.place, P.year, P.period);
+        const fg = resolve('var(--color-fg)'), fgMuted = resolve('var(--color-fg-muted)');
+        const tip = tipFor(box);
+        st.showTip = (ev, p) => {
+          const v = valOf(p);
           tip.show(ev, [
             { text: p.name + ' · ' + p.region + ', ' + p.elevation_m + ' m' },
-            { text: M.label + ': ' + fmt(M.id, r ? r[M.id] : null, avg) + ' ' + unitOf(M.id, P.period), color: ramp(sc(r ? r[M.id] : 0)) },
+            { text: M.label + ': ' + fmt(M.id, v, avg) + ' ' + unitOf(M.id, P.period), color: ramp(sc(v == null ? 0 : v)) },
             { text: p.note },
           ]);
         };
-        const dotR = overview ? 8 : 14;
-        for (const p of inMap) {
-          const [x, y] = proj(p.lon, p.lat);
-          const r = get(p.place, P.year, P.period);
-          const v = r ? r[M.id] : null;
-          const g = svg.append('g').attr('class', 'cb-dot').attr('tabindex', 0).attr('role', 'button').attr('aria-label', p.name + ': ' + fmt(M.id, v, avg) + ' ' + unitOf(M.id, P.period));
+        st.hideTip = () => tip.hide();
+        for (const p of onMap) {
+          const mk = st.markers.get(p.place);
+          const v = valOf(p);
           const sel = p.place === P.place, isC = p.place === cmp;
-          if (sel) g.append('circle').attr('cx', x).attr('cy', y).attr('r', dotR + 7).attr('fill', 'none').attr('stroke', 'var(--color-fg)').attr('stroke-width', 2.5);
-          if (isC) g.append('circle').attr('cx', x).attr('cy', y).attr('r', dotR + 7).attr('fill', 'none').attr('stroke', 'var(--color-fg-muted)').attr('stroke-width', 2).attr('stroke-dasharray', '4 3');
-          g.append('circle').attr('cx', x).attr('cy', y).attr('r', dotR).attr('fill', v == null ? 'var(--cds-chart-muted)' : ramp(sc(v))).attr('stroke', 'var(--color-fg)').attr('stroke-opacity', 0.35).attr('stroke-width', 1);
-          if (!overview || sel || isC) {
-            const side = (LABEL_SIDE[frame] || {})[p.place];
-            const left = side === 'left', top = side === 'top';
-            const off = dotR + 12;
-            const tx = top ? x : left ? x - off : x + off;
-            const anchor = top ? 'middle' : left ? 'end' : 'start';
-            const y1 = top ? y - dotR - 32 : y - 2, y2 = top ? y - dotR - 12 : y + 20;
-            g.append('text').attr('x', tx).attr('y', y1).attr('text-anchor', anchor).attr('font-size', 19).attr('font-weight', sel ? 600 : 400).attr('fill', 'var(--color-fg)').text(p.name);
-            g.append('text').attr('x', tx).attr('y', y2).attr('text-anchor', anchor).attr('font-size', 17).attr('fill', 'var(--color-fg-muted)').text(fmt(M.id, v, avg) + unitTag);
-          }
-          g.on('click', () => set({ place: p.place, frame: 'auto' }))
-            .on('keydown', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); set({ place: p.place, frame: 'auto' }); } })
-            .on('mousemove', (ev) => showTip(ev, p)).on('mouseleave', () => tip.hide());
-        }
-        if (overview) {
-          // region names beside each cluster, clickable to zoom in
-          for (const [reg, fr, dx, dy, anchor] of REGION_TAGS) {
-            const ps = inMap.filter((p) => p.region === reg);
-            if (!ps.length) continue;
-            const cx = d3.mean(ps, (p) => proj(p.lon, p.lat)[0]), cy = d3.mean(ps, (p) => proj(p.lon, p.lat)[1]);
-            const t = svg.append('text').attr('x', cx + dx).attr('y', cy + dy).attr('text-anchor', anchor).attr('font-size', 18).attr('font-weight', 500).attr('fill', 'var(--color-fg)').style('cursor', 'pointer').text(reg + ' ›');
-            t.on('click', () => set({ frame: fr }));
-          }
-        }
-        // UK baselines inset
-        if (homes.length) {
-          const rowH = 46, bh = 18 + rowH * homes.length, bx = VW - 250, by = VH - 20 - bh;
-          svg.append('rect').attr('x', bx).attr('y', by).attr('width', 232).attr('height', bh).attr('rx', 8).attr('fill', 'var(--color-panel)').attr('stroke', 'var(--color-border-line)');
-          homes.forEach((h, i) => {
-            const r = get(h.place, P.year, P.period);
-            if (!r) return;
-            const cy = by + 9 + rowH * i + rowH / 2;
-            const sel = h.place === P.place, isC = h.place === cmp;
-            const g = svg.append('g').attr('class', 'cb-dot').attr('tabindex', 0).attr('role', 'button').attr('aria-label', h.name + ': ' + fmt(M.id, r[M.id], avg));
-            if (sel || isC) g.append('circle').attr('cx', bx + 30).attr('cy', cy).attr('r', 19).attr('fill', 'none').attr('stroke', sel ? 'var(--color-fg)' : 'var(--color-fg-muted)').attr('stroke-width', sel ? 2.5 : 2).attr('stroke-dasharray', isC ? '4 3' : null);
-            g.append('circle').attr('cx', bx + 30).attr('cy', cy).attr('r', 13).attr('fill', ramp(sc(r[M.id]))).attr('stroke', 'var(--color-fg)').attr('stroke-opacity', 0.35);
-            g.append('text').attr('x', bx + 56).attr('y', cy - 3).attr('font-size', 18).attr('font-weight', sel ? 600 : 400).attr('fill', 'var(--color-fg)').text(h.name);
-            g.append('text').attr('x', bx + 56).attr('y', cy + 17).attr('font-size', 16).attr('fill', 'var(--color-fg-muted)').text(fmt(M.id, r[M.id], avg) + unitTag + ' · ' + h.area);
-            g.on('click', () => set({ place: h.place })).on('mousemove', (ev) => showTip(ev, h)).on('mouseleave', () => tip.hide());
+          mk.setRadius(sel ? 10 : 8);
+          mk.setStyle({
+            fillColor: v == null ? muted : ramp(sc(v)), fillOpacity: 1,
+            color: sel ? fg : isC ? fgMuted : fg, opacity: sel || isC ? 1 : 0.35,
+            weight: sel ? 3 : isC ? 2.5 : 1, dashArray: isC ? '4 3' : null,
           });
+          if (sel || isC) mk.bringToFront();
+          mk.setTooltipContent(p.name + ' · ' + fmt(M.id, v, avg) + unitTag);
+          const el = mk.getElement();
+          if (el) el.setAttribute('aria-label', p.name + ': ' + fmt(M.id, v, avg) + ' ' + unitOf(M.id, P.period));
         }
-        // legend
-        const lg = svg.append('g').attr('transform', `translate(${VW - 250},${VH - 20 - (18 + 46 * homes.length) - 58})`);
-        const gid = 'cbgrad' + Math.random().toString(36).slice(2, 7);
-        const grad = svg.append('defs').append('linearGradient').attr('id', gid);
-        [0, 0.5, 1].forEach((o) => grad.append('stop').attr('offset', o).attr('style', 'stop-color:' + ramp(o)));
-        lg.append('rect').attr('width', 232).attr('height', 12).attr('rx', 6).attr('fill', `url(#${gid})`);
-        lg.append('text').attr('y', 34).attr('font-size', 16).attr('fill', 'var(--color-fg-muted)').text('Less · ' + fmt(M.id, sc.domain()[0], avg));
-        lg.append('text').attr('x', 232).attr('y', 34).attr('text-anchor', 'end').attr('font-size', 16).attr('fill', 'var(--color-fg-muted)').text(fmt(M.id, sc.domain()[1], avg) + ' · More');
+        // labels: every place once zoomed in to a region, otherwise only the selected and compared places.
+        // A label that would overlap one already shown is hidden (selected and compared go first); zoom in to see it.
+        st.labels = () => {
+          const all = map.getZoom() >= 8;
+          const rank = (p) => (p.place === P.place ? 0 : p.place === cmp ? 1 : 2);
+          const shown = [];
+          for (const p of onMap.slice().sort((a, b) => rank(a) - rank(b))) {
+            const mk = st.markers.get(p.place);
+            const sel = p.place === P.place, isC = p.place === cmp;
+            if (!(all || sel || isC)) { mk.closeTooltip(); continue; }
+            mk.openTooltip();
+            const t = mk.getTooltip().getElement();
+            t.classList.toggle('cb-sel', sel);
+            const r = t.getBoundingClientRect();
+            if (!sel && !isC && shown.some((q) => r.left < q.right && r.right > q.left && r.top < q.bottom && r.bottom > q.top)) mk.closeTooltip();
+            else shown.push(r);
+          }
+        };
+        st.labels();
+        // key under the map: colour scale and the UK baselines on the same scale
+        const key = st.key;
+        key.replaceChildren();
+        const scale = document.createElement('div');
+        scale.className = 'cb-mapkey-scale';
+        const bar = document.createElement('div');
+        bar.className = 'cb-mapkey-bar';
+        bar.style.background = 'linear-gradient(to right, ' + [0, 0.5, 1].map(ramp).join(', ') + ')';
+        const ends = document.createElement('div');
+        ends.className = 'cb-mapkey-ends';
+        const lo = document.createElement('span'), hi = document.createElement('span');
+        lo.textContent = 'Less · ' + fmt(M.id, sc.domain()[0], avg);
+        hi.textContent = fmt(M.id, sc.domain()[1], avg) + ' · More';
+        ends.append(lo, hi);
+        scale.append(bar, ends);
+        key.appendChild(scale);
+        for (const h of homes) {
+          const v = valOf(h);
+          if (v == null) continue;
+          const sel = h.place === P.place, isC = h.place === cmp;
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'cb-mapkey-home' + (sel ? ' cb-on' : '') + (isC ? ' cb-cmp' : '');
+          b.setAttribute('aria-label', h.name + ': ' + fmt(M.id, v, avg) + ' ' + unitOf(M.id, P.period));
+          const sw = document.createElement('span');
+          sw.className = 'cb-mapkey-dot';
+          sw.style.background = ramp(sc(v));
+          const nm = document.createElement('b');
+          nm.textContent = h.name;
+          b.append(sw, nm, document.createTextNode(' ' + fmt(M.id, v, avg) + unitTag + ' · ' + h.area));
+          b.addEventListener('click', () => set({ place: h.place }));
+          b.addEventListener('mousemove', (ev) => st.showTip(ev, h));
+          b.addEventListener('mouseleave', () => tip.hide());
+          key.appendChild(b);
+        }
       }
     }
 

@@ -1,11 +1,13 @@
 // Before/after check for refactors: render the same settings in two versions of a dashboard and require
 // identical page markup (text, tables, chart geometry). Settings are injected through the page's saved params.
 // Usage: node tests/compare_pages.js <old .html file> <old params key> <new site dir> <region> [new params key]
-// e.g.   node tests/compare_pages.js spanish-coast-climate.html spain-climate-params _site spain-coast
+// e.g.   node tests/compare_pages.js old.html spain-climate-params _site spain-coast --skip-map
+// --skip-map leaves the map card out of the comparison (the map itself is meant to differ since phase B).
 const { chromium } = require('playwright');
 const path = require('path');
-const { serve } = require('./serve');
+const { serve, stubTiles } = require('./serve');
 
+const SKIP_MAP = process.argv.includes('--skip-map');
 const PLACES = ['begur', 'llanca', 'roses', 'lescala', 'palamos', 'tossa', 'figueres', 'girona', 'olot', 'nerja', 'torrox',
   'frigiliana', 'marbella', 'estepona', 'alicante', 'altea', 'javea', 'palma', 'soller', 'pollensa', 'dunning', 'bristol'];
 const MEASURES = ['tmax', 'tmin', 'ride', 'warm', 'rain', 'wet', 'tram', 'hot', 'frost'];
@@ -16,7 +18,8 @@ const combos = [
 ];
 
 (async () => {
-  const [oldFile, oldKey, newDir, region, newKey = 'dc-params-' + region] = process.argv.slice(2);
+  const args = process.argv.slice(2).filter((a) => a !== '--skip-map');
+  const [oldFile, oldKey, newDir, region, newKey = 'dc-params-' + region] = args;
   const server = await serve(newDir);
   const sides = [['old', 'file://' + path.resolve(oldFile), oldKey], ['new', server.url + region + '/', newKey]];
   const b = await chromium.launch();
@@ -25,11 +28,13 @@ const combos = [
     const got = {};
     for (const [side, url, key] of sides) {
       const ctx = await b.newContext({ viewport: { width: 1280, height: 900 } });
+      await stubTiles(ctx);
       await ctx.addInitScript(([k, v]) => localStorage.setItem(k, v), [key, JSON.stringify(c)]);
       const p = await ctx.newPage();
       await p.goto(url); await p.waitForLoadState('networkidle'); await p.waitForTimeout(500);
-      // The map legend's gradient gets a random id on every draw; normalise it.
-      got[side] = (await p.evaluate(() => document.querySelector('.cb').innerHTML)).replace(/cbgrad[a-z0-9]+/g, 'cbgrad');
+      // The map card is left out when --skip-map is given (phase B replaced the map); otherwise normalise the
+      // old map legend's random gradient id.
+      got[side] = (await p.evaluate((skip) => { const c = document.querySelector('.cb').cloneNode(true); if (skip) c.querySelector('#map-card').remove(); return c.innerHTML; }, SKIP_MAP)).replace(/cbgrad[a-z0-9]+/g, 'cbgrad');
       await ctx.close();
     }
     if (got.old !== got.new) {

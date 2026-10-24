@@ -34,7 +34,7 @@ A free, static website that helps a keen road cyclist (the owner, based in Scotl
 
 - **Controls:** place, compare-with, month slider (Jan–Dec + "Whole year"), year slider (2017–2025 or "All", the 9-year average), Play (steps months), and a measure picker (9 measures, section 4.3).
 - **Takeaway line**, then **headline tiles** for the selected place and period, with the comparison place underneath.
-- **Map card** with tabs: *All Spain*, *Costa Brava*, *Costa del Sol*, *Costa Blanca*, *Mallorca*. It follows the selected place's region unless a tab is clicked. Dots are coloured by the chosen measure, and a corner box shows the UK baselines (Dunning, Bristol) on the same scale.
+- **Map card** (since refactor phase B, 24 Oct 2026): a zoomable Leaflet map on OpenStreetMap tiles, with tabs *All Spain*, *Costa Brava*, *Costa del Sol*, *Costa Blanca*, *Mallorca* that move the view. It follows the selected place's region unless a tab is clicked. Dots are coloured by the chosen measure; clicking one selects that place. Labels show for every place once zoomed in to a region (a label that would overlap another is hidden), otherwise only for the selected and compared places. A strip under the map shows the colour scale and the UK baselines (Dunning, Bristol) on the same scale.
 - **Through the year:** monthly line (temperatures, with a min–max band across years) or bars (day counts), with the comparison place in grey.
 - **Every month, every year:** a 9×12 heatmap plus whole-year column and average row. Clicking a cell sets the month and year.
 - **Year by year:** bars for the chosen month across 2017–2025 with an average line and comparison marks.
@@ -55,7 +55,6 @@ config/places.json            every place (id, name, country, region, lat/lon, m
 config/regions.json           one entry per dashboard page: countries, UK baselines, defaults, title, credits
 data/processed/climate/<country>.json    modelled monthly rows (4.2), one file per country (ES, GB)
 data/processed/stations/<country>.json   station monthly rows (5.3)
-data/processed/map-outlines-spain.json   LEGACY map outlines, until refactor phase B
 data/reference/aemet-station-inventory.json   AEMET station list (public, reusable)
 data/raw/, data/interim/      git-ignored download caches and intermediates
 pipeline/openmeteo_fetch.py   modelled data: fetch + aggregate (Python port, see 4.1); --check compares without writing
@@ -63,7 +62,6 @@ pipeline/openmeteo_browser_reference.js   the exact JS aggregation originally us
 pipeline/meteocat_fetch.py / meteocat_aggregate.py   Catalan stations (needs METEOCAT_API_KEY)
 pipeline/aemet_fetch.py / aemet_aggregate.py         Spanish national stations (needs AEMET_API_KEY)
 pipeline/stations_combine.py  merges both station sets -> data/processed/stations/<country>.json
-pipeline/maps/mk*.js          LEGACY hand-built map outlines (removed in refactor phase B)
 site-src/pages/               index.html (landing), region.html (dashboard template, one page per region)
 site-src/css/                 tokens.css (light + dark design tokens), dashboard.css, landing.css
 site-src/js/                  dash-shim.js (the `dash` API, fetches region data), periods.js (calcs), dashboard.js (UI)
@@ -261,7 +259,7 @@ Conclusions:
 | AEMET OpenData | Spanish national stations | Owner holds a key (JWT, **expires ~29 Jan 2027**; the owner must re-request at opendata.aemet.es). Header `api_key` | Reuse authorised citing AEMET: "© AEMET, Agencia Estatal de Meteorología". |
 | ECA&D (KNMI) | Planned: station validation across Europe | No registration for station data. `www.ecad.eu` was allowlisted, but the site returned **HTTP 503** on 21 Oct 2026. Retry. Bulk files may be served from another host. | Non-commercial research and education only. Acknowledge data providers; cite Klein Tank et al. (2002), *Int. J. Climatol.* 22, 1441–1453. |
 | Met Office MIDAS Open (via CEDA) | Planned: UK stations (Bristol, Dunning) | The owner applied for a CEDA account (pending). Needs an **access token** (not a password) for scripted downloads. Host `dap.ceda.ac.uk` | Open Government Licence v3. Cite the dataset DOI shown on the CEDA catalogue page (Met Office, MIDAS Open: UK daily weather observation data). |
-| geo-maps (OSM-derived), Natural Earth, es-atlas | Legacy map outlines | Bundled in data/processed | Attribute OpenStreetMap contributors (ODbL) / Natural Earth / es-atlas. |
+| OpenStreetMap tiles (`tile.openstreetmap.org`) | Map background, via Leaflet 1.9.4 (vendored) | No key. The [tile usage policy](https://operations.osmfoundation.org/policies/tiles/) allows light use like this site with visible attribution; no bulk or automated downloading (the tests serve blank tiles instead). If traffic grows, switch to a tile provider: change the URL in `initMap` in `site-src/js/dashboard.js`. | Data © OpenStreetMap contributors, ODbL; attribution shown on the map and in the footer. Leaflet is BSD-2. (The geo-maps / Natural Earth / es-atlas outlines used until 24 Oct 2026 are gone.) |
 
 **Secrets:** keys go in environment variables (`METEOCAT_API_KEY`, `AEMET_API_KEY`, `CEDA_ACCESS_TOKEN`) or a git-ignored `.env`. Never in code, commits, the built page or issues. **Ask the owner for keys; they're not in this repo.**
 
@@ -277,9 +275,9 @@ Conclusions:
   3. `site-src/js/dashboard.js`: the UI IIFE, whose `dash.onData(…)` redraws everything from `dash.params()`.
 - **Region file** (`_site/data/regions/<region>.json`, ~120 KB for Spain): `{id, name, years, places, climate: {place: {measure: [108 values]}}, stations: {place: {source, station, …, series: {measure: [108, null where invalid]}}}, outlines}`. Months run year-major from January of the first year. It holds the region's places plus the UK baselines.
 - **Params:** `place` (default `begur`), `compare` (`dunning`), `measure` (`tmax`), `year` (`all`), `period` (`'1'`), `frame` (`auto` | `spain` | `brava` | `sol` | `blanca` | `mallorca`), `region` (`all` | region name).
-- **Map:** hand-projected SVG (equirectangular with cos-latitude scaling), one frame per region, from `map-outlines-spain.json` rows `{frame, layer, path, W, E, S, N, k, scale, width, height}`. Label placement is hand-tuned in `LABEL_SIDE`, `FRAME_LABELS` and `REGION_TAGS`. **This doesn't scale**; replacing it is the top refactor item (9.1).
+- **Map:** Leaflet 1.9.4 with OpenStreetMap raster tiles, built once by `initMap` in `dashboard.js`; each redraw restyles the circle markers and updates the key strip (`#cb-mapkey`). A frame (`P.frame`, or the selected place's region) is fitted to that region's places, only when the frame changes, so changing measure doesn't undo panning. Region moves aren't animated: restyling markers during Leaflet's zoom animation left their paths blank. Dark mode inverts the tiles with a CSS filter. Scroll-wheel zoom is off (page scrolling stays normal) and one-finger dragging is off on touch devices (pinch zooms). Markers are keyboard-focusable (Enter selects).
 - Styling: CSS custom properties (`--cds-*`, `--color-*`, `--font-anthropic-*`) from `site-src/css/tokens.css`, with light and dark themes. Charts are d3 v7. The layout works at 400 px with no horizontal scroll, and the smoke test checks this.
-- Still hard-coded in `dashboard.js` until refactor phase C: `REGIONS`, `FRAMES`, map label tuning, `YEARS`, `DEFAULTS` and the Spain-specific prose.
+- Still hard-coded in `dashboard.js` until refactor phase C: `REGIONS`, `REGION_FRAME`, `FRAMES`, `YEARS`, `DEFAULTS` and the Spain-specific prose.
 
 ---
 
@@ -311,7 +309,7 @@ Conclusions:
 ### 9.1 Architecture refactor (before adding countries)
 - **Build pipeline:** `pipeline/` scripts → `data/processed/` → site. Adding a region should mean adding rows to a places config and re-running, with no page surgery.
 - **Per-country (or per-region) data files** loaded on demand, plus a small **summary file** (place × month aggregates for every place) for search and ranking. Keep it static; GitHub Pages is fine at this scale.
-- **Replace the hand-built SVG maps with a zoomable slippy map** (e.g. Leaflet + OpenStreetMap tiles; respect the tile usage policy and attribution, and use a tile provider if traffic grows). Places become markers coloured by the chosen measure.
+- ~~**Replace the hand-built SVG maps with a zoomable slippy map**~~ Done 24 Oct 2026 (Leaflet + OpenStreetMap tiles; see section 7).
 - Decide whether to keep the `dash`-style API (proven, small) or refactor to plain ES modules. Either is fine; keep the smoke test green.
 - Consider multiple HTML pages (landing, region dashboards, method/about) rather than one huge page.
 
@@ -354,9 +352,8 @@ Order agreed in principle: all of Spain (including the Canaries) → Portugal �
 - Sóller's terrain is unresolved by the model; treat its figures as indicative only.
 - `tram` misses the Levante; the station gust direction differs in definition from the model's dominant direction.
 - Partial station records: Torrox ~50%, Port de Sóller ~60%, Benidorm ~80% (flagged on the page when below 85%).
-- The heatmap is dense at phone width but usable. The map at phone width is small; the slippy map will fix this.
+- The heatmap is dense at phone width but usable. On the map, labels in tight clusters (Nerja / Frigiliana / Torrox) hide each other until you zoom in.
 - A fresh Open-Meteo fetch differs slightly from the committed rain-based figures (see 4.1); the committed data is a 16–17 Oct 2026 snapshot.
-- `pipeline/maps/mk*.js` are legacy, depend on large npm geodata packages (`@geo-maps/earth-lands-100m` is ~117 MB), and expect intermediate files from the original session (e.g. `land_clip.json`, `data*.json`). Don't revive them; replace them (9.1).
 
 ---
 

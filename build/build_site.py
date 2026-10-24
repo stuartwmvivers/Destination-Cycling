@@ -28,6 +28,7 @@ esc = lambda s: s.replace('&', '&amp;').replace('<', '&lt;').replace('"', '&quot
 MEASURES = ['tmax', 'tmin', 'rain', 'wet', 'ride', 'warm', 'hot', 'frost', 'tram']
 STATION_INFO = ['source', 'station', 'station_name', 'distance_km', 'elevation_m', 'gust_height_m']
 D3 = '7.9.0'
+LEAFLET = '1.9.4'
 
 def write(rel, text):
     p = os.path.join(OUT, rel)
@@ -86,9 +87,6 @@ for reg in regions:
             st[p['place']] = {**info, 'series': columns(rs)}
     data = {'id': reg['id'], 'name': reg['name'], 'years': years, 'places': members,
             'climate': {p['place']: columns(climate[p['place']]) for p in members}, 'stations': st}
-    if reg.get('outlines'):   # legacy hand-built map outlines, until the slippy map replaces them (refactor phase B)
-        sizes['data/' + reg['outlines']] = write('data/' + reg['outlines'], read(J('data', 'processed', reg['outlines'])))
-        data['outlines'] = reg['outlines']
     rel = f"data/regions/{reg['id']}.json"
     sizes[rel] = write(rel, json.dumps(data, ensure_ascii=False, separators=(',', ':')))
 
@@ -117,13 +115,18 @@ d3 = next(p for p in [J('node_modules', 'd3', 'dist', 'd3.min.js')] if os.path.e
 assert load(J('node_modules', 'd3', 'package.json'))['version'] == D3, 'd3 version changed: update D3 and test'
 os.makedirs(os.path.join(OUT, 'vendor'))
 shutil.copy(d3, os.path.join(OUT, 'vendor', f'd3-{D3}.min.js'))
+assert load(J('node_modules', 'leaflet', 'package.json'))['version'] == LEAFLET, 'Leaflet version changed: update LEAFLET and test'
+lf = os.path.join(OUT, 'vendor', f'leaflet-{LEAFLET}')
+os.makedirs(lf)
+for f in ['leaflet.js', 'leaflet.css']: shutil.copy(J('node_modules', 'leaflet', 'dist', f), lf)
+shutil.copytree(J('node_modules', 'leaflet', 'dist', 'images'), os.path.join(lf, 'images'))
 
 def page(rel, title, description, css, body, foot, scripts=()):
     root = '../' * rel.count('/')
     html = ('<!doctype html>\n<html lang="en-GB">\n<head>\n<meta charset="utf-8">\n'
             '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
             f'<title>{esc(title)}</title>\n<meta name="description" content="{esc(description)}">\n'
-            + ''.join(f'<link rel="stylesheet" href="{root}css/{c}.css">\n' for c in ['tokens'] + css)
+            + ''.join(f'<link rel="stylesheet" href="{root}{c if "/" in c else f"css/{c}.css"}">\n' for c in ['tokens'] + css)
             + '</head>\n<body>\n<div id="dash-root">\n' + body + f'\n<footer class="cb-foot">{foot}</footer>\n</div>\n'
             + ''.join(s.replace('{{ROOT}}', root) + '\n' for s in scripts)
             + '</body>\n</html>\n')
@@ -132,8 +135,9 @@ def page(rel, title, description, css, body, foot, scripts=()):
 # ---------- region pages ----------
 region_body = read(J('site-src', 'pages', 'region.html'))
 for reg in regions:
-    page(f"{reg['id']}/index.html", reg['title'], reg['description'], ['dashboard'], region_body, reg['credits'], [
+    page(f"{reg['id']}/index.html", reg['title'], reg['description'], [f'vendor/leaflet-{LEAFLET}/leaflet.css', 'dashboard'], region_body, reg['credits'], [
         f'<script src="{{{{ROOT}}}}vendor/d3-{D3}.min.js"></script>',
+        f'<script src="{{{{ROOT}}}}vendor/leaflet-{LEAFLET}/leaflet.js"></script>',
         '<script>window.DC_PAGE = ' + json.dumps({'region': reg['id'], 'root': '{{ROOT}}'}) + ';</script>',
         '<script src="{{ROOT}}js/dash-shim.js"></script>',
         '<script src="{{ROOT}}js/periods.js"></script>',

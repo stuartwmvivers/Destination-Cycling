@@ -46,5 +46,5 @@ Data pipeline scripts are in `pipeline/`; see HANDOVER.md for how to run them (s
 - Weather model data: [Open-Meteo](https://open-meteo.com/), CC BY 4.0 (non-commercial free tier).
 - Costa Brava station readings: © Servei Meteorològic de Catalunya (Meteocat), monthly summaries used with permission. Raw daily data is not redistributed.
 - Costa del Sol, Costa Blanca and Mallorca station readings: © AEMET, Agencia Estatal de Meteorología.
-- Map outlines: geo-maps (© OpenStreetMap contributors, ODbL), Natural Earth, es-atlas.
+- Map: © [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors (ODbL), tiles from the OpenStreetMap Foundation; drawn with [Leaflet](https://leafletjs.com/) (BSD-2).
 - Charts: [d3](https://d3js.org/) (ISC licence).

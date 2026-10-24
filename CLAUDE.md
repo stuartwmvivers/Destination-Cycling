@@ -24,7 +24,7 @@ python3 tests/data_check.py
 node tests/render_check.js _site
 node tests/serve.js _site 8000                    # preview at http://127.0.0.1:8000/ (file:// won't load data)
 git show 052c30e:spanish-coast-climate.html > /tmp/old.html   # last single-file page, for before/after comparisons
-node tests/compare_pages.js /tmp/old.html spain-climate-params _site spain-coast
+node tests/compare_pages.js /tmp/old.html spain-climate-params _site spain-coast --skip-map   # map card differs since phase B
 python3 pipeline/openmeteo_fetch.py --check <place_id>   # compare live API with committed rows, writes nothing
 python3 pipeline/openmeteo_fetch.py <place_id>    # modelled data: fetch and WRITE (see HANDOVER 4.1 first)
 METEOCAT_API_KEY=... python3 pipeline/meteocat_fetch.py && python3 pipeline/meteocat_aggregate.py

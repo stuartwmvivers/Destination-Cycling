@@ -1,6 +1,6 @@
 # Refactor plan: from one Spain page to a multi-region site
 
-Status: **approved 23 October 2026** as written (drop offline, deploy with Actions, `/spain-coast/` URLs, one page per country). **Phases A and D done 23 Oct 2026** (see the end of this file, D was brought forward); B and C to do.
+Status: **approved 23 October 2026** as written (drop offline, deploy with Actions, `/spain-coast/` URLs, one page per country). **Phases A and D done 23 Oct 2026, B done 24 Oct 2026** (see the end of this file); C to do.
 
 Goal (HANDOVER 9.1): adding a region should mean adding places to a config file and re-running the pipeline and build, with no edits to page code. The numbers on the page must not change as a side effect: the reference values in HANDOVER 4.4 are the test.
 
@@ -119,3 +119,23 @@ After this, adding a region means: add places to `config/places.json` and a row 
 - The frozen root `index.html` and `spanish-coast-climate.html` are removed. For before/after comparisons, take the old page from history: `git show 052c30e:spanish-coast-climate.html`.
 - Checked by simulating the workflow in a fresh clone: clean `npm ci`, the build, both checks and the 31-setting comparison all pass; the redirect lands on `/spain-coast/#measured`. The workflow itself first runs on GitHub after the owner switches Pages to "GitHub Actions" and pushes.
 - Saved dashboard settings don't carry over (the localStorage key changed); visitors start from the defaults once.
+
+## Phase B: done (24 October 2026)
+
+- The hand-drawn SVG map is replaced by Leaflet 1.9.4 (pinned in `package.json`, vendored into `_site/vendor/leaflet-1.9.4/` by the build) on OpenStreetMap tiles. Removed: `data/processed/map-outlines-spain.json`, `pipeline/maps/`, the outline loading in the shim and build, and `FRAME_LABELS`, `LABEL_SIDE`, `REGION_TAGS` and about 100 lines of SVG map code.
+- Behaviour kept:
+  - the region tabs (now they move the view) and following the selected place's region;
+  - dots coloured by the measure, on a scale set by the places in the current frame;
+  - the selected place ringed and the compared place dashed;
+  - hover details, click to select, and the UK baselines on the same scale.
+- Changed:
+  - the legend and baselines moved out of the map corner into a strip under the map (on phones the corner box covered places);
+  - labels for all places appear once zoomed in to a region, and overlapping labels are hidden rather than hand-placed;
+  - the map note mentions panning and zooming.
+- Region moves aren't animated: restyling markers during Leaflet's zoom animation left their paths blank.
+- Tests:
+  - `render_check.js` checks that markers exist and that clicking a marker selects a place;
+  - both browser tests answer tile requests with a blank PNG (offline, repeatable, and within the OSM tile policy);
+  - `compare_pages.js --skip-map` confirms everything outside the map card is still identical to the old page across 31 settings;
+  - a check of every frame at 400 and 1280 px found no labels clipped at the map edge.
+- Credits updated in `config/regions.json` (page footer), README and HANDOVER section 6.

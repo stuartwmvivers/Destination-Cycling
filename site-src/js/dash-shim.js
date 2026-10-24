@@ -48,11 +48,6 @@
       sets.places = d.places;
       sets.climate = expand(d.climate, d.years, () => ({}));
       sets.stations = expand(d.stations, d.years, ({ series, ...info }) => info);
-      if (d.outlines) {
-        const o = await fetch(PAGE.root + 'data/' + d.outlines);
-        if (!o.ok) throw new Error('HTTP ' + o.status);
-        sets.outlines = await o.json();
-      }
       status = 'ok';
     } catch (e) { console.error('Failed to load region data', e); status = 'error'; }
     schedule();

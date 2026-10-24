@@ -16,5 +16,9 @@ function serve(dir, port = 0) {
   });
   return new Promise((ok) => server.listen(port, '127.0.0.1', () => ok({ url: `http://127.0.0.1:${server.address().port}/`, close: () => server.close() })));
 }
-module.exports = { serve };
+// Answer map-tile requests with a blank tile, so tests are offline, repeatable and don't load the
+// OpenStreetMap tile servers (their usage policy discourages automated requests).
+const BLANK_PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=', 'base64');
+const stubTiles = (ctx) => ctx.route('https://tile.openstreetmap.org/**', (route) => route.fulfill({ contentType: 'image/png', body: BLANK_PNG }));
+module.exports = { serve, stubTiles };
 if (require.main === module) serve(process.argv[2] || '_site', +process.argv[3] || 8000).then((s) => console.log('serving', s.url));

@@ -7,6 +7,11 @@
     "test": "python3 tests/data_check.py && node tests/render_check.js _site",
     "serve": "node tests/serve.js _site 8000"
   },
-  "dependencies": { "d3": "7.9.0" },
-  "devDependencies": { "playwright": "^1.48.0" }
+  "dependencies": {
+    "d3": "7.9.0",
+    "leaflet": "1.9.4"
+  },
+  "devDependencies": {
+    "playwright": "^1.48.0"
+  }
 }
