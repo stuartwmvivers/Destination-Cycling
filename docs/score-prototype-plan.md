@@ -1,6 +1,6 @@
 # Cycling-base score: Spain prototype plan
 
-Status: **approved 24 October 2026**, with all four decisions in section 7 accepted (cache outside OneDrive, the Python packages, ODbL for the score data, Canaries and Balearics included). Phases 1 and 2 done (24–25 Oct 2026); phase 3 built, awaiting the owner's check of the airport list (see the end of this file). It implements `docs/cycling-score-spec.md` (decisions of 24 Oct 2026) for Spain, including the Balearics and Canaries.
+Status: **approved 24 October 2026**, with all four decisions in section 7 accepted (cache outside OneDrive, the Python packages, ODbL for the score data, Canaries and Balearics included). Phases 1–3 done (24–25 Oct 2026). **Phase 4 in progress: the weather download runs unattended for about 4 days from 25 Oct 2026** (see "Phase 4" at the end of this file). Phase 5 (the score page) can start meanwhile. It implements `docs/cycling-score-spec.md` (decisions of 24 Oct 2026) for Spain, including the Balearics and Canaries.
 
 ## 1. What the prototype produces
 
@@ -176,3 +176,32 @@ etwork.npz` (194 MB).
     - roads, junctions and paths in built-up land count 0.3.
   - Known limit: dense lowland minor-road networks (e.g. Valencia's huerta) still score highest on quiet roads, because OSM has no traffic data. Phase 5's normalisation must cap each measure.
 - **Credits for the score page (phase 5)** must add: Copernicus DEM (DLR/Airbus credit), ESA WorldCover (CC BY 4.0), and OSM (ODbL) for the score data.
+
+## Phase 4: weather at the climbs (IN PROGRESS from 25 October 2026)
+
+- **Candidate bases (`bases.py`):** a 5 km grid over Spain snapped onto the cycling network. 16,609 bases, each with its near and onward climbs; **7,415 (45%) pass the gate** (≥ 3 near climbs). Output `WORK/bases.json`; runs in under a minute.
+- **Weather points (`weather_points.py`):** one per 25 km square containing a gate-passing base, at the mean position of those bases. **566 points**, ordered busiest-first (the first 140 cover 3,259 of the 7,415 bases).
+- **The download (`weather_fetch.py`):** Open-Meteo daily high, precipitation and max gust, 2017–2025, Europe/Madrid (as HANDOVER 4.1, minus the variables the score doesn't need).
+  - **The free tier allows roughly 140 points a day**: each request weighs about 70 "calls" against about 10,000 a day. That is about 2 hours of downloading a day, **about 4 days in all.** The first plan said "a few hours", which was wrong.
+  - Every point is saved to `WORK/weather/<id>.json` as it arrives. It resumes after stopping.
+  - Progress is in `WORK/weather_status.json` and `WORK/weather_fetch.log`. A lock file stops two copies running at once.
+- **Running unattended, set up with the owner on 25 Oct 2026:**
+  - **Windows Task Scheduler**, task "Destination Cycling weather fetch":
+    - it runs `pipeline/score/run_weather_fetch.cmd` daily at 01:30 and 13:30 and at logon (missed runs start when the PC is next on), each run stopping at the daily allowance;
+    - it needs the PC on and the owner logged in to Windows; Claude need not be open;
+    - when all points are in, it does nothing.
+  - **A Claude scheduled task**, "destination-cycling-weather-check", daily at 09:00 (or when the app next opens):
+    - it reads the status file, log and task info, reports progress, flags problems, and **says when the download is complete**;
+    - it is read-only, and was saved in Bypass permissions mode (the owner can change that in the app).
+- **To check by hand:** read `C:\ai-projects\DestinationCyclingCache\work\weather_status.json`, or count the files in `work\weather`.
+- **To restart by hand:** `run_weather_fetch.cmd`, or in a terminal in the repo:
+  `$env:DC_CACHE = 'C:\ai-projects\DestinationCyclingCache'; & 'C:\ai-projects\DestinationCyclingCache\venv\Scripts\python.exe' pipeline\score\weather_fetch.py`
+  Run only one copy at a time.
+- **Scoring (`weather_score.py`, written and tested on early points):**
+  - each base uses its own weather point, or borrows the nearest fetched point until its own arrives;
+  - temperature is adjusted to the median mid-height of its near climbs at 6.5 °C/km;
+  - rideable days per HANDOVER 4.2;
+  - the index weights October–May at 1.0 and June–September at 0.25.
+  - Output: `WORK/weather_bases.json`.
+- **When the download completes:** run `weather_score.py --check`, review the places it prints, record the results here, then disable the Windows task and the daily Claude check (the owner's call).
+- **Meanwhile, phase 5 can proceed without the weather.** Build the score page as an explorer (spec section 7a) on bases, climbs, reach measures and drive times, with the weather component filling in from `weather_bases.json` as it becomes available.
