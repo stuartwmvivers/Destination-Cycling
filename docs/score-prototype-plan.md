@@ -1,6 +1,6 @@
 # Cycling-base score: Spain prototype plan
 
-Status: **approved 24 October 2026**, with all four decisions in section 7 accepted (cache outside OneDrive, the Python packages, ODbL for the score data, Canaries and Balearics included). Phases 1 and 2 done (24–25 Oct 2026; see the end of this file). Phase 3 next. It implements `docs/cycling-score-spec.md` (decisions of 24 Oct 2026) for Spain, including the Balearics and Canaries.
+Status: **approved 24 October 2026**, with all four decisions in section 7 accepted (cache outside OneDrive, the Python packages, ODbL for the score data, Canaries and Balearics included). Phases 1 and 2 done (24–25 Oct 2026); phase 3 built, awaiting the owner's check of the airport list (see the end of this file). It implements `docs/cycling-score-spec.md` (decisions of 24 Oct 2026) for Spain, including the Balearics and Canaries.
 
 ## 1. What the prototype produces
 
@@ -30,7 +30,7 @@ Status: **approved 24 October 2026**, with all four decisions in section 7 accep
 |---|---|---|
 | Roads, paths, tracks, peaks, parks | OpenStreetMap extracts from Geofabrik: Spain (1.5 GB, which excludes the Canaries) and the Canary Islands (60 MB, listed under Africa) | ODbL. **Our results are derived from OSM, so the published score data must also be ODbL**, with attribution. This is fine for a free site, but it is a licence condition to accept. |
 | Terrain heights | Copernicus DEM GLO-30 (30 m grid; free download from the AWS open-data bucket, no key) | Free with the Copernicus/DLR/Airbus credit line. |
-| Countryside quality (for gravel) | CORINE Land Cover 2018 (Copernicus, 100 m) | Free with attribution. |
+| Countryside quality (for gravel) | ~~CORINE Land Cover 2018~~ **ESA WorldCover 2021** (10 m, AWS open data, no login), since CORINE needs an EU login | CC BY 4.0: "© ESA WorldCover project 2021 / Contains modified Copernicus Sentinel data (2021) processed by ESA WorldCover consortium". |
 | Weather at altitude | Open-Meteo, the existing method (HANDOVER 4.2) | As now. A new batch of points; see the weather phase. |
 | Airports with year-round EDI/GLA flights | **Hand-maintained list**, researched and dated, in `config/airports.json` | No open schedule data. Seasonal-only routes count much less in winter (spec). Needs a check by the owner. |
 | Property prices | To be researched (phase 6): candidates are Spain's notaries' statistics portal and the Ministry's municipal *valor tasado* | Coverage of small villages is the known gap. |
@@ -154,3 +154,25 @@ etwork.npz` (194 MB).
   - climbs reached by riding over another climb **count**. They are implemented as *onward* climbs (foot within 26 km of a near climb's top), counted in the score but not the gate. With onward climbs in the gate, Valencia passed; without, the gate is back to 25 of 26 as expected.
   - Port de Pollença: 3 near and 3 onward climbs, including Sa Calobra at 57 km via the Lluc climb. From Pollença, Sa Calobra is 51 km.
 - **One unexplained failure:** the first all-Spain run died silently after the search; a rerun completed normally.
+
+## Phase 3: reach measures and airports (25 October 2026, built; airport list to confirm)
+
+- **Airports (`config/airports.json`): a dated DRAFT, from airline announcements and route aggregators.** No official winter 2026/27 timetables were found, and the main route-listing site blocks automated access.
+  - Year-round from EDI or GLA as best known: Alicante, Málaga, Tenerife South, Lanzarote, Gran Canaria, Fuerteventura, Barcelona, Madrid.
+  - **Palma is "unknown" for EDI in winter, so Mallorca currently has no qualifying airport**, which matters for the benchmark. Girona and Reus are thought to be summer only.
+  - **Owner to confirm.**
+- **Driving network:** `build_network.py --drive` (motorways included, car one-way rules); 537,000 km.
+- **Drive times:** `drive_times.py`, with typical speeds per road class and no traffic.
+  - Checks: Torrox Costa–Málaga 40 min, Calpe–Alicante 51, Girona–Barcelona 68, Granada–Málaga 78, Puerto de la Cruz–Tenerife South 58.
+  - Slightly fast on twisty mountain roads (Ronda–Málaga 74 min, against an estimated 80–100).
+  - Two variants are saved: year-round airports only, and including seasonal ones.
+- **Off-road features:** `extract_features.py`, from OSM.
+  - Gravel tracks 804,000 km; paths 209,000 km; mountain paths 21,000 km; rough tracks 101,000 km.
+  - About 270,000 ways in waymarked hiking routes; 82,000 peaks with heights.
+- **Measures:** `reach_measures.py`, on 1 km grids with straight-line discs (20 km for roads, 15 km for gravel, walking and peaks).
+  - Measures: quiet roads, loop-ability (junctions of three or more minor roads), flat roads (under 2%), gravel weighted by countryside quality, walking (paths, mountain paths ×2, waymarked bonus), peaks.
+  - Judgement calls made on 25 Oct 2026, to review with the ranking in phase 5:
+    - farmland counts 0.6 for gravel countryside, so tracks through woods and hills count more than vineyard tracks in La Mancha;
+    - roads, junctions and paths in built-up land count 0.3.
+  - Known limit: dense lowland minor-road networks (e.g. Valencia's huerta) still score highest on quiet roads, because OSM has no traffic data. Phase 5's normalisation must cap each measure.
+- **Credits for the score page (phase 5)** must add: Copernicus DEM (DLR/Airbus credit), ESA WorldCover (CC BY 4.0), and OSM (ODbL) for the score data.

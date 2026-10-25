@@ -56,6 +56,21 @@ Known good cycling bases must rank near the top of their country: e.g. **Mallorc
 3. Portugal, France, UK; then Italy, Croatia, Slovenia.
 4. UI: adjustable weights, a "find places like Mallorca" similarity view, and shortlists.
 
+## 7a. Exploring, not a fixed ranking (owner, 25 Oct 2026)
+
+The page is a tool for exploring candidates, not a single verdict. Every component is precomputed per base; the score is worked out live in the page from the user's choices:
+- a weight slider per component (climbing, weather, airport, quiet roads, walking, flat/rolling, gravel), each of which can also be switched off;
+- **flights mode:**
+  - year-round direct only (the strict rule);
+  - seasonal direct counted at reduced credit (e.g. Palma, which is seasonal for the owner; connecting flights out of season are acceptable but not ideal);
+  - flights ignored;
+- **the climbing gate as a switch**, with the minimum number of near climbs adjustable, to see what a relaxed gate opens up;
+- "rank by one thing" shortcuts and presets: the agreed defaults (section 3), "weather first" and "climbing only";
+- a per-base breakdown showing why it ranks where it does;
+- the price filter (phase 6).
+
+The owner's general view: weather should lead, and destinations reachable direct and year-round from Edinburgh have an advantage. The default weights stay as agreed in section 3; "weather first" is offered as a preset.
+
 ## 8. Decisions and open questions
 
 Decided (owner, 24 Oct 2026):

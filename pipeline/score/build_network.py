@@ -14,7 +14,9 @@ in the cache (WORK/network.npz):
   edge_oneway             1 if only u -> v is allowed for bikes
   edge_struct             1 bridge, 2 tunnel, 0 neither (terrain heights don't apply on these)
   geom_off, geom_lat, geom_lon   the full polyline of each edge (geom_off[i]:geom_off[i+1]), for terrain sampling
-Usage (score venv): python pipeline/score/build_network.py
+Usage (score venv): python pipeline/score/build_network.py            cycling network -> WORK/network.npz
+                    python pipeline/score/build_network.py --drive    driving network (with motorways, car one-way rules)
+                                                                      -> WORK/drive.npz, for airport drive times
 """
 import glob, math, os, time
 from array import array
@@ -47,12 +49,32 @@ def oneway(tags):
     if o == '-1': return -1
     return 0
 
+# Driving network: everything a car may use between towns and to airports, with typical speeds (km/h).
+DRIVE_SPEED = {'motorway': 110, 'motorway_link': 60, 'trunk': 90, 'trunk_link': 60, 'primary': 80, 'primary_link': 50,
+               'secondary': 70, 'secondary_link': 50, 'tertiary': 60, 'tertiary_link': 40, 'unclassified': 50, 'road': 40,
+               'residential': 30, 'living_street': 15}
+DRIVE_CLASSES = list(DRIVE_SPEED)
+
+def keep_drive(tags):
+    h = tags.get('highway')
+    if h not in DRIVE_SPEED: return False
+    if tags.get('access') in NO or tags.get('motor_vehicle') in NO or tags.get('motorcar') in NO: return False
+    if tags.get('area') == 'yes': return False
+    return True
+
+def oneway_drive(tags):
+    o = tags.get('oneway')
+    if o in ('yes', 'true', '1') or tags.get('junction') in ('roundabout', 'circular') or tags.get('highway') in ('motorway', 'motorway_link'):
+        return -1 if o == '-1' else 1
+    if o == '-1': return -1
+    return 0
+
 def structure(tags):
     if tags.get('tunnel') in ('yes', 'building_passage', 'avalanche_protector', 'culvert') : return 2
     if tags.get('bridge') not in (None, 'no'): return 1
     return 0
 
-def read_ways(path):
+def read_ways(path, keep=keep, oneway=oneway, cls_of=CLS):
     """Way node ids and coordinates for kept ways, as flat arrays plus per-way offsets and attributes."""
     ids, lat, lon, off, cls, ow, st = array('q'), array('d'), array('d'), array('q', [0]), array('b'), array('b'), array('b')
     fp = osmium.FileProcessor(path).with_locations().with_filter(osmium.filter.KeyFilter('highway'))
@@ -63,7 +85,7 @@ def read_ways(path):
         d = oneway(o.tags)
         if d == -1: refs.reverse(); d = 1
         for r, la, lo in refs: ids.append(r); lat.append(la); lon.append(lo)
-        off.append(len(ids)); cls.append(CLS[o.tags['highway']]); ow.append(d); st.append(structure(o.tags))
+        off.append(len(ids)); cls.append(cls_of[o.tags['highway']]); ow.append(d); st.append(structure(o.tags))
     return (np.frombuffer(ids, np.int64), np.frombuffer(lat, np.float64), np.frombuffer(lon, np.float64),
             np.frombuffer(off, np.int64), np.frombuffer(cls, np.int8), np.frombuffer(ow, np.int8), np.frombuffer(st, np.int8))
 
@@ -72,10 +94,15 @@ def haversine(la1, lo1, la2, lo2):
     a = np.sin((p2 - p1) / 2) ** 2 + np.cos(p1) * np.cos(p2) * np.sin(np.radians(lo2 - lo1) / 2) ** 2
     return 2 * 6371008.8 * np.arcsin(np.sqrt(a))
 
-def main():
+def main(drive=False):
+    if drive:
+        classes, rules = DRIVE_CLASSES, dict(keep=keep_drive, oneway=oneway_drive, cls_of={c: i for i, c in enumerate(DRIVE_CLASSES)})
+        name = 'drive.npz'
+    else:
+        classes, rules, name = CLASSES, {}, 'network.npz'
     parts = []
     for f in sorted(glob.glob(os.path.join(OSM, '*-latest.osm.pbf'))):
-        t = time.time(); parts.append(read_ways(f))
+        t = time.time(); parts.append(read_ways(f, **rules))
         print(f'{os.path.basename(f)}: {len(parts[-1][3]) - 1:,} ways kept ({time.time() - t:.0f} s)', flush=True)
     ids = np.concatenate([p[0] for p in parts]); lat = np.concatenate([p[1] for p in parts]); lon = np.concatenate([p[2] for p in parts])
     offs, base = [], 0
@@ -108,12 +135,13 @@ def main():
         cuts = np.flatnonzero(junction[a:b]) + a
         for s, e in zip(cuts[:-1], cuts[1:]):
             n = e - s + 1; geom_idx[k:k + n] = np.arange(s, e + 1); k += n
-    out = os.path.join(WORK, 'network.npz')
+    out = os.path.join(WORK, name)
     np.savez_compressed(out, node_lat=node_lat, node_lon=node_lon, edge_u=np.frombuffer(eu, np.int64), edge_v=np.frombuffer(ev, np.int64),
                         edge_len=np.frombuffer(el, np.float64), edge_cls=np.frombuffer(ec, np.int8), edge_oneway=np.frombuffer(eo, np.int8), edge_struct=np.frombuffer(es, np.int8),
                         geom_off=np.frombuffer(goff, np.int64), geom_lat=lat[geom_idx].astype(np.float32), geom_lon=lon[geom_idx].astype(np.float32),
-                        classes=np.array(CLASSES))
+                        classes=np.array(classes))
     print(f'network: {len(jnodes):,} junctions, {len(eu):,} edges, {sum(el) / 1000:,.0f} km of road -> {out} ({os.path.getsize(out) / 1e6:.0f} MB)')
 
 if __name__ == '__main__':
-    main()
+    import sys
+    main(drive='--drive' in sys.argv)

@@ -4,13 +4,14 @@ Copernicus DEM GLO-30 terrain tiles. Re-running skips complete files; partial do
 .part and renamed only when complete.
 
 Uses urllib (which trusts the operating system's certificates) rather than requests (its own bundle).
-Usage (score venv): python pipeline/score/fetch_inputs.py [--osm] [--dem]   (default: both)
+Usage (score venv): python pipeline/score/fetch_inputs.py [--osm] [--dem] [--landcover]   (default: all)
 Licences: OSM data ODbL (© OpenStreetMap contributors); Copernicus DEM: © DLR e.V. 2010-2014 and
-© Airbus Defence and Space GmbH 2014-2018, provided under COPERNICUS by the European Union and ESA.
+© Airbus Defence and Space GmbH 2014-2018, provided under COPERNICUS by the European Union and ESA;
+ESA WorldCover: © ESA WorldCover project 2021 / Contains modified Copernicus Sentinel data (2021), CC BY 4.0.
 """
 import os, shutil, sys, time, urllib.error, urllib.request
 from concurrent.futures import ThreadPoolExecutor
-from common import OSM, DEM, OSM_EXTRACTS, DEM_URL, DEM_AREAS, dem_name
+from common import OSM, DEM, LANDCOVER, OSM_EXTRACTS, DEM_URL, DEM_AREAS, LANDCOVER_URL, LANDCOVER_TILES, dem_name
 
 def remote_size(url):
     try:
@@ -36,7 +37,7 @@ def download(url, path):
             print(f'  retry {attempt + 1} for {url}: {e}', flush=True); time.sleep(10)
     raise RuntimeError(f'failed: {url}')
 
-def main(do_osm, do_dem):
+def main(do_osm, do_dem, do_lc):
     if do_osm:
         for name, url in OSM_EXTRACTS.items():
             t = time.time(); st = download(url, os.path.join(OSM, f'{name}-latest.osm.pbf'))
@@ -48,7 +49,11 @@ def main(do_osm, do_dem):
         print(f'DEM: {len(tiles)} tiles checked: {res.count("got")} downloaded, {res.count("had")} already had, {res.count("missing")} all-sea (none)')
         total = sum(os.path.getsize(os.path.join(DEM, f)) for f in os.listdir(DEM) if f.endswith('.tif'))
         print(f'DEM cache: {total / 1e9:.2f} GB', flush=True)
+    if do_lc:
+        with ThreadPoolExecutor(4) as ex:
+            res = list(ex.map(lambda t: download(LANDCOVER_URL.format(t=t), os.path.join(LANDCOVER, t + '.tif')), LANDCOVER_TILES))
+        print(f'land cover: {len(LANDCOVER_TILES)} tiles checked: {res.count("got")} downloaded, {res.count("had")} already had, {res.count("missing")} all-sea (none)', flush=True)
 
 if __name__ == '__main__':
     a = sys.argv[1:]
-    main('--osm' in a or not a, '--dem' in a or not a)
+    main('--osm' in a or not a, '--dem' in a or not a, '--landcover' in a or not a)
