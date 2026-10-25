@@ -65,6 +65,8 @@ Decided (owner, 24 Oct 2026):
 - **Property prices:** a big factor, shown as a separate axis next to the score with a price filter, not blended in (section 3).
 - **Walking:** secondary but important, 10% (section 3). The other weights were rebalanced: climbing 35%, weather 20%, airport 13%, quiet roads 12%, flat/rolling 5%, gravel 5%.
 - **Continuous ascent:** a dip of under 20 m of descent does not break a climb.
+- **Climbs reached over another climb (25 Oct 2026): they count.** An *onward* climb is one whose foot is within 26 km by road of the top of a near climb, e.g. Sa Calobra from Pollença, over the Lluc climb. Onward climbs count in the climbing score, rated by their longer distance (base to the first foot, plus the first climb, plus the ride on), but **not towards the gate**. Counted in the gate they let flat places pass on hills beyond the hills: Valencia passed with 1 near and 3 onward climbs.
+- **Where a climb starts (25 Oct 2026):** where the road first gains at least 15 m in 500 m (3%). Gentle lower slopes don't count as part of the climb, e.g. the approach from Pollença towards the Coll de Femenia. The same rule means Els Àngels from the Girona side (about 1–2% in its lower half) falls under 300 m and doesn't count, while Els Àngels from the east does.
 
 Open:
 - Property prices: which price source per country (and at what level: municipality, province or region).

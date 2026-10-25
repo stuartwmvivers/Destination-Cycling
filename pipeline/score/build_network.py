@@ -12,6 +12,7 @@ in the cache (WORK/network.npz):
   edge_len                length in metres
   edge_cls                road class code (index into CLASSES)
   edge_oneway             1 if only u -> v is allowed for bikes
+  edge_struct             1 bridge, 2 tunnel, 0 neither (terrain heights don't apply on these)
   geom_off, geom_lat, geom_lon   the full polyline of each edge (geom_off[i]:geom_off[i+1]), for terrain sampling
 Usage (score venv): python pipeline/score/build_network.py
 """
@@ -46,9 +47,14 @@ def oneway(tags):
     if o == '-1': return -1
     return 0
 
+def structure(tags):
+    if tags.get('tunnel') in ('yes', 'building_passage', 'avalanche_protector', 'culvert') : return 2
+    if tags.get('bridge') not in (None, 'no'): return 1
+    return 0
+
 def read_ways(path):
     """Way node ids and coordinates for kept ways, as flat arrays plus per-way offsets and attributes."""
-    ids, lat, lon, off, cls, ow = array('q'), array('d'), array('d'), array('q', [0]), array('b'), array('b')
+    ids, lat, lon, off, cls, ow, st = array('q'), array('d'), array('d'), array('q', [0]), array('b'), array('b'), array('b')
     fp = osmium.FileProcessor(path).with_locations().with_filter(osmium.filter.KeyFilter('highway'))
     for o in fp:
         if not o.is_way() or not keep(o.tags): continue
@@ -57,9 +63,9 @@ def read_ways(path):
         d = oneway(o.tags)
         if d == -1: refs.reverse(); d = 1
         for r, la, lo in refs: ids.append(r); lat.append(la); lon.append(lo)
-        off.append(len(ids)); cls.append(CLS[o.tags['highway']]); ow.append(d)
+        off.append(len(ids)); cls.append(CLS[o.tags['highway']]); ow.append(d); st.append(structure(o.tags))
     return (np.frombuffer(ids, np.int64), np.frombuffer(lat, np.float64), np.frombuffer(lon, np.float64),
-            np.frombuffer(off, np.int64), np.frombuffer(cls, np.int8), np.frombuffer(ow, np.int8))
+            np.frombuffer(off, np.int64), np.frombuffer(cls, np.int8), np.frombuffer(ow, np.int8), np.frombuffer(st, np.int8))
 
 def haversine(la1, lo1, la2, lo2):
     p1, p2 = np.radians(la1), np.radians(la2)
@@ -75,7 +81,7 @@ def main():
     offs, base = [], 0
     for p in parts: offs.append(p[3][:-1] + base); base += len(p[0])
     off = np.append(np.concatenate(offs), base)
-    cls = np.concatenate([p[4] for p in parts]); ow = np.concatenate([p[5] for p in parts])
+    cls = np.concatenate([p[4] for p in parts]); ow = np.concatenate([p[5] for p in parts]); st = np.concatenate([p[6] for p in parts])
 
     # junctions: nodes used more than once across kept ways, plus every way's first and last node
     uniq, inv, counts = np.unique(ids, return_inverse=True, return_counts=True)
@@ -87,13 +93,13 @@ def main():
     node_lat[jid[inv[junction]]] = lat[junction]; node_lon[jid[inv[junction]]] = lon[junction]
 
     seg = haversine(lat[:-1], lon[:-1], lat[1:], lon[1:])   # metres between consecutive points (across ways too; masked below)
-    eu, ev, el, ec, eo, goff = array('q'), array('q'), array('d'), array('b'), array('b'), array('q', [0])
+    eu, ev, el, ec, eo, es, goff = array('q'), array('q'), array('d'), array('b'), array('b'), array('b'), array('q', [0])
     gsel = np.zeros(len(ids), bool); glen = 0
     for w in range(len(off) - 1):
         a, b = off[w], off[w + 1]
         cuts = np.flatnonzero(junction[a:b]) + a
         for s, e in zip(cuts[:-1], cuts[1:]):
-            eu.append(jid[inv[s]]); ev.append(jid[inv[e]]); el.append(float(seg[s:e].sum())); ec.append(cls[w]); eo.append(ow[w])
+            eu.append(jid[inv[s]]); ev.append(jid[inv[e]]); el.append(float(seg[s:e].sum())); ec.append(cls[w]); eo.append(ow[w]); es.append(st[w])
             glen += e - s + 1; goff.append(glen)
     # geometry: every edge's points s..e inclusive (shared junction points repeated per edge)
     geom_idx = np.empty(glen, np.int64); k = 0
@@ -104,7 +110,7 @@ def main():
             n = e - s + 1; geom_idx[k:k + n] = np.arange(s, e + 1); k += n
     out = os.path.join(WORK, 'network.npz')
     np.savez_compressed(out, node_lat=node_lat, node_lon=node_lon, edge_u=np.frombuffer(eu, np.int64), edge_v=np.frombuffer(ev, np.int64),
-                        edge_len=np.frombuffer(el, np.float64), edge_cls=np.frombuffer(ec, np.int8), edge_oneway=np.frombuffer(eo, np.int8),
+                        edge_len=np.frombuffer(el, np.float64), edge_cls=np.frombuffer(ec, np.int8), edge_oneway=np.frombuffer(eo, np.int8), edge_struct=np.frombuffer(es, np.int8),
                         geom_off=np.frombuffer(goff, np.int64), geom_lat=lat[geom_idx].astype(np.float32), geom_lon=lon[geom_idx].astype(np.float32),
                         classes=np.array(CLASSES))
     print(f'network: {len(jnodes):,} junctions, {len(eu):,} edges, {sum(el) / 1000:,.0f} km of road -> {out} ({os.path.getsize(out) / 1e6:.0f} MB)')

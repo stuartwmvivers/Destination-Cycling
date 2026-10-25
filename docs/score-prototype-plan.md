@@ -1,6 +1,6 @@
 # Cycling-base score: Spain prototype plan
 
-Status: **approved 24 October 2026**, with all four decisions in section 7 accepted (cache outside OneDrive, the Python packages, ODbL for the score data, Canaries and Balearics included). Phase 1 done 24 Oct 2026 (see the end of this file). It implements `docs/cycling-score-spec.md` (decisions of 24 Oct 2026) for Spain, including the Balearics and Canaries.
+Status: **approved 24 October 2026**, with all four decisions in section 7 accepted (cache outside OneDrive, the Python packages, ODbL for the score data, Canaries and Balearics included). Phases 1 and 2 done (24–25 Oct 2026; see the end of this file). Phase 3 next. It implements `docs/cycling-score-spec.md` (decisions of 24 Oct 2026) for Spain, including the Balearics and Canaries.
 
 ## 1. What the prototype produces
 
@@ -120,3 +120,37 @@ etwork.npz` (194 MB).
   - Girona–Banyoles 18.6 km;
   - Calpe–Altea 11.7 km.
 - **Not yet used:** the terrain tiles (phase 2 samples them along every edge's stored road shape).
+
+## Phase 2: climbs and gate (done 25 October 2026)
+
+- **Scripts:**
+  - `sample_terrain.py`: heights every ≤ 30 m along every road edge. It uses a 5×5 median filter on the terrain tiles, draws straight lines across bridges and tunnels (about 56,000 and 10,000 edges), and applies a light median-of-3 along roads.
+  - `find_climbs.py`, plus the diagnostics `trace_route.py`, `list_climbs.py`, `validate_climbs.py` and `gate.py`.
+- **Climb rules:**
+  - ≥ 300 m gain;
+  - no dip of 20 m below the running high;
+  - progress of ≥ 5 m of new height every 1 km;
+  - start trimmed to where the road first gains 15 m in 500 m (**3%, confirmed by the owner 25 Oct 2026**);
+  - average ≥ 3%;
+  - one-way streets respected;
+  - up to 3 approaches kept per junction, with feet ≥ 1.5 km apart;
+  - upper parts of bigger climbs, and climbs sharing over half their road with a bigger climb ending nearby, dropped.
+- **Three fixes found by testing on Mallorca:**
+  - climbs now top out partway along an edge (Sa Calobra's top 6.4 km is a single junction-free edge);
+  - bridges and tunnels are levelled;
+  - the progress rule was relaxed from 10 m per 600 m (it cut Puig Major at the Mirador de Ses Barques) and foot trimming added.
+- **Result:** 3,113 climbs across Spain (80 s).
+- **Known climbs:**
+  - Puig Major from Sóller 875 m / 14.5 km; Coll de Femenia 426 m / 8 km; Coll de Sóller 486 m.
+  - Sa Calobra 625 m: about 45 m short, because of a 24 m terrain dip at the "knot", which isn't tagged as a bridge in OSM.
+  - Coll de Rates and Rocacorba start lower down than their standard start points.
+  - Torrox Costa–Cómpeta splits into several climbs at dips of more than 20 m.
+- **Gate:** 25 of 26 named places as expected; all known bases pass and the flat places fail.
+  - The exception is the Ebro Delta (Deltebre), which passes with 3 climbs at 23–25 km (the hills behind Tortosa). The nearness scoring in phase 5 will mark it down.
+  - Port de Pollença just passes with 3. Sa Calobra and Puig Major start well beyond 26 km by road from there.
+- **Owner check-in (25 Oct 2026):**
+  - the 3% start rule is kept;
+  - the climbs listed near familiar places "sound fine";
+  - climbs reached by riding over another climb **count**. They are implemented as *onward* climbs (foot within 26 km of a near climb's top), counted in the score but not the gate. With onward climbs in the gate, Valencia passed; without, the gate is back to 25 of 26 as expected.
+  - Port de Pollença: 3 near and 3 onward climbs, including Sa Calobra at 57 km via the Lluc climb. From Pollença, Sa Calobra is 51 km.
+- **One unexplained failure:** the first all-Spain run died silently after the search; a rerun completed normally.
