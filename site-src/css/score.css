@@ -46,6 +46,8 @@
 #sc-key .cb-note { flex: 1 1 14rem; }
 
 /* private copy only: price filter and score-against-price chart */
+.sc-private { border-left: 3px solid var(--dash-c0); padding-left: var(--cds-pad-sm); }
+.sc-private .cb-lab b { color: var(--color-fg); }
 .sc-price { display: flex; flex-wrap: wrap; align-items: center; gap: var(--cds-gap-sm); font-size: var(--cds-font-size-body); }
 .sc-price input { width: 6.5rem; font: inherit; padding: var(--cds-pad-xs) var(--cds-pad-sm); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); background: var(--color-bg); color: var(--color-fg); }
 .sc-price-line { margin: 0; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }

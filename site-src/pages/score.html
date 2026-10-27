@@ -7,6 +7,16 @@
   </header>
 
   <section class="cb-controls sc-controls" aria-label="How to score">
+    <div class="cb-ctl cb-span sc-private" id="sc-price-ctl" hidden>
+      <span class="cb-lab"><b>Price filter (private copy):</b> property price, € per m² of notarised sales</span>
+      <div class="sc-price">
+        <label>From <input type="number" id="sc-pmin" min="0" step="100" inputmode="numeric" aria-label="Lowest price per m²"></label>
+        <label>to <input type="number" id="sc-pmax" min="0" step="100" inputmode="numeric" aria-label="Highest price per m²"></label>
+        <button type="button" class="cb-btn" id="sc-pclear">Clear</button>
+      </div>
+      <label class="sc-check"><input type="checkbox" id="sc-ponly"> Only bases with a price</label>
+      <p class="cb-def" id="sc-pdef"></p>
+    </div>
     <div class="cb-ctl cb-span">
       <span class="cb-lab" id="sc-preset-lab">Presets</span>
       <div class="cb-seg" id="sc-presets" role="group" aria-labelledby="sc-preset-lab"></div>
@@ -37,16 +47,6 @@
         <output id="sc-built-out" for="sc-built-s"></output>
       </div>
       <p class="cb-def">Built-up share of the land within 5 km of the base: no penalty up to 10% (villages, small towns), the full penalty from 50% (cities, resort strips).</p>
-    </div>
-    <div class="cb-ctl" id="sc-price-ctl" hidden>
-      <span class="cb-lab">Property price, € per m² (private)</span>
-      <div class="sc-price">
-        <label>From <input type="number" id="sc-pmin" min="0" step="100" inputmode="numeric" aria-label="Lowest price per m²"></label>
-        <label>to <input type="number" id="sc-pmax" min="0" step="100" inputmode="numeric" aria-label="Highest price per m²"></label>
-        <button type="button" class="cb-btn" id="sc-pclear">Clear</button>
-      </div>
-      <label class="sc-check"><input type="checkbox" id="sc-ponly"> Only bases with a price</label>
-      <p class="cb-def" id="sc-pdef"></p>
     </div>
   </section>
 
