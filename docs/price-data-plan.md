@@ -63,6 +63,7 @@ A similar, shorter request to the Catastro would ask whether the urban value-zon
   - never in the public repo or on GitHub Pages;
   - family access later through a login-protected copy (planned: Cloudflare Pages with Cloudflare Access, the owner's account).
   - The permission drafts above are only for a later decision to publish.
+- **Measure (owner, 27 October 2026):** **€/m²** leads, as a broad indication only. There is no typical total price and no flats/houses split, since real prices depend on the property.
 - **Source:** the notaries' portal map, the **average price per m² of notarised sales over the last 12 months, per municipality**.
   - It needs no account and covers small villages wherever there were enough sales; otherwise it says "Without info".
   - A free account (the owner's) adds the number of sales, flats vs houses and trends, but only **50 detailed queries a month** (`basic.number.monthly.queries`).

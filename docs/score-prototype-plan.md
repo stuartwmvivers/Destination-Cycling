@@ -371,3 +371,21 @@ Decided with the owner: prices from the notaries' portal, for **private family u
 - open http://127.0.0.1:8000/score/spain/
 
 Rebuild without `--private` before anything else uses `_site`. Next: the login-protected family copy (Cloudflare Pages + Access), once the weather is complete and the ranking is checked.
+
+### Owner check-in on the ranking (27 October 2026)
+
+- The owner looked over the live score page and found that **it looks good**.
+- So the weights, the gate (3 near climbs), the built-up penalty (on at 20%) and the year-round flights rule all stay as they are.
+- Once the full weather is in, the ranking gets only a brief recheck; ranks will shift a little.
+
+### What kind of property (owner, 27 October 2026)
+
+- The owner would consider:
+  - a house or flat in a small town or village;
+  - something just outside a small town or village;
+  - a house on its own in the country, outside a larger town, as long as facilities aren't too far away.
+- The owner leans towards **rural**. It depends on the property and its surroundings.
+- **How this fits the score:**
+  - The built-up penalty already favours villages and the countryside over towns and resort strips, so nothing changes now.
+  - The score doesn't yet measure "not too far from facilities". A possible later factor is the drive to the nearest town with everyday shops and a health centre, from OSM.
+  - The €/m² figure is a municipal average that mixes town flats and country houses, so for a rural house it's only a broad guide.
