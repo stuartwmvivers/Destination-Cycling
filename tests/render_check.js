@@ -55,6 +55,26 @@ const pagesIn = (dir) => fs.readdirSync(dir, { recursive: true }).filter((f) => 
           if ((await p.inputValue('#cb-place')) === before) errs.push(`${name} ${w}: clicking a map marker did not select a place`);
         }
       }
+      if (await p.$('#sc-map')) {   // score explorer: data loaded, a list row selects a base, presets and the gate change the ranking
+        if (await p.$('#sc-status.cb-fail')) errs.push(`${name} ${w}: score data failed to load`);
+        const rows = await p.locator('#sc-top tbody tr').count();
+        if (!rows) errs.push(`${name} ${w}: top-bases table is empty`);
+        else {
+          const want = await p.locator('#sc-top tbody tr').nth(3).locator('td').first().textContent();
+          await p.locator('#sc-top tbody tr').nth(3).click(); await p.waitForTimeout(200);
+          if ((await p.textContent('#sc-detail h2')) !== want) errs.push(`${name} ${w}: clicking a top-bases row did not show its breakdown`);
+          const first = await p.textContent('#sc-top tbody tr td');
+          await p.click('#sc-presets button[data-p="weather"]'); await p.waitForTimeout(200);
+          await p.click('#sc-flights button[data-f="seasonal"]'); await p.waitForTimeout(200);
+          if ((await p.textContent('#sc-top tbody tr td')) === first && (await p.textContent('#sc-detail .cb-note')) === '') errs.push(`${name} ${w}: presets changed nothing`);
+          await p.uncheck('#sc-gate'); await p.waitForTimeout(200);
+          if (!/off/.test(await p.textContent('#sc-gate-out'))) errs.push(`${name} ${w}: gate switch did not turn off`);
+          await p.uncheck('#sc-built'); await p.waitForTimeout(200);
+          if ((await p.textContent('#sc-built-out')) !== 'off') errs.push(`${name} ${w}: built-up penalty switch did not turn off`);
+          await p.check('#sc-built');
+          await p.click('#sc-presets button[data-p="agreed"]'); await p.check('#sc-gate'); await p.click('#sc-flights button[data-f="year_round"]'); await p.waitForTimeout(200);
+        }
+      }
       await p.screenshot({ path: `render-${name.replace(/\//g, '_')}-${w}.png`, fullPage: true });
       await ctx.close();
     }

@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-"""Weather component for each gate-passing base (spec section 3): rideable days measured at the height of its
+"""Weather component for each base with at least MIN_NEAR near climb (spec section 3): rideable days measured at the height of its
 climbs, weighted to the months a holiday home would be used.
 
+- Bases: MIN_NEAR = 1, not the gate's 3, so the score page can relax the gate (spec 7a). Weather points were chosen
+  for gate-passing areas only (weather_points.py), so bases with 1-2 near climbs often borrow a neighbour's point.
 - Weather: the base's own weather point (weather_points.py), or the nearest point fetched so far.
 - Climb height: the median of the mid-heights ((foot + top) / 2) of the base's near climbs.
 - Temperature: the day's high adjusted from the model's grid-cell height to the climb height at LAPSE degrees per km
@@ -17,6 +19,7 @@ from common import WORK
 
 LAPSE = 6.5            # C per 1000 m
 SUMMER_W = 0.25        # weight of June-September against October-May
+MIN_NEAR = 1
 MONTH_W = np.array([1, 1, 1, 1, 1, SUMMER_W, SUMMER_W, SUMMER_W, SUMMER_W, 1, 1, 1], float)
 
 def day_months():
@@ -26,7 +29,7 @@ def day_months():
 
 def main(check):
     climbs = json.load(open(os.path.join(WORK, 'climbs.json')))['climbs']
-    bases = [b for b in json.load(open(os.path.join(WORK, 'bases.json')))['bases'] if len(b['near']) >= 3]
+    bases = [b for b in json.load(open(os.path.join(WORK, 'bases.json')))['bases'] if len(b['near']) >= MIN_NEAR]
     pts = {p['id']: p for p in json.load(open(os.path.join(WORK, 'weather_points.json')))['points']}
     got = {}
     for f in glob.glob(os.path.join(WORK, 'weather', '*.json')):
@@ -56,7 +59,7 @@ def main(check):
                     'climb_height': round(h), 'model_elev': round(zm), 'ride_month': [round(x, 1) for x in per_month],
                     'ride_year': round(float(per_month.sum()), 1), 'index': round(index, 3)})
     json.dump({'lapse': LAPSE, 'summer_w': SUMMER_W, 'points_fetched': len(got), 'bases': out}, open(os.path.join(WORK, 'weather_bases.json'), 'w'))
-    print(f'{len(out):,} gate-passing bases scored; {own:,} with their own weather point, the rest borrowing the nearest of {len(got)} fetched')
+    print(f'{len(out):,} bases with >= {MIN_NEAR} near climb scored; {own:,} with their own weather point, the rest borrowing the nearest of {len(got)} fetched')
     if check: report(out)
 
 def report(out):

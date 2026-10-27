@@ -1,6 +1,6 @@
 # Cycling-base score: Spain prototype plan
 
-Status: **approved 24 October 2026**, with all four decisions in section 7 accepted (cache outside OneDrive, the Python packages, ODbL for the score data, Canaries and Balearics included). Phases 1–3 done (24–25 Oct 2026). **Phase 4 in progress: the weather download runs unattended for about 4 days from 25 Oct 2026** (see "Phase 4" at the end of this file). Phase 5 (the score page) can start meanwhile. It implements `docs/cycling-score-spec.md` (decisions of 24 Oct 2026) for Spain, including the Balearics and Canaries.
+Status: **approved 24 October 2026**, with all four decisions in section 7 accepted (cache outside OneDrive, the Python packages, ODbL for the score data, Canaries and Balearics included). Phases 1–3 done (24–25 Oct 2026). **Phase 4 in progress: the weather download runs unattended for about 4 days from 25 Oct 2026** (see "Phase 4" at the end of this file). Phase 5 (the score page, `/score/spain/`) built 25 Oct 2026 with partial weather; owner check-in pending. It implements `docs/cycling-score-spec.md` (decisions of 24 Oct 2026) for Spain, including the Balearics and Canaries.
 
 ## 1. What the prototype produces
 
@@ -205,3 +205,134 @@ etwork.npz` (194 MB).
   - Output: `WORK/weather_bases.json`.
 - **When the download completes:** run `weather_score.py --check`, review the places it prints, record the results here, then disable the Windows task and the daily Claude check (the owner's call).
 - **Meanwhile, phase 5 can proceed without the weather.** Build the score page as an explorer (spec section 7a) on bases, climbs, reach measures and drive times, with the weather component filling in from `weather_bases.json` as it becomes available.
+
+## Phase 5: the score page as an explorer (built 25 October 2026; owner check-in pending)
+
+- **New scripts:**
+  - `extract_names.py`: OSM towns and villages (8,970) and named passes, saddles and peaks (57,000) → `WORK/names.json`, for labels (8 s).
+  - `score_export.py`: precomputes every component (0–1) per base and writes **`data/processed/score/spain.json`** (committed, ODbL, 3.9 MB, about 1 MB gzipped). It prints the validation table.
+- **`weather_score.py` now scores every base with at least 1 near climb** (10,762), not only the gate-passing 7,415, so the page can relax the gate. Weather for gate-passing bases is unchanged.
+- **Page `/score/spain/`** (`site-src/pages/score.html`, `js/score.js`, `css/score.css`), linked from the landing page as "Prototype". It has:
+  - a weight slider, on/off box and "only" button per component;
+  - presets: agreed defaults, weather first (20/35/15/12/10/4/4), climbing only;
+  - flights mode: year-round only, seasonal at half credit, ignored;
+  - the gate as a switch, with 1–8 near climbs;
+  - a canvas map of all 10,762 bases;
+  - top 25 (optionally one per 15 km);
+  - the known-places table;
+  - a per-base breakdown with each component's points, rideable days by month, and near and onward climbs (named from the nearest OSM pass or peak, linked to OSM).
+  - Settings are remembered in the browser only. Credits added: OSM (ODbL), Copernicus DEM, ESA WorldCover, Open-Meteo, the airport list's date.
+- **Component formulas (judgement calls, for the owner to review):**
+  - **Climbing is absolute, not percentile-scaled.** Each climb is worth min(gain, 1,500) / 300, times nearness (1 to 10 km, 0.4 at 26, 0.1 from 60). The score is 0.8 × (1 − e^(−sum/5)) + 0.2 × the best near climb (300 m → 0, 1,000 m → 1).
+    - The first try scaled linearly to the 95th percentile (28 near climbs), and Pollença scored 0.10.
+  - Weather, quiet roads (0.6 km + 0.4 junctions), walking (0.75 paths + 0.25 peaks), flat and gravel are each scaled between their 5th and 95th percentile over gate-passing bases.
+  - Airport uses the spec's curve on drive minutes, in the page.
+  - Onward climbs are capped at the 12 most valuable per base.
+- **Validation, default weights, weather from 141 of 566 points (rank among 7,415 gate-passing bases):**
+
+  | Place | Year-round flights | Seasonal at half |
+  |---|---|---|
+  | Granada | 1 | 1 |
+  | Gran Canaria (San Bartolomé) | 210 | 210 |
+  | Alicante | 239 | 239 |
+  | Girona | 505 | 505 |
+  | Tenerife (Puerto de la Cruz) | 550 | 550 |
+  | Altea / Calpe / Cómpeta | 606 / 655 / 625 | about the same |
+  | Nerja / Torrox / Ronda / Olot | 1,034 / 1,280 / 1,328 / 1,108 | about the same |
+  | Sóller | 1,497 | 942 |
+  | Palma | 2,158 | 1,465 |
+  | Pollença / Port de Pollença | 4,371 / 6,078 | 3,355 / 5,195 |
+  | Jaca | 5,595 | 5,598 |
+  | Deltebre (Ebro Delta, should fail) | passes the gate, about 4,500 | |
+
+- **What looks wrong, for the check-in:**
+  - **Mallorca's north is low.** The causes, in order:
+    1. the year-round airport rule (Palma at the 0.15 floor costs about 11 points);
+    2. half the 15–20 km discs is sea, so quiet roads, walking and gravel come out low on every coast;
+    3. Pollença has only 4 near climbs.
+  - **Barcelona's suburbs rank high** (Pallejà 7th, Santa Coloma de Gramenet, Llinars). The reasons are a 14-minute airport, dense minor roads (OSM has no traffic) and Collserola and Montserrat climbs.
+  - Granada leads on sheer number of climbs plus walking.
+  - Possible fixes to discuss:
+    - scale the reach measures per km² of land rather than per disc;
+    - penalise built-up land more for quiet roads;
+    - decide whether the seasonal mode should be the default.
+  - **Nothing has been tuned to the list yet.** The owner decides.
+- **When the weather completes:** rerun `weather_score.py`, then `score_export.py`, then rebuild. The weather normalisation and the ranks will shift.
+
+### Phase 5 revision (owner, 25 October 2026): reach measures per km² of land, built-up roads penalised more
+
+- **Owner's view:** agreed that Mallorca's north scoring low and Barcelona's suburbs ranking high both look wrong.
+- **`reach_measures.py` changes:**
+  - Minor roads and junctions in built-up land now count **0.1** (was 0.3), for quiet roads only. Flat roads keep 0.3.
+  - Land area within 15 and 20 km is recorded (`land15`, `land20`). Usable land is WorldCover land (not water, sea or no-data) within 3 km of a Spanish network junction. The second condition is needed because Portugal, France and Andorra aren't in the OSM extract, so would count as empty land.
+  - Checks: Port de Pollença 34% land, Pollença 47%, Calpe 53%, Madrid 98%, Badajoz 69% (Portugal left out).
+- **`score_export.py` change:** quiet roads, junctions, flat, gravel, walking and peaks are now per km² of land: raw ÷ max(land, 25% of the circle) × circle. The page shows the land % in the breakdown.
+- **Validation after the change (rank of 7,415, default weights):**
+
+  | Place | Year-round flights | Seasonal at half |
+  |---|---|---|
+  | Granada | 7 | 7 |
+  | Alicante | 125 | 125 |
+  | Tenerife (Puerto de la Cruz) | 128 | 128 |
+  | Calpe | 196 | 196 |
+  | Altea | 241 | 241 |
+  | Torrox / Nerja | 347 / 345 | about the same |
+  | Dénia | 395 | 395 |
+  | Gran Canaria (San Bartolomé) | 425 | 425 |
+  | Cómpeta | 480 | 480 |
+  | Sóller | 759 | 418 |
+  | Girona | 807 | 815 |
+  | Olot | 1,217 | 1,240 |
+  | Ronda | 1,393 | 1,418 |
+  | Palma | 1,781 | 1,109 |
+  | Pollença / Port de Pollença | 3,166 / 3,979 | 2,208 / 2,929 |
+  | Jaca | 5,710 | 5,710 |
+  | Deltebre (should fail) | about 3,700 | |
+
+- **Barcelona's suburbs dropped** (Pallejà 7 → 111, Llinars 62 → 135). But some built-up places still lead: Torrequebrada (Benalmádena) is 1st, Esplugues de Llobregat 15th, Santa Coloma de Gramenet 41st.
+  - They are carried by climbing, weather and an airport 10–20 minutes away. None of those is a reach measure.
+  - The score has no measure of **how built-up the base itself is** (riding out through a city every day).
+  - Candidate fix, not yet built: a penalty or filter on the built-up share within about 5 km of the base.
+- **Pollença still ranks about 3,000.** Its climbing is 0.43 (4 near climbs, the nearest about 10 km away) against 0.8–1.0 for the Costa Blanca, the Axarquía and the Canaries.
+
+### Phase 5 revision 2 (owner, 25 October 2026): built-up base penalty
+
+- **The measure:** the share of usable land within 5 km of the base that ESA WorldCover maps as built-up (`reach_measures.py`: `built5`, `land5`).
+  - Across gate-passing bases: median 0.8%, 90th percentile 8%, 99th 34%.
+  - Examples: Pollença 0–5%, Sóller 2%, Nerja 9–12%, Calpe 28–41%, Alicante 34%, Granada 37%, Torrequebrada 38%, Esplugues de Llobregat 59%.
+- **The penalty** (`score_export.py`, `c_built`): 0 up to 10% built-up, rising linearly to 1 at 50%.
+  - The page multiplies the total by (1 − strength × penalty).
+  - Strength defaults to **20%**; it is adjustable 0–50% and can be switched off. The presets don't change it.
+  - **Default on: my choice, for the owner to confirm.**
+- **Validation (rank of 7,415, default weights, penalty at 20%):**
+
+  | Place | Year-round flights | Seasonal at half | No penalty |
+  |---|---|---|---|
+  | Nerja | 265 | 265 | 345 |
+  | Tenerife (Puerto de la Cruz) | 272 | 272 | 128 |
+  | Altea | 292 | 292 | 241 |
+  | Gran Canaria (San Bartolomé) | 304 | 305 | 425 |
+  | Cómpeta | 356 | 359 | 480 |
+  | Marbella | 403 | 407 | 474 |
+  | Granada | 409 | 413 | 7 |
+  | Torrox | 501 | 505 | 347 |
+  | Calpe | 504 | 509 | 196 |
+  | Dénia | 561 | 567 | 395 |
+  | Alicante | 599 | 605 | 125 |
+  | Sóller | 665 | 299 | 759 |
+  | Olot / Girona | 1,134 / 1,137 | 1,151 / 1,154 | 1,217 / 807 |
+  | Ronda | 1,333 | 1,353 | 1,393 |
+  | Pollença / Port de Pollença | 3,133 / 3,950 | 2,167 / 2,897 | 3,166 / 3,979 |
+  | Palma (city) | 4,278 | 3,411 | 1,781 |
+  | Jaca | 5,702 | 5,702 | 5,710 |
+
+- **Top 15 (one per 15 km), with the penalty:**
+  - Cenes de la Vega (by Granada, at the foot of the Sierra Nevada), Mijas, Agost, Totana;
+  - Bajamar and San Andrés (Tenerife);
+  - Nerja;
+  - Valsequillo and Santa María de Guía (Gran Canaria);
+  - Vélez de Benaudalla;
+  - Argentona (Maresme);
+  - Jete, El Bebedero, Las Rosas, el Ràfol d'Almúnia.
+  - All are under 10% built-up.
+- **Barcelona's suburbs:** Esplugues and Santa Coloma drop out of the top 1,000. Pallejà is 446th; Llinars del Vallès (10% built-up) stays 91st.

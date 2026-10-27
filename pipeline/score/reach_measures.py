@@ -6,14 +6,20 @@ Each measure sums features within a straight-line radius of a point (a disc, by 
 than road distances for all of Spain, and close enough for these secondary measures.
   quiet_km    minor paved roads: tertiary(+link) and unclassified 1.0, secondary(+link) and 'road' 0.5;
               primary roads and town streets (residential) don't count; roads in built-up land (WorldCover) count
-              0.3, so suburban sprawl doesn't look like quiet countryside. Radius 20 km (~26 km by road).
-  loops       junctions where >= 3 minor roads meet (a proxy for loop-ability); 0.3 in built-up land. Radius 20 km.
+              URBAN_QUIET (0.1; 0.3 until 25 Oct 2026, when Barcelona's suburbs still ranked high), so suburban sprawl
+              doesn't look like quiet countryside. Radius 20 km (~26 km by road).
+  loops       junctions where >= 3 minor roads meet (a proxy for loop-ability); URBAN_QUIET in built-up land. Radius 20 km.
   flat_km     minor roads (as quiet_km) averaging under 2% gradient: recovery-day riding. Radius 20 km.
   gravel_km   gravel tracks (features cat 1) x countryside quality from land cover (forest, scrub, grass,
               wetland 1.0; farmland 0.6 (pleasant but not "nice countryside" in the way woods and hills are); bare 0.6; snow 0.5; built-up 0.2; water 0). Radius 15 km.
   walk_km     paths 1.0 (0.3 in built-up land), mountain paths 2.0, rough tracks 0.5, plus their length again if
               part of a waymarked hiking route. Radius 15 km.
   peaks       named peaks >= 300 m, weighted by height / 1000. Radius 15 km.
+  land15/20   km2 of usable land within 15 / 20 km: land in WorldCover (not water, not sea or no-data) AND within
+              LAND_NEAR_KM of a junction of the Spanish network, so Portugal, France and Andorra (outside the OSM
+              extract, so roadless here) don't count as empty land. score_export.py divides by it (25 Oct 2026).
+  built5/land5  km2 of built-up land (WorldCover class 50) and of usable land within 5 km: how built-up the base's
+              own surroundings are, for the page's built-up penalty (owner, 25 Oct 2026).
 Output: WORK/reach.npz (one grid per area: mainland + Balearics, Canaries).
 Usage (score venv): python pipeline/score/reach_measures.py [--check]
 """
@@ -25,6 +31,8 @@ from common import WORK, LANDCOVER
 
 AREAS = {'mainland': (35.8, 44.0, -9.6, 4.6), 'canaries': (27.5, 29.5, -18.3, -13.3)}
 RADIUS = {'quiet_km': 20, 'loops': 20, 'flat_km': 20, 'gravel_km': 15, 'walk_km': 15, 'peaks': 15}
+URBAN_QUIET = 0.1      # quiet roads and junctions in built-up land
+LAND_NEAR_KM = 3
 ROAD_W = {'tertiary': 1.0, 'tertiary_link': 1.0, 'unclassified': 1.0, 'secondary': 0.5, 'secondary_link': 0.5, 'road': 0.5}
 LC_QUALITY = {10: 1.0, 20: 1.0, 30: 1.0, 40: 0.6, 50: 0.2, 60: 0.6, 70: 0.5, 80: 0.0, 90: 1.0, 95: 1.0, 100: 1.0}
 
@@ -87,9 +95,24 @@ def road_layers(lc):
     deg = np.bincount(np.r_[n['edge_u'][minor], n['edge_v'][minor]], minlength=len(n['node_lat']))
     j = deg >= 3
     urban = np.where(lc(mlat, mlon) == 50, 0.3, 1.0).astype(np.float32)
-    jurban = np.where(lc(n['node_lat'][j], n['node_lon'][j]) == 50, 0.3, 1.0).astype(np.float32)
-    return dict(quiet=(mlat, mlon, L * w[e] * urban), flat=(mlat, mlon, L * (w[e] > 0) * flat[e] * urban),
-                loops=(n['node_lat'][j], n['node_lon'][j], jurban))
+    uquiet = np.where(urban < 1, URBAN_QUIET, 1.0).astype(np.float32)
+    jurban = np.where(lc(n['node_lat'][j], n['node_lon'][j]) == 50, URBAN_QUIET, 1.0).astype(np.float32)
+    return dict(quiet=(mlat, mlon, L * w[e] * uquiet), flat=(mlat, mlon, L * (w[e] > 0) * flat[e] * urban),
+                loops=(n['node_lat'][j], n['node_lon'][j], jurban), nodes=(n['node_lat'], n['node_lon']))
+
+def land_grid(G, lc, nodes):
+    """Fractions (0-1) of each 1 km cell that are usable land and built-up land: WorldCover (3 x 3 samples per cell),
+    near the network."""
+    rows, cols = np.mgrid[0:G.ny, 0:G.nx]
+    frac = np.zeros((G.ny, G.nx), np.float32); built = np.zeros((G.ny, G.nx), np.float32)
+    for dy in (-1 / 3, 0, 1 / 3):
+        for dx in (-1 / 3, 0, 1 / 3):
+            la = (G.n - (rows + 0.5 + dy) * G.dy).ravel(); lo = (G.w + (cols + 0.5 + dx) * G.dx).ravel()
+            c = lc(la, lo).reshape(G.ny, G.nx)
+            frac += ((c != 0) & (c != 80)) / 9; built += (c == 50) / 9
+    has = G.add(nodes[0].astype(np.float64), nodes[1].astype(np.float64), np.ones(len(nodes[0]), np.float32)) > 0
+    near = G.disc_sum(has.astype(np.float32), LAND_NEAR_KM) > 0.5
+    return frac * near, built * near
 
 def main(check):
     t = time.time()
@@ -112,6 +135,9 @@ def main(check):
                   'peaks': G.add(f['peak_lat'][pk].astype(np.float64), f['peak_lon'][pk].astype(np.float64), f['peak_ele'][pk] / 1000)}
         for k, g in layers.items():
             out[f'{area}_{k}'] = G.disc_sum(g, RADIUS[k])
+        land, built = land_grid(G, lc, R['nodes'])
+        for km in (5, 15, 20): out[f'{area}_land{km}'] = G.disc_sum(land, km)
+        out[f'{area}_built5'] = G.disc_sum(built, 5)
         out[f'{area}_box'] = np.array(box); out[f'{area}_shape'] = np.array([G.ny, G.nx])
         print(f'{area}: {G.ny} x {G.nx} grid ({time.time() - t:.0f} s)', flush=True)
     np.savez_compressed(os.path.join(WORK, 'reach.npz'), **out)

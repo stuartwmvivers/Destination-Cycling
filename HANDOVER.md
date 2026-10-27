@@ -400,7 +400,7 @@ Order agreed in principle: all of Spain (including the Canaries) → Portugal �
 
 ## 12. First tasks for Claude Code
 
-> **Current work (25 Oct 2026):** the cycling-base score prototype for Spain, `docs/score-prototype-plan.md`. Phases 1–3 done. Phase 4's weather download runs unattended for about 4 days: a Windows scheduled task, plus a daily Claude check that reports progress and says when it's complete. Phase 5 (the score page, an explorer with live sliders: spec section 7a) is next and doesn't need the weather to start. The list below is the original first-session list; items 1–4 are done.
+> **Current work (25 Oct 2026):** the cycling-base score prototype for Spain, `docs/score-prototype-plan.md`. Phases 1–3 done. Phase 4's weather download runs unattended for about 4 days: a Windows scheduled task, plus a daily Claude check that reports progress and says when it's complete. Phase 5 (the score page `/score/spain/`, an explorer with live sliders: spec section 7a) was built on 25 Oct 2026 with partial weather. It awaits the owner's ranking check-in (plan, "Phase 5"). Regenerate its data with `pipeline/score/score_export.py` after `weather_score.py`. The list below is the original first-session list; items 1–4 are done.
 
 1. Read `CLAUDE.md`, this file and `docs/cycling-score-spec.md`. Run `npm ci`, build, and the smoke test, and confirm the output matches the committed `spanish-coast-climate.html`.
 2. ~~Verify `pipeline/openmeteo_fetch.py` against the live API for one place.~~ Done 23 Oct 2026 (see 4.1).

@@ -172,6 +172,25 @@ for reg in regions:
         '<script src="{{ROOT}}js/periods.js"></script>',
         '<script src="{{ROOT}}js/dashboard.js"></script>'])
 
+# ---------- score explorer (prototype; docs/score-prototype-plan.md phase 5) ----------
+# data/processed/score/<id>.json comes from pipeline/score/score_export.py and is copied as it is (ODbL).
+SCORE_CREDITS = ('Score data derived from <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> (© OpenStreetMap contributors, ODbL 1.0; '
+                 'the score data are published under the ODbL). Terrain: Copernicus DEM GLO-30, © DLR e.V. 2010–2014 and © Airbus Defence and Space GmbH 2014–2018, '
+                 'provided under COPERNICUS by the European Union and ESA. Land cover: © ESA WorldCover project 2021 / Contains modified Copernicus Sentinel data (2021) '
+                 'processed by ESA WorldCover consortium (CC BY 4.0). Weather: <a href="https://open-meteo.com/">Open-Meteo</a> historical archive (CC BY 4.0). '
+                 'Airports: hand-made draft list, researched 25 Oct 2026.')
+score_regions = [os.path.basename(f)[:-5] for f in sorted(glob.glob(J('data', 'processed', 'score', '*.json')))]
+for sid in score_regions:
+    rel = f'data/score/{sid}.json'
+    sizes[rel] = write(rel, read(J('data', 'processed', 'score', f'{sid}.json')))
+    page(f'score/{sid}/index.html', 'Cycling bases in Spain: score explorer',
+         'Explore candidate cycling bases across Spain, scored on climbs within reach, weather at the climbs, airports with flights from Scotland, quiet roads and walking.',
+         [f'vendor/leaflet-{LEAFLET}/leaflet.css', 'dashboard', 'score'], read(J('site-src', 'pages', 'score.html')),
+         SCORE_CREDITS + ABOUT_LINK, [
+        f'<script src="{{{{ROOT}}}}vendor/leaflet-{LEAFLET}/leaflet.js"></script>',
+        '<script>window.DC_SCORE = ' + json.dumps({'region': sid, 'root': '{{ROOT}}'}) + ';</script>',
+        '<script src="{{ROOT}}js/score.js"></script>'])
+
 # ---------- about page ----------
 page('about/index.html', 'About Destination Cycling', 'How the Destination Cycling figures are made, how far to trust them, and where the data come from.',
      ['landing'], fill(read(J('site-src', 'pages', 'about.html')), {'YEARS': YEARS_LABEL, 'N_YEARS': N_YEARS}),
@@ -191,8 +210,12 @@ def card(reg):
     return (f'      <a class="lp-card" href="{reg["id"]}/">\n        <span class="lp-tag">Available</span>\n'
             f'        <h3>{esc(reg["card"]["title"])}</h3>\n        <p>{esc(text)}</p>\n'
             f'        <span class="lp-go">{esc(reg["card"]["link"])}</span>\n      </a>')
+score_cards = ''.join('\n      <a class="lp-card" href="score/spain/">\n        <span class="lp-tag">Prototype</span>\n'
+                      '        <h3>Cycling bases in Spain</h3>\n        <p>Every 5 km of Spain scored on climbs within riding distance, weather at the climbs, '
+                      'flights from Scotland, quiet roads and walking, with weights you can change.</p>\n'
+                      '        <span class="lp-go">Explore the score</span>\n      </a>' for sid in score_regions if sid == 'spain')
 index_body = fill(read(J('site-src', 'pages', 'index.html')),
-                  {'RIDE_BARS': bars, 'REGION_CARDS': '\n'.join(card(r) for r in regions), 'YEARS': YEARS_LABEL})
+                  {'RIDE_BARS': bars, 'REGION_CARDS': '\n'.join(card(r) for r in regions) + score_cards, 'YEARS': YEARS_LABEL})
 page('index.html', 'Destination Cycling',
      'Comparing places in Europe as year-round road-cycling bases, starting with nine years of weather on the Spanish coast.',
      ['landing'], index_body,

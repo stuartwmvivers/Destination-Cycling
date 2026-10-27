@@ -1,0 +1,84 @@
+<div class="cb sc">
+  <header class="cb-head">
+    <p class="sc-crumb"><a href="{{ROOT}}">Destination Cycling</a> · Prototype</p>
+    <h1 class="cb-title">Cycling bases in Spain: an explorer</h1>
+    <p class="cb-take">Every point is a possible base, every 5 km across Spain, the Balearics and the Canaries, scored on <b>climbs within riding distance</b>, weather at the climbs' height, the drive to an airport with direct flights from Edinburgh or Glasgow, quiet roads, walking, flat roads and gravel. <b>Change the weights</b> and the ranking changes with them. It is a screen to find places worth a closer look, not a verdict.</p>
+    <p class="sc-warn" id="sc-status">Loading…</p>
+  </header>
+
+  <section class="cb-controls sc-controls" aria-label="How to score">
+    <div class="cb-ctl cb-span">
+      <span class="cb-lab" id="sc-preset-lab">Presets</span>
+      <div class="cb-seg" id="sc-presets" role="group" aria-labelledby="sc-preset-lab"></div>
+    </div>
+    <div class="cb-ctl cb-span">
+      <span class="cb-lab">Weights (switch a factor off with its box; “only” ranks by that factor alone)</span>
+      <div class="sc-weights" id="sc-weights"></div>
+    </div>
+    <div class="cb-ctl">
+      <span class="cb-lab" id="sc-flights-lab">Flights from Edinburgh or Glasgow</span>
+      <div class="cb-seg" id="sc-flights" role="group" aria-labelledby="sc-flights-lab"></div>
+      <p class="cb-def" id="sc-flights-def"></p>
+    </div>
+    <div class="cb-ctl">
+      <span class="cb-lab">Climbing gate</span>
+      <label class="sc-check"><input type="checkbox" id="sc-gate"> Require at least</label>
+      <div class="cb-slide">
+        <input type="range" id="sc-gate-n" min="1" max="8" step="1" aria-label="Minimum number of near climbs">
+        <output id="sc-gate-out" for="sc-gate-n"></output>
+      </div>
+      <p class="cb-def">Climbs of 300 m or more whose foot is within 26 km by road. Agreed gate: 3. With the gate off, every base with at least one climb in reach is ranked.</p>
+    </div>
+    <div class="cb-ctl">
+      <span class="cb-lab">Built-up base</span>
+      <label class="sc-check"><input type="checkbox" id="sc-built"> Penalise built-up surroundings, by up to</label>
+      <div class="cb-slide">
+        <input type="range" id="sc-built-s" min="0" max="50" step="1" aria-label="Largest built-up penalty, per cent of the score">
+        <output id="sc-built-out" for="sc-built-s"></output>
+      </div>
+      <p class="cb-def">Built-up share of the land within 5 km of the base: no penalty up to 10% (villages, small towns), the full penalty from 50% (cities, resort strips).</p>
+    </div>
+  </section>
+
+  <section class="cb-grid sc-main">
+    <div class="cb-card">
+      <h2 id="sc-map-h">Map of the ranking</h2>
+      <div class="cb-seg" id="sc-frames" role="group" aria-label="Map area"></div>
+      <div class="cb-map" id="sc-map" role="region" aria-labelledby="sc-map-h"></div>
+      <div class="cb-mapkey" id="sc-key"></div>
+      <p class="cb-note">Click a dot for its breakdown. Grey dots don't pass the gate. Black rings mark the top 20 in the list.</p>
+    </div>
+    <div class="cb-card" id="sc-detail" aria-live="polite">
+      <h2>Breakdown</h2>
+      <p class="cb-note">Choose a base on the map or in a list.</p>
+    </div>
+  </section>
+
+  <section class="cb-grid">
+    <div class="cb-card">
+      <h2>Top bases</h2>
+      <label class="sc-check"><input type="checkbox" id="sc-spread"> One per area (best base in each 15 km)</label>
+      <div class="cb-tablewrap"><table class="cb-table" id="sc-top"></table></div>
+    </div>
+    <div class="cb-card">
+      <h2>Known places</h2>
+      <p class="cb-note">The validation list: known cycling bases should rank high, flat places should fail the gate. Each is matched to the nearest base point.</p>
+      <div class="cb-tablewrap"><table class="cb-table" id="sc-known"></table></div>
+    </div>
+  </section>
+
+  <section class="cb-card">
+    <h2>How the score works</h2>
+    <div class="cb-method">
+      <p><b>Bases.</b> A 5 km grid snapped onto the cycling road network: paved roads from primary down to unclassified, with motorways, private and unpaved roads left out. Riding distances are along roads, in legal directions.</p>
+      <p><b>Climbs.</b> Found on 30 m Copernicus terrain heights along every road: at least 300 m of ascent with no dip of 20 m or more, averaging 3% or more, starting where the road first gains 15 m in 500 m. A <i>near</i> climb's foot is within 26 km of the base by road; an <i>onward</i> climb's foot is within 26 km of a near climb's top. Onward climbs count in the score but not the gate.</p>
+      <p><b>Climbing (0–1).</b> Each climb is worth its gain divided by 300 m (counting at most 1,500 m), times a nearness factor: full value with its foot within 10 km, 0.4 at 26 km, 0.1 beyond 60 km. The total saturates, so a week's worth of good climbs is close to full marks (80%); the best single climb near the base adds the other 20%.</p>
+      <p><b>Weather (0–1).</b> Rideable days (dry, gusts under 50 km/h, a high of at least 11°C) from Open-Meteo, 2017–2025, with the high adjusted to the median height of the base's climbs. October to May count four times as much as summer. Modelled figures undercount real rideable days (see the dashboard), and the download is incomplete: “borrowed” weather comes from the nearest point fetched so far.</p>
+      <p><b>Airport (0–1).</b> Drive time to the nearest airport with direct flights from Edinburgh or Glasgow, at typical road speeds without traffic: full marks to 60 minutes, half at 120, never below 0.15. The airport list is a hand-made draft and needs checking.</p>
+      <p><b>Quiet roads, walking, flat, gravel (0–1).</b> From OpenStreetMap within a straight-line radius (20 km for roads, 15 km for walking and gravel): minor-road length and junctions, paths and mountain paths with a bonus for waymarked routes and peaks, minor roads under 2%, and gravel tracks weighted by countryside from ESA WorldCover. Each is measured per km² of land within the radius, so sea (and Portugal, France and Andorra, which aren't in the road data) doesn't count against a base, with land counted as at least a quarter of the circle. Minor roads and junctions in built-up land count a tenth. Each is then scaled between its 5th and 95th percentile across the gate-passing bases.</p>
+      <p><b>Built-up penalty.</b> The share of land within 5 km of the base that ESA WorldCover maps as built-up. Up to 10% costs nothing; from 10% to 50% the penalty rises to its full size, by default 20% of the score. It is there because every ride from a city or a resort strip starts in traffic, which the other measures don't see.</p>
+      <p><b>Total.</b> The weighted average of the factors that are switched on, out of 100. Default weights as agreed on 24 October 2026: climbing 35, weather 20, airport 13, quiet roads 12, walking 10, flat 5, gravel 5. The built-up penalty then reduces it.</p>
+      <p><b>What it can't judge.</b> Scenery, traffic (OSM has road classes, not counts), road surfaces, drivers, cafés or property prices. A high score means “look here”, not “buy here”.</p>
+    </div>
+  </section>
+</div>
