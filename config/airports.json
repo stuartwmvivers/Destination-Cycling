@@ -1,7 +1,9 @@
 {
-  "status": "DRAFT for the owner to confirm. Researched 25 Oct 2026 from airline announcements and route aggregators; no official winter 2026/27 timetables were found, so every route needs checking.",
-  "rule": "Spec: drive time to the nearest airport with YEAR-ROUND direct flights from Edinburgh (EDI) or Glasgow (GLA). 'year_round' counts in full; 'seasonal' counts much less in winter; 'none' or 'unknown' don't count until confirmed. The score page lets the user choose: year-round direct only, seasonal direct counted at reduced credit, or flights ignored (owner, 25 Oct 2026).",
+  "status": "Checked 27 Oct 2026 (owner asked Claude to do it): Wikipedia's Edinburgh and Glasgow airlines-and-destinations tables, then Google Flights direct-only searches for Wed 13 Jan and Wed 10 Feb 2027 (which also show the nearest days with direct flights). Winter frequencies are estimates from those searches, not timetables. Re-check each autumn.",
+  "rule": "Spec: drive time to the nearest airport with YEAR-ROUND direct flights from Edinburgh (EDI) or Glasgow (GLA). 'year_round' counts in full; 'seasonal' counts much less in winter; 'none' or 'unknown' don't count until confirmed. The score page lets the user choose: year-round direct only, seasonal direct counted at reduced credit, or flights ignored (owner, 25 Oct 2026). Owner, 27 Oct 2026: both EDI and GLA count (routes are similar; the choice is by flight times). Year-round means direct flights every month November-March, at least about twice a week, because trips range from a few days at short notice to a couple of months.",
   "sources": [
+    "Wikipedia: Edinburgh Airport and Glasgow Airport, 'Airlines and destinations' (read 27 Oct 2026)",
+    "Google Flights, direct-only one-way searches EDI/GLA -> each doubtful airport, 13 Jan and 10 Feb 2027 (27 Oct 2026)",
     "Ryanair winter 2026 Edinburgh schedule announcement (14-16 Oct 2026): 46 routes; extra capacity named for Barcelona, Madrid and Malaga",
     "Jet2 Edinburgh destination listings (winter 2026/27 programme, including Tenerife)",
     "Route aggregator listings for Glasgow (Ryanair, Jet2 and easyJet on Alicante and Malaga; Jet2 on Tenerife and Lanzarote)"
@@ -15,7 +17,7 @@
       "edi": "year_round",
       "gla": "year_round",
       "confidence": "high",
-      "note": "Several airlines from both"
+      "note": "easyJet, Ryanair, Jet2 from EDI; easyJet, Jet2, Ryanair, TUI from GLA"
     },
     {
       "code": "AGP",
@@ -25,7 +27,7 @@
       "edi": "year_round",
       "gla": "year_round",
       "confidence": "high",
-      "note": "Ryanair adds winter capacity from EDI; Ryanair, Jet2 and easyJet from GLA"
+      "note": "easyJet, Ryanair, Jet2 from EDI; easyJet, Jet2, Ryanair from GLA"
     },
     {
       "code": "TFS",
@@ -35,7 +37,7 @@
       "edi": "year_round",
       "gla": "year_round",
       "confidence": "high",
-      "note": "Winter-sun core route"
+      "note": "easyJet, Ryanair, Jet2 from EDI; Jet2, TUI from GLA"
     },
     {
       "code": "ACE",
@@ -44,8 +46,8 @@
       "lon": -13.605,
       "edi": "year_round",
       "gla": "year_round",
-      "confidence": "medium",
-      "note": "Jet2 lists both; winter frequency not confirmed"
+      "confidence": "high",
+      "note": "easyJet, Ryanair, Jet2 from EDI (flight on 13 Jan 2027); Jet2, TUI from GLA"
     },
     {
       "code": "LPA",
@@ -53,9 +55,9 @@
       "lat": 27.932,
       "lon": -15.387,
       "edi": "year_round",
-      "gla": "unknown",
-      "confidence": "medium",
-      "note": "Jet2 from EDI; GLA not confirmed"
+      "gla": "year_round",
+      "confidence": "high",
+      "note": "Ryanair, Jet2, easyJet from EDI (flight on 13 Jan 2027); Jet2, TUI from GLA (Wikipedia; Google Flights check failed)"
     },
     {
       "code": "FUE",
@@ -63,9 +65,9 @@
       "lat": 28.452,
       "lon": -13.864,
       "edi": "year_round",
-      "gla": "unknown",
-      "confidence": "medium",
-      "note": "Jet2 from EDI; GLA not confirmed"
+      "gla": "year_round",
+      "confidence": "high",
+      "note": "Ryanair and Jet2 from EDI (both on 13 Jan 2027); Jet2 from GLA (Wikipedia)"
     },
     {
       "code": "BCN",
@@ -73,9 +75,9 @@
       "lat": 41.297,
       "lon": 2.078,
       "edi": "year_round",
-      "gla": "unknown",
+      "gla": "seasonal",
       "confidence": "high",
-      "note": "Ryanair winter capacity named from EDI"
+      "note": "EDI: Ryanair, easyJet, Vueling, about 3-4 days a week in January (Mon, Thu, Fri; none on Wed). GLA: none found on 13 Jan 2027"
     },
     {
       "code": "MAD",
@@ -83,9 +85,9 @@
       "lat": 40.472,
       "lon": -3.561,
       "edi": "year_round",
-      "gla": "unknown",
+      "gla": "none",
       "confidence": "high",
-      "note": "Ryanair winter capacity named from EDI"
+      "note": "EDI: Ryanair, easyJet, about 3-4 days a week in January (Mon, Thu, Fri). Not served from GLA"
     },
     {
       "code": "PMI",
@@ -94,38 +96,48 @@
       "lon": 2.736,
       "edi": "seasonal",
       "gla": "seasonal",
-      "confidence": "owner",
-      "note": "Owner, 25 Oct 2026: seasonal for them (summer direct; connecting flights out of season). Matters for the Mallorca benchmark"
+      "confidence": "high",
+      "note": "Owner, 25 Oct 2026: seasonal; confirmed 27 Oct 2026 (no direct flights found in January 2027). Matters for the Mallorca benchmark"
     },
     {
       "code": "RMU",
       "name": "Murcia (Corvera)",
       "lat": 37.803,
       "lon": -1.125,
-      "edi": "unknown",
-      "gla": "unknown",
-      "confidence": "low",
-      "note": "Possibly Jet2/Ryanair; not confirmed"
+      "edi": "none",
+      "gla": "none",
+      "confidence": "high",
+      "note": "No route from EDI or GLA listed, and none found in January 2027"
     },
     {
       "code": "SVQ",
       "name": "Seville",
       "lat": 37.418,
       "lon": -5.893,
-      "edi": "unknown",
+      "edi": "year_round",
       "gla": "none",
-      "confidence": "low",
-      "note": "Not confirmed"
+      "confidence": "medium",
+      "note": "EDI: Ryanair, about twice a week in winter (Mon and Sat, Jan and Feb 2027): at the threshold. Not served from GLA"
+    },
+    {
+      "code": "SDR",
+      "name": "Santander",
+      "lat": 43.427,
+      "lon": -3.82,
+      "edi": "year_round",
+      "gla": "none",
+      "confidence": "medium",
+      "note": "New 27 Oct 2026. EDI: Ryanair, about twice a week in winter (Sun and Thu in Jan 2027): at the threshold. Not served from GLA"
     },
     {
       "code": "VLC",
       "name": "Valencia",
       "lat": 39.489,
       "lon": -0.482,
-      "edi": "unknown",
+      "edi": "seasonal",
       "gla": "none",
-      "confidence": "low",
-      "note": "Not confirmed"
+      "confidence": "high",
+      "note": "Ryanair summer only: no direct flights found in January 2027"
     },
     {
       "code": "GRO",
@@ -133,9 +145,9 @@
       "lat": 41.901,
       "lon": 2.76,
       "edi": "seasonal",
-      "gla": "none",
-      "confidence": "low",
-      "note": "Thought to be summer only; matters for Girona and the Costa Brava"
+      "gla": "seasonal",
+      "confidence": "high",
+      "note": "Jet2 summer only: no direct flights found in January 2027"
     },
     {
       "code": "REU",
@@ -144,8 +156,8 @@
       "lon": 1.167,
       "edi": "seasonal",
       "gla": "seasonal",
-      "confidence": "low",
-      "note": "Thought to be summer only"
+      "confidence": "high",
+      "note": "Jet2, easyJet, TUI summer only: no direct flights found in January 2027"
     },
     {
       "code": "IBZ",
@@ -154,7 +166,7 @@
       "lon": 1.373,
       "edi": "seasonal",
       "gla": "seasonal",
-      "confidence": "medium",
+      "confidence": "high",
       "note": "Summer only"
     },
     {
@@ -164,7 +176,7 @@
       "lon": 4.219,
       "edi": "seasonal",
       "gla": "seasonal",
-      "confidence": "medium",
+      "confidence": "high",
       "note": "Summer only"
     },
     {
@@ -172,10 +184,10 @@
       "name": "Bilbao",
       "lat": 43.301,
       "lon": -2.911,
-      "edi": "unknown",
+      "edi": "seasonal",
       "gla": "none",
-      "confidence": "low",
-      "note": "Not confirmed"
+      "confidence": "high",
+      "note": "Wikipedia lists Vueling year-round, but no direct flights found on or near 13 Jan or 10 Feb 2027; easyJet resumes 30 Mar 2027"
     }
   ]
 }

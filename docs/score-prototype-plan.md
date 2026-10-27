@@ -160,7 +160,7 @@ etwork.npz` (194 MB).
 - **Airports (`config/airports.json`): a dated DRAFT, from airline announcements and route aggregators.** No official winter 2026/27 timetables were found, and the main route-listing site blocks automated access.
   - Year-round from EDI or GLA as best known: Alicante, Málaga, Tenerife South, Lanzarote, Gran Canaria, Fuerteventura, Barcelona, Madrid.
   - **Palma is "unknown" for EDI in winter, so Mallorca currently has no qualifying airport**, which matters for the benchmark. Girona and Reus are thought to be summer only.
-  - **Owner to confirm.**
+  - **Owner to confirm.** Checked 27 Oct 2026; see "Airport list checked" at the end of this file.
 - **Driving network:** `build_network.py --drive` (motorways included, car one-way rules); 537,000 km.
 - **Drive times:** `drive_times.py`, with typical speeds per road class and no traffic.
   - Checks: Torrox Costa–Málaga 40 min, Calpe–Alicante 51, Girona–Barcelona 68, Granada–Málaga 78, Puerto de la Cruz–Tenerife South 58.
@@ -303,7 +303,7 @@ etwork.npz` (194 MB).
 - **The penalty** (`score_export.py`, `c_built`): 0 up to 10% built-up, rising linearly to 1 at 50%.
   - The page multiplies the total by (1 − strength × penalty).
   - Strength defaults to **20%**; it is adjustable 0–50% and can be switched off. The presets don't change it.
-  - **Default on: my choice, for the owner to confirm.**
+  - **Default on, confirmed by the owner on 27 Oct 2026.**
 - **Validation (rank of 7,415, default weights, penalty at 20%):**
 
   | Place | Year-round flights | Seasonal at half | No penalty |
@@ -336,3 +336,28 @@ etwork.npz` (194 MB).
   - Jete, El Bebedero, Las Rosas, el Ràfol d'Almúnia.
   - All are under 10% built-up.
 - **Barcelona's suburbs:** Esplugues and Santa Coloma drop out of the top 1,000. Pallejà is 446th; Llinars del Vallès (10% built-up) stays 91st.
+
+### Airport list checked (27 October 2026)
+
+- **Owner's answers:**
+  - Both Edinburgh and Glasgow count; the routes are similar and the choice is by flight times on the day.
+  - Trips range from a few days at short notice to a couple of months.
+  - So "year-round" means direct flights every month from November to March, at least about twice a week.
+- **Method (Claude, at the owner's request):**
+  1. Read the Edinburgh and Glasgow "Airlines and destinations" tables on Wikipedia.
+  2. Ran Google Flights direct-only searches for Wednesday 13 January and Wednesday 10 February 2027. Where there is no flight that day, these show the nearest days that have one.
+  - The frequencies are estimates from those searches, not timetables.
+- **Changes in `config/airports.json`:**
+  - **Now year-round:** Seville (EDI, about twice a week: Mon and Sat) and **Santander** (new; EDI, about twice a week: Sun and Thu). Both are at the threshold.
+  - **Confirmed year-round:**
+    - Madrid and Barcelona from EDI, about 3–4 days a week; neither from GLA in winter;
+    - Alicante, Málaga, Tenerife South, Lanzarote, Gran Canaria and Fuerteventura, from both.
+  - **Confirmed seasonal:** Valencia, Girona, Reus, Palma, Ibiza, Menorca, and **Bilbao**. Wikipedia lists Vueling as year-round to Bilbao, but no flights were found on or near either date.
+  - **Murcia:** no flights at all.
+- **Effect (default weights, penalty 20%):**
+  - The top 15 is unchanged.
+  - The north coast rises sharply: Potes (Picos de Europa) 4,975 → 3,104, Cangas de Onís 3,816 → 2,205, Santander city 5,823 → 4,243.
+  - Aracena 6,482 → 5,120; Grazalema 1,288 → 1,233.
+  - Mallorca slips as others pass it: Pollença 3,133 → 3,526, Palma 4,278 → 4,629.
+  - 3,579 bases have a different nearest year-round airport.
+- **Re-check each autumn:** winter schedules change, and Seville and Santander sit at the twice-a-week threshold.

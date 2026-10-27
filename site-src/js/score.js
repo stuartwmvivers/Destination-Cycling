@@ -302,7 +302,7 @@
   const status = () => {
     const w = D.weather, borrowed = B.w_own.filter((x) => !x).length;
     $('#sc-status').innerHTML = `<b>Prototype, data of ${esc(D.generated)}.</b> Weather from ${w.points_fetched} of ${w.points_total} points so far: ${num(borrowed)} of ${num(N)} bases borrow the nearest fetched point for now. `
-      + `The airport list is a dated draft. Nothing here includes property prices yet.`;
+      + `Winter flights were checked on 27 Oct 2026 for January and February 2027. Nothing here includes property prices yet.`;
   };
 
   fetch(CFG.root + 'data/score/' + CFG.region + '.json')

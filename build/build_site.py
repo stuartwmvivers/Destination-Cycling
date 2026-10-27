@@ -178,7 +178,7 @@ SCORE_CREDITS = ('Score data derived from <a href="https://www.openstreetmap.org
                  'the score data are published under the ODbL). Terrain: Copernicus DEM GLO-30, © DLR e.V. 2010–2014 and © Airbus Defence and Space GmbH 2014–2018, '
                  'provided under COPERNICUS by the European Union and ESA. Land cover: © ESA WorldCover project 2021 / Contains modified Copernicus Sentinel data (2021) '
                  'processed by ESA WorldCover consortium (CC BY 4.0). Weather: <a href="https://open-meteo.com/">Open-Meteo</a> historical archive (CC BY 4.0). '
-                 'Airports: hand-made draft list, researched 25 Oct 2026.')
+                 'Airports: hand-made list of direct winter flights from Edinburgh and Glasgow, checked 27 Oct 2026.')
 score_regions = [os.path.basename(f)[:-5] for f in sorted(glob.glob(J('data', 'processed', 'score', '*.json')))]
 for sid in score_regions:
     rel = f'data/score/{sid}.json'
