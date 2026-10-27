@@ -361,3 +361,13 @@ etwork.npz` (194 MB).
   - Mallorca slips as others pass it: Pollença 3,133 → 3,526, Palma 4,278 → 4,629.
   - 3,579 bases have a different nearest year-round airport.
 - **Re-check each autumn:** winter schedules change, and Seville and Santander sit at the twice-a-week threshold.
+
+## Phase 6: property prices (started 27 October 2026; private)
+
+Decided with the owner: prices from the notaries' portal, for **private family use only**. They are never committed or published; the public page is unchanged. Source, method, scripts, guards and the first lookups (156 municipalities, 735 bases) are in `docs/price-data-plan.md` section 4. To view the private copy locally:
+
+- `python build/build_site.py --private`
+- `node tests/serve.js _site 8000`
+- open http://127.0.0.1:8000/score/spain/
+
+Rebuild without `--private` before anything else uses `_site`. Next: the login-protected family copy (Cloudflare Pages + Access), once the weather is complete and the ranking is checked.

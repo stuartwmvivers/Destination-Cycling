@@ -17,11 +17,15 @@ No numbers are computed here beyond what the page itself computes; the rounding 
 summary.json matches the dashboard's (JavaScript Math.round, halves up).
 
 Usage: python3 build/build_site.py   (needs node_modules/d3 from `npm ci`)
+       python3 build/build_site.py --private   adds the PRIVATE property prices (data/private/, git-ignored) to the
+       score page, for the owner's local copy or the login-protected family copy only. Never in CI or on GitHub Pages.
 """
-import glob, json, math, os, re, shutil
+import glob, json, math, os, re, shutil, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 J = lambda *p: os.path.join(ROOT, *p)
 OUT = J('_site')
+PRIVATE = '--private' in sys.argv
+assert not (PRIVATE and os.environ.get('GITHUB_ACTIONS')), 'the private build must never run in GitHub Actions'
 read = lambda p: open(p, encoding='utf-8').read()
 load = lambda p: json.load(open(p, encoding='utf-8'))
 esc = lambda s: s.replace('&', '&amp;').replace('<', '&lt;').replace('"', '&quot;')
@@ -183,12 +187,20 @@ score_regions = [os.path.basename(f)[:-5] for f in sorted(glob.glob(J('data', 'p
 for sid in score_regions:
     rel = f'data/score/{sid}.json'
     sizes[rel] = write(rel, read(J('data', 'processed', 'score', f'{sid}.json')))
+    # private prices (notaries' portal: personal and family use only), from pipeline/score/price_join.py
+    priv = J('data', 'private', 'score_prices.json') if sid == 'spain' else None
+    has_prices = bool(PRIVATE and priv and os.path.exists(priv))
+    if PRIVATE and not has_prices: print(f'  --private: no {priv}; run pipeline/score/price_join.py first')
+    if has_prices: sizes[f'data/score/{sid}-prices.json'] = write(f'data/score/{sid}-prices.json', read(priv))
+    credits = SCORE_CREDITS + (' <b>Private copy.</b> Property prices: Portal Estadístico del Notariado (Consejo General del Notariado), '
+                               'average price per m² of notarised sales over the last 12 months, for personal and family use only; '
+                               'not for sharing or publication.' if has_prices else '')
     page(f'score/{sid}/index.html', 'Cycling bases in Spain: score explorer',
          'Explore candidate cycling bases across Spain, scored on climbs within reach, weather at the climbs, airports with flights from Scotland, quiet roads and walking.',
          [f'vendor/leaflet-{LEAFLET}/leaflet.css', 'dashboard', 'score'], read(J('site-src', 'pages', 'score.html')),
-         SCORE_CREDITS + ABOUT_LINK, [
+         credits + ABOUT_LINK, [
         f'<script src="{{{{ROOT}}}}vendor/leaflet-{LEAFLET}/leaflet.js"></script>',
-        '<script>window.DC_SCORE = ' + json.dumps({'region': sid, 'root': '{{ROOT}}'}) + ';</script>',
+        '<script>window.DC_SCORE = ' + json.dumps({'region': sid, 'root': '{{ROOT}}', 'prices': has_prices}) + ';</script>',
         '<script src="{{ROOT}}js/score.js"></script>'])
 
 # ---------- about page ----------
@@ -232,4 +244,4 @@ for old, new in [('spanish-coast-climate.html', 'spain-coast/')]:
                        f'<body><p>This page has moved to <a href="{new}">{new}</a>.</p></body>\n</html>\n')
 
 for rel, n in sorted(sizes.items()): print(f'  {rel:40} {n / 1024:7.1f} KB')
-print('built', OUT)
+print('built', OUT, '(PRIVATE: includes property prices; never publish this build)' if PRIVATE else '')

@@ -52,6 +52,11 @@ for sub, key in [('climate', 'climate'), ('stations', 'stations')]:
     missing = {k for k in src if k[0] in in_places} - seen
     if missing: fails.append(f'{sub}: {len(missing)} source rows not in any region file, e.g. {sorted(missing)[:3]}')
 
+# private property prices (build_site.py --private) must never be in a build that GitHub Actions publishes
+private = glob.glob(J('_site', 'data', 'score', '*-prices.json'))
+if private and os.environ.get('GITHUB_ACTIONS'): fails.append(f'private price data in the build: {private}')
+elif private: print(f'note: this is a PRIVATE build ({len(private)} price file); never publish it')
+
 if fails:
     print('\n'.join(fails)); sys.exit(1)
 print(f'ok: {len(REFERENCE)} reference places match HANDOVER 4.4; region files match data/processed')

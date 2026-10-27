@@ -6,3 +6,6 @@ data/interim/
 render-*.png
 __pycache__/
 _site/
+
+# Private property prices (notaries portal: personal/family use only, never commit; see docs/price-data-plan.md)
+data/private/

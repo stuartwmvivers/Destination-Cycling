@@ -38,6 +38,16 @@
       </div>
       <p class="cb-def">Built-up share of the land within 5 km of the base: no penalty up to 10% (villages, small towns), the full penalty from 50% (cities, resort strips).</p>
     </div>
+    <div class="cb-ctl" id="sc-price-ctl" hidden>
+      <span class="cb-lab">Property price, € per m² (private)</span>
+      <div class="sc-price">
+        <label>From <input type="number" id="sc-pmin" min="0" step="100" inputmode="numeric" aria-label="Lowest price per m²"></label>
+        <label>to <input type="number" id="sc-pmax" min="0" step="100" inputmode="numeric" aria-label="Highest price per m²"></label>
+        <button type="button" class="cb-btn" id="sc-pclear">Clear</button>
+      </div>
+      <label class="sc-check"><input type="checkbox" id="sc-ponly"> Only bases with a price</label>
+      <p class="cb-def" id="sc-pdef"></p>
+    </div>
   </section>
 
   <section class="cb-grid sc-main">
@@ -65,6 +75,12 @@
       <p class="cb-note">The validation list: known cycling bases should rank high, flat places should fail the gate. Each is matched to the nearest base point.</p>
       <div class="cb-tablewrap"><table class="cb-table" id="sc-known"></table></div>
     </div>
+  </section>
+
+  <section class="cb-card" id="sc-chart-card" hidden>
+    <h2>Score against price</h2>
+    <p class="cb-note">One dot per municipality with a price (its best base), for the bases that pass the current gate and price range. Up and to the left is better value. Click a dot for its breakdown.</p>
+    <div id="sc-chart"></div>
   </section>
 
   <section class="cb-card">

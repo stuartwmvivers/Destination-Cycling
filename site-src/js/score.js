@@ -26,7 +26,7 @@
     { id: 'blanca', label: 'Costa Blanca', b: [[38.3, -0.75], [39.0, 0.3]] }, { id: 'malaga', label: 'Málaga & Granada', b: [[36.55, -5.4], [37.4, -3.1]] },
     { id: 'canaries', label: 'Canaries', b: [[27.6, -18.2], [29.3, -13.4]] },
   ];
-  const DEFAULTS = { w: AGREED, on: Object.fromEntries(COMPS.map((c) => [c.id, true])), flights: 'year_round', gate: true, gateN: 3, built: true, builtS: 20, spread: true, frame: 'spain', sel: null };
+  const DEFAULTS = { w: AGREED, on: Object.fromEntries(COMPS.map((c) => [c.id, true])), flights: 'year_round', gate: true, gateN: 3, built: true, builtS: 20, pmin: null, pmax: null, ponly: false, spread: true, frame: 'spain', sel: null };
   const KEY = 'dc-score-' + CFG.region;
 
   // ---------- params (remembered in this browser only) ----------
@@ -37,9 +37,17 @@
   if (!FRAMES.some((f) => f.id === P.frame)) P.frame = DEFAULTS.frame;
   const save = () => { try { localStorage.setItem(KEY, JSON.stringify(P)); } catch (e) { /* private mode: not remembered */ } };
 
+  let PR = null, PM = null;   // private prices (CFG.prices only): municipality slot per base, and the municipalities
   let D, B, C, N, comp, order = [], rankOf, total, eligible, map, markers = [], selLayer, frameShown = null;
 
   const airportCurve = (m) => (m == null ? 0.15 : m <= 60 ? 1 : m <= 120 ? 1 - 0.5 * (m - 60) / 60 : 0.15 + 0.35 * Math.exp(-(m - 120) / 60));
+  const priceOf = (i) => (PR && PR[i] >= 0 ? PM[PR[i]] : null);
+  const priceOk = (i) => {
+    if (!PR) return true;
+    const m = priceOf(i);
+    if (!m) return !P.ponly;
+    return (P.pmin == null || m.eur_m2 >= P.pmin) && (P.pmax == null || m.eur_m2 <= P.pmax);
+  };
   const builtF = () => (P.built ? P.builtS / 100 : 0);   // largest built-up penalty, as a fraction of the score
   const weights = () => Object.fromEntries(COMPS.map((c) => [c.id, P.on[c.id] && !(c.id === 'airport' && P.flights === 'ignore') ? +P.w[c.id] : 0]));
   const kmBetween = (i, j) => Math.hypot(B.lat[i] - B.lat[j], (B.lon[i] - B.lon[j]) * Math.cos(B.lat[i] * Math.PI / 180)) * 111.2;
@@ -58,7 +66,7 @@
       let s = 0;
       for (const c of COMPS) if (w[c.id]) s += w[c.id] * (comp[c.id][i] || 0);
       total[i] = (wsum ? (s / wsum) * 100 : 0) * (1 - builtF() * (B.c_built[i] || 0));
-      eligible[i] = !P.gate || B.near[i].length >= P.gateN ? 1 : 0;
+      eligible[i] = (!P.gate || B.near[i].length >= P.gateN) && priceOk(i) ? 1 : 0;
     }
     order = [];
     for (let i = 0; i < N; i++) if (eligible[i]) order.push(i);
@@ -114,6 +122,12 @@
     $('#sc-gate').addEventListener('change', (e) => { P.gate = e.target.checked; update(); });
     $('#sc-gate-n').addEventListener('input', (e) => { P.gateN = +e.target.value; P.gate = true; update(); });
     $('#sc-spread').addEventListener('change', (e) => { P.spread = e.target.checked; update(); });
+    const pnum = (v) => (v === '' || isNaN(+v) ? null : Math.max(0, +v));
+    $('#sc-pmin').addEventListener('change', (e) => { P.pmin = pnum(e.target.value); update(); });
+    $('#sc-pmax').addEventListener('change', (e) => { P.pmax = pnum(e.target.value); update(); });
+    $('#sc-ponly').addEventListener('change', (e) => { P.ponly = e.target.checked; update(); });
+    $('#sc-pclear').addEventListener('click', () => { P.pmin = P.pmax = null; P.ponly = false; update(); });
+    $('#sc-chart').addEventListener('click', (e) => { const c = e.target.closest('[data-i]'); if (c) select(+c.dataset.i, true); });
     $('#sc-built').addEventListener('change', (e) => { P.built = e.target.checked; update(); });
     $('#sc-built-s').addEventListener('input', (e) => { P.builtS = +e.target.value; P.built = true; update(); });
     $('#sc-frames').innerHTML = FRAMES.map((f) => `<button type="button" data-fr="${f.id}">${esc(f.label)}</button>`).join('');
@@ -142,6 +156,11 @@
     $('#sc-gate').checked = P.gate; $('#sc-gate-n').value = P.gateN;
     $('#sc-gate-out').textContent = P.gate ? `${P.gateN} near climb${P.gateN > 1 ? 's' : ''} · ${num(order.length)} bases` : `off · ${num(order.length)} bases`;
     $('#sc-spread').checked = P.spread;
+    if (PR) {
+      $('#sc-pmin').value = P.pmin ?? ''; $('#sc-pmax').value = P.pmax ?? ''; $('#sc-ponly').checked = P.ponly;
+      const nb = PR.filter((x) => x >= 0).length;
+      $('#sc-pdef').textContent = `Prices for ${num(PM.length)} municipalities so far (${num(nb)} bases). Bases without one are kept unless you tick the box. Your range is remembered in this browser only.`;
+    }
     $('#sc-built').checked = P.built; $('#sc-built-s').value = P.builtS;
     $('#sc-built-out').textContent = P.built ? `${P.builtS}% of the score` : 'off';
     $('#sc-frames').querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.fr === P.frame)));
@@ -206,19 +225,19 @@
 
   const drawTop = () => {
     const rows = topList();
-    $('#sc-top').innerHTML = `<thead><tr><th>Base</th><th>Rank</th><th>Score</th><th>Climbs</th><th>Rideable days</th><th>Airport</th></tr></thead><tbody>`
+    $('#sc-top').innerHTML = `<thead><tr><th>Base</th><th>Rank</th><th>Score</th><th>Climbs</th><th>${PR ? 'Ride days' : 'Rideable days'}</th><th>Airport</th>${PR ? '<th>€/m²</th>' : ''}</tr></thead><tbody>`
       + rows.map((i) => `<tr data-i="${i}" tabindex="0" class="${i === P.sel ? 'cb-sel' : ''}"><td>${esc(B.name[i] || '–')}</td><td>${num(rankOf[i])}</td><td>${num(total[i], 1)}</td>`
-        + `<td>${B.near[i].length}</td><td>${num(B.w_ride[i])}</td><td>${B.yr_min[i] == null ? '–' : num(B.yr_min[i]) + ' min'}</td></tr>`).join('') + '</tbody>';
+        + `<td>${B.near[i].length}</td><td>${num(B.w_ride[i])}</td><td>${B.yr_min[i] == null ? '–' : num(B.yr_min[i]) + ' min'}</td>${PR ? `<td>${priceOf(i) ? num(priceOf(i).eur_m2) : '–'}</td>` : ''}</tr>`).join('') + '</tbody>';
   };
 
   let known = [];
   const drawKnown = () => {
-    $('#sc-known').innerHTML = `<thead><tr><th>Place</th><th>Expected</th><th>Gate</th><th>Rank</th><th>Score</th></tr></thead><tbody>`
+    $('#sc-known').innerHTML = `<thead><tr><th>Place</th><th>Expected</th><th>Gate</th><th>Rank</th><th>Score</th>${PR ? '<th>€/m²</th>' : ''}</tr></thead><tbody>`
       + known.map(({ p, i }) => {
         const gate = B.near[i].length >= D.gate_n;
         return `<tr data-i="${i}" tabindex="0" class="${i === P.sel ? 'cb-sel' : ''}"><td>${esc(p.name)}</td><td>${p.expect === '?' ? '–' : p.expect}</td>`
           + `<td class="${(gate ? 'pass' : 'fail') === p.expect || p.expect === '?' ? '' : 'sc-miss'}">${gate ? 'pass' : 'fail'} (${B.near[i].length})</td>`
-          + `<td>${eligible[i] ? num(rankOf[i]) : '–'}</td><td>${num(total[i], 1)}</td></tr>`;
+          + `<td>${eligible[i] ? num(rankOf[i]) : '–'}</td><td>${num(total[i], 1)}</td>${PR ? `<td>${priceOf(i) ? num(priceOf(i).eur_m2) : '–'}</td>` : ''}</tr>`;
       }).join('') + '</tbody>';
   };
 
@@ -226,7 +245,7 @@
   const select = (i, pan) => {
     P.sel = i; save();
     if (pan) { map.setView([B.lat[i], B.lon[i]], Math.max(map.getZoom(), 10), { animate: false }); }
-    drawDetail(); drawTop(); drawKnown(); drawSel();
+    drawDetail(); drawTop(); drawKnown(); drawSel(); drawChart();
   };
   const drawSel = () => {
     selLayer.clearLayers();
@@ -278,6 +297,7 @@
     box.innerHTML = `<h2>${esc(B.name[i] || 'Base')}</h2>
       <p class="cb-note">${status} · ${B.lat[i].toFixed(3)}, ${B.lon[i].toFixed(3)}</p>
       <p class="sc-total">${num(total[i], 1)}<span class="cb-tile-unit">/ 100</span></p>
+      ${PR ? `<p class="sc-price-line">${priceOf(i) ? `<b>${num(priceOf(i).eur_m2)} €/m²</b> in ${esc(priceOf(i).name)} (${esc(priceOf(i).province)}): average of notarised sales over the last 12 months, checked ${esc(priceOf(i).checked)}` : 'No price looked up yet for this municipality'}</p>` : ''}
       <div class="sc-bars">${rows}</div>
       ${monthBars ? `<p class="cb-note">Rideable days by month at the climbs' height (modelled, 2017–2025):</p>${monthBars}` : ''}
       <h3 class="sc-h3">Near climbs (foot within 26 km by road)</h3>
@@ -285,6 +305,31 @@
       ${B.onward[i].length ? `<h3 class="sc-h3">Onward climbs (over a near climb first; distance is the whole ride to the foot)</h3>
       <div class="cb-tablewrap sc-climbs"><table class="cb-table">${head}<tbody>${B.onward[i].map(([c, km, via]) => climbRow(c, km, via)).join('')}</tbody></table></div>` : ''}
       <p class="cb-note">On the map: near climbs in solid orange (foot to top, as the crow flies), onward climbs dashed. Climb names are the nearest pass or peak to the top in OpenStreetMap, so some are approximate.</p>`;
+  };
+
+
+  // ---------- score against price (private copy only) ----------
+  const drawChart = () => {
+    if (!PR) return;
+    const box = $('#sc-chart'), W = Math.max(280, box.clientWidth || 600), H = 340, m = { l: 46, r: 14, t: 12, b: 38 };
+    const pts = order.filter((i) => priceOf(i)).map((i) => ({ i, x: priceOf(i).eur_m2, y: total[i] }));
+    if (!pts.length) { box.innerHTML = '<p class="cb-note">No priced bases pass the current gate and price range.</p>'; return; }
+    // one dot per municipality (its best base), so a town with several bases doesn't crowd the chart
+    const best = new Map();
+    for (const p of pts) { const k = PR[p.i]; if (!best.has(k)) best.set(k, p); }
+    const shown = [...best.values()];
+    const xmax = Math.max(...shown.map((p) => p.x)) * 1.05, ymin = Math.floor(Math.min(...shown.map((p) => p.y)) / 5) * 5, ymax = Math.ceil(Math.max(...shown.map((p) => p.y)) / 5) * 5 || 5;
+    const X = (v) => m.l + (v / xmax) * (W - m.l - m.r), Y = (v) => H - m.b - ((v - ymin) / (ymax - ymin || 1)) * (H - m.t - m.b);
+    const step = xmax > 6000 ? 2000 : 1000, ys = Math.max(5, Math.round((ymax - ymin) / 25) * 5);
+    let g = '';
+    for (let v = 0; v <= xmax; v += step) g += `<line x1="${X(v)}" x2="${X(v)}" y1="${m.t}" y2="${H - m.b}" class="sc-grid"/><text x="${X(v)}" y="${H - m.b + 16}" text-anchor="middle">${num(v)}</text>`;
+    for (let v = ymin; v <= ymax; v += ys) g += `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(v)}" y2="${Y(v)}" class="sc-grid"/><text x="${m.l - 6}" y="${Y(v) + 4}" text-anchor="end">${v}</text>`;
+    const dots = shown.map((p) => `<circle data-i="${p.i}" cx="${X(p.x).toFixed(1)}" cy="${Y(p.y).toFixed(1)}" r="${p.i === P.sel ? 7 : 5}" fill="${colourOf(p.i)}" class="${p.i === P.sel ? 'sc-dot sc-dot-sel' : 'sc-dot'}"><title>${esc(priceOf(p.i).name)}: ${num(p.y, 1)} points, ${num(p.x)} €/m²</title></circle>`).join('');
+    const sel = P.sel != null && PR[P.sel] >= 0 ? best.get(PR[P.sel]) : null;
+    const lab = sel ? `<text x="${X(sel.x) + 9}" y="${Y(sel.y) - 8}" class="sc-dot-lab">${esc(priceOf(sel.i).name)}</text>` : '';
+    box.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}" role="img" aria-label="Score against price per square metre">${g}`
+      + `<text x="${(m.l + W - m.r) / 2}" y="${H - 4}" text-anchor="middle" class="sc-axis">Price, € per m² (municipality average)</text>`
+      + `<text transform="translate(12 ${(m.t + H - m.b) / 2}) rotate(-90)" text-anchor="middle" class="sc-axis">Score</text>${dots}${lab}</svg>`;
   };
 
   // ---------- draw everything ----------
@@ -295,19 +340,20 @@
     pending = true;
     requestAnimationFrame(() => {
       pending = false;
-      score(); colourScale(); syncControls(); drawMap(); drawTop(); drawKnown(); drawDetail(); drawSel();
+      score(); colourScale(); syncControls(); drawMap(); drawTop(); drawKnown(); drawDetail(); drawSel(); drawChart();
     });
   };
 
   const status = () => {
     const w = D.weather, borrowed = B.w_own.filter((x) => !x).length;
     $('#sc-status').innerHTML = `<b>Prototype, data of ${esc(D.generated)}.</b> Weather from ${w.points_fetched} of ${w.points_total} points so far: ${num(borrowed)} of ${num(N)} bases borrow the nearest fetched point for now. `
-      + `Winter flights were checked on 27 Oct 2026 for January and February 2027. Nothing here includes property prices yet.`;
+      + `Winter flights were checked on 27 Oct 2026 for January and February 2027. `
+      + (PR ? `<b>Private copy with property prices: not for sharing.</b>` : `Nothing here includes property prices yet.`);
   };
 
   fetch(CFG.root + 'data/score/' + CFG.region + '.json')
     .then((r) => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-    .then((data) => {
+    .then(async (data) => {
       D = data; B = D.bases; C = D.climbs; N = B.lat.length;
       comp = Object.fromEntries(COMPS.filter((c) => c.id !== 'airport').map((c) => [c.id, B['c_' + c.id]]));
       for (const a of D.airports) AIRPORTS[a.code] = a;
@@ -318,6 +364,10 @@
       });
       if (P.sel != null && P.sel >= N) P.sel = null;
       RAMP = [0, 1, 2, 3, 4].map((k) => hex(css('--sc-r' + k)));
+      if (CFG.prices) {
+        const pr = await fetch(CFG.root + 'data/score/' + CFG.region + '-prices.json').then((r) => (r.ok ? r.json() : null)).catch(() => null);
+        if (pr && pr.base_muni.length === N) { PR = pr.base_muni; PM = pr.munis; $('#sc-price-ctl').hidden = false; $('#sc-chart-card').hidden = false; }
+      }
       status(); buildControls(); initMap();
       if (P.sel == null) { score(); P.sel = order[0] ?? null; }   // first visit: show the top base's breakdown
       update();
