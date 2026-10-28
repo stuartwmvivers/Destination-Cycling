@@ -98,7 +98,7 @@ These needs are assumptions until the family is asked (section 6).
 - **Tapping a spot** shows its name, band, climbs, riding days, airport, price (in the private copy) and strengths, with a link to the nearest listed place.
 - **On a PC,** hovering shows the name.
 
- pick two or three areas and see them side by side, one row per question.
+**Compare:** pick two or three areas and see them side by side, one row per question.
 
 **My favourites:** the areas you've starred, ready to compare. It's a handy page to have open at a family discussion.
 
