@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Destination Cycling: places worth a look (mock-up)</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="#/">Destination Cycling</a>
+  <nav class="nav" aria-label="Main">
+    <a href="#/" data-nav="places">Places</a>
+    <a href="#/explore" data-nav="explore">Explore the map</a>
+    <a href="#/favourites" data-nav="favourites">Favourites <span class="count" id="fav-count"></span></a>
+    <a href="#/compare" data-nav="compare">Compare <span class="count" id="cmp-count"></span></a>
+    <a href="#/about" data-nav="about">About</a>
+  </nav>
+</header>
+<p class="mock-note">Mock-up for trying the design. The data is real, but nothing here is final.</p>
+<main id="app" tabindex="-1"><p class="loading">Loading places…</p></main>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -389,3 +389,10 @@ Rebuild without `--private` before anything else uses `_site`. Next: the login-p
   - The built-up penalty already favours villages and the countryside over towns and resort strips, so nothing changes now.
   - The score doesn't yet measure "not too far from facilities". A possible later factor is the drive to the nearest town with everyday shops and a health centre, from OSM.
   - The €/m² figure is a municipal average that mixes town flats and country houses, so for a rural house it's only a broad guide.
+
+### Order of work (owner, 27 October 2026)
+
+1. Get everything working first: the full weather rerun and the price refresh.
+2. Then make the interface as clear and intuitive as possible (DC-27).
+3. Then open the login-protected family copy. The Cloudflare key, account and sign-in list are ready, so this step is only the setup.
+4. Only then add new factors. "Near facilities" waits until this point.
