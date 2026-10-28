@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Data for the interface mock-up (docs/interface-plan.md, DC-27). Not part of the site build.
 
-Areas: the best AREAS bases under the agreed default settings, one per SPREAD_KM (as the score page's "one per area" list).
+Areas: bases one per SPREAD_KM (as the score page's "one per area" list): the best AREAS under the agreed default settings,
+the best AREAS counting summer-only flights, and the best REGION_MIN on the Balearics and the Canaries.
 For each: its score components (so the mock-up can re-rank live), place, setting, airports, near climbs, and the year's
 weather at the base itself:
 - the high at the base's own height: the weather point's daily high (2017-2025), moved from the model's height
@@ -16,7 +17,9 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(
 from common import ROOT, WORK, DEM, dem_name
 from price_shortlist import airport_curve, PROVINCES
 
-AREAS, SPREAD_KM, LAPSE = 80, 15, 6.5
+AREAS, REGION_MIN, SPREAD_KM, LAPSE = 80, 8, 15, 6.5
+REGIONS = {'balearics': lambda lat, lon: 38.5 < lat < 40.3 and lon > 1.1,   # as app.js's WHERE filters
+           'canaries': lambda lat, lon: lat < 30}
 OUT = os.path.join(ROOT, 'mockup', 'data')
 
 def setting(built):
@@ -38,14 +41,28 @@ def main():
     wnode = {w['node']: w for w in json.load(open(os.path.join(WORK, 'weather_bases.json')))['bases']}
     wb = [wnode[n] for n in nodes]
     mu = json.load(open(os.path.join(WORK, 'municipalities.json'), encoding='utf-8'))
-    total = [sum(W[k] * ((B['c_' + k][i] or 0) if k != 'airport' else airport_curve(B['yr_min'][i])) for k in W) / sum(W.values()) * 100
-             * (1 - d['built']['strength'] * (B['c_built'][i] or 0)) for i in range(N)]
-    order = sorted((i for i in range(N) if len(B['near'][i]) >= d['gate_n']), key=lambda i: -total[i])
+    def total(i, seasonal):
+        ap = airport_curve(B['yr_min'][i])
+        if seasonal: ap = max(ap, d['seasonal_credit'] * airport_curve(B['any_min'][i]))
+        return (sum(W[k] * ((B['c_' + k][i] or 0) if k != 'airport' else ap) for k in W) / sum(W.values()) * 100
+                * (1 - d['built']['strength'] * (B['c_built'][i] or 0)))
+    gated = [i for i in range(N) if len(B['near'][i]) >= d['gate_n']]
     km = lambda i, j: math.hypot(B['lat'][i] - B['lat'][j], (B['lon'][i] - B['lon'][j]) * math.cos(math.radians(B['lat'][i]))) * 111.2
-    top = []
-    for i in order:
-        if all(km(i, j) > SPREAD_KM for j in top): top.append(i)
-        if len(top) >= AREAS: break
+    def spread(pool, n, seasonal, taken=()):
+        """The best n of pool under one setting, one per SPREAD_KM; skips any within SPREAD_KM of taken."""
+        out = []
+        for i in sorted(pool, key=lambda i: -total(i, seasonal)):
+            if all(km(i, j) > SPREAD_KM for j in out): out.append(i)
+            if len(out) >= n: break
+        return [i for i in out if all(km(i, j) > SPREAD_KM for j in taken)]
+    # the page re-ranks only these areas, so pick them under more than one setting (owner, 28 October 2026: no Balearic
+    # area made the default 80, as their airports have only summer flights): the best AREAS with year-round flights,
+    # the best AREAS counting summer-only routes too, and the best REGION_MIN on each island group
+    top = spread(gated, AREAS, False)
+    top += spread(gated, AREAS, True, top)
+    for region in REGIONS.values():
+        top += spread([i for i in gated if region(B['lat'][i], B['lon'][i])], REGION_MIN, True, top)
+    top.sort(key=lambda i: -total(i, False))
 
     d0 = dt.date(2017, 1, 1); month = np.array([(d0 + dt.timedelta(days=k)).month for k in range(3287)])
     years = 9; cache = {}
