@@ -165,6 +165,14 @@ main { max-width: 1440px; margin: 0 auto; padding: 24px max(20px, env(safe-area-
 .rating .dots i.on { background: var(--good); }
 .rating .what { color: var(--muted); font-size: .9rem; }
 .links { display: flex; flex-wrap: wrap; gap: 10px; }
+.eat { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.eat li { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.eat li:last-child { border-bottom: 0; }
+.eat li span:not(.muted) { display: block; color: var(--muted); font-size: .9rem; }
+.eat-km { white-space: nowrap; color: var(--muted); font-size: .95rem; }
+.lg-eat { display: flex; align-items: center; gap: 6px; cursor: pointer; min-height: 32px; }
+.lg-eat input { width: 18px; height: 18px; accent-color: #2e7d4f; margin: 0; }
+.lg-eat i { width: 14px; height: 14px; border-radius: 50%; border: 2px solid #2e7d4f; background: rgba(46,125,79,.15); }
 .soon { padding: 12px 14px; border-radius: 8px; background: var(--soft); color: var(--muted); font-size: .95rem; }
 .pager { display: flex; justify-content: space-between; gap: 12px; margin-top: 26px; }
 

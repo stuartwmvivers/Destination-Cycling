@@ -31,7 +31,12 @@ The page is a good workbench for the owner. For anyone else it's an exam paper.
     - *Is it warm and sunny enough to sit outside in the afternoon and evening, month by month?*
     - *What's it like for eating out (restaurants, cafés, markets within a short walk or drive)?*
 
-    Eating out isn't measured yet: the plan is to show it on area pages as a fact (e.g. a count of restaurants and cafés from OSM), not to score it. New factors wait until after the interface (score-prototype-plan, "Order of work").
+    **Eating out (owner, 29 October 2026):** shown as a fact, not scored. The owner's test is whether you can walk to dinner: a villa between Pollença and its port had plenty of restaurants within a few km but none within an easy walk.
+    - `pipeline/score/extract_eating.py` finds clusters ("eating-out centres") of OSM restaurants, cafés and bars: at least 3 within 600 m in a straight line (about a 10-minute walk), named after the nearest town, village or district.
+    - In the mock-up: each area page lists the towns and villages with clusters within 10 km (about 15 minutes' drive) and their counts, with a green circle on the map for each cluster's 10-minute walk; each card names the nearest sizeable one; the Explore map draws the circles when zoomed in, and its tap summary names the nearest.
+    - Limits: OSM under-maps small towns (so counts mean "at least"); no ratings; distances are straight lines.
+
+    It could become a small scored factor later, if the owner wants.
   - Their questions are likely to be:
     - *Where should we look?*
     - *What is it like there, through the year?*

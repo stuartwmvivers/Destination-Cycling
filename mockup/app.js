@@ -99,6 +99,11 @@
   const strengths = (a) => FACTORS.filter((f) => f.id !== 'airport' && comp(a, f.id) >= 0.6).sort((x, y) => comp(a, y.id) - comp(a, x.id)).slice(0, 3)
     .map((f) => ({ climbing: 'Great climbing', weather: 'Sunny riding winters', quiet: 'Quiet roads', walking: 'Good walking', flat: 'Easy rides', gravel: 'Gravel tracks' }[f.id]));
   const winterHigh = (a) => Math.round(a.high[0]);
+  // eating out: clusters of restaurants, cafés and bars (OpenStreetMap), each counted within about a 10-minute walk
+  const EAT_GREEN = '#2e7d4f';
+  const kmWord = (k) => (k < 1 ? 'under 1 km' : `${num(k)} km`);
+  const eatHead = (a) => a.eat.list.find((e) => e.n >= 10) || a.eat.list[0] || null;
+  const eatPlaces = (n) => `${num(n)} place${n === 1 ? '' : 's'} to eat and drink`;
   const winterRide = (a) => Math.round(WINTER.reduce((s, m) => s + a.ride[m], 0));
 
   const ICON = {
@@ -214,6 +219,9 @@
         <div class="fact">${ICON.sun}<div><b>${winterHigh(a)}° in January</b><span>${winterRide(a)} good riding days, Oct to May</span></div></div>
         <div class="fact">${ICON.mountain}<div><b>${a.near_n} big climbs</b><span>within 26 km by road</span></div></div>
         <div class="fact">${ICON.plane}<div><b>${a.yr ? `${esc(a.yr.name)}, ${mins(a.yr.min)}` : a.any ? `${esc(a.any.name)}, ${mins(a.any.min)}` : 'No direct flights near'}</b><span>${esc(flightsWord(a.yr || a.any))}</span></div></div>
+        <div class="fact">${ICON.fork}<div>${(() => { const e = eatHead(a); return e
+          ? `<b>${esc(e.name)}, ${kmWord(e.km)}</b><span>${eatPlaces(e.n)}${a.eat.within > 1 ? `; ${a.eat.within - 1} more town${a.eat.within > 2 ? 's' : ''} or village${a.eat.within > 2 ? 's' : ''} within ${D.meta.eating.km} km` : ''}</span>`
+          : `<b>Eating out: ${esc(a.eat.nearest.name)}, ${num(a.eat.nearest.km)} km</b><span>nothing closer on the map</span>`; })()}</div></div>
         ${Object.keys(PRICE).length ? `<div class="fact">${ICON.home}<div><b>${p ? `About €${num(Math.round(p.eur_m2 / 50) * 50)} per m²` : 'No price yet'}</b><span>${p ? 'average of recent sales' : 'too few sales recorded'}</span></div></div>` : ''}
       </div>
       <div class="strip" aria-hidden="true">
@@ -394,7 +402,7 @@
           <section class="sec">
             <h2>${ICON.map} Where it is</h2>
             <div class="amap" id="amap" role="region" aria-label="Map of ${esc(a.name)} and its climbs"></div>
-            <p class="muted" style="font-size:.85rem">The orange lines join the foot and top of each big climb (straight lines, not the road).</p>
+            <p class="muted" style="font-size:.85rem">The orange lines join the foot and top of each big climb (straight lines, not the road). The green circles are about a 10-minute walk around each cluster of restaurants, cafés and bars.</p>
             <div class="links">
               <a class="btn" href="https://www.google.com/maps/@${a.lat},${a.lon},14z" target="_blank" rel="noopener">Open in Google Maps</a>
               <a class="btn" href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${a.lat},${a.lon}" target="_blank" rel="noopener">Street View</a>
@@ -412,7 +420,12 @@
           </section>
           <section class="sec">
             <h2>${ICON.fork} Eating out</h2>
-            <p class="soon">Coming next: restaurants, cafés and markets within a short walk or drive.</p>
+            ${a.eat.list.length ? `<p>${a.eat.within} town${a.eat.within === 1 ? '' : 's'} and village${a.eat.within === 1 ? '' : 's'} with places to eat and drink within ${D.meta.eating.km} km (about 15 minutes' drive). Each count is what lies within about a 10-minute walk of the centre: the green circles on the map above.</p>
+            <ul class="eat">${a.eat.list.map((e) => `<li><div><b>${esc(e.name)}</b>${e.spots.length > 1 ? ` <span class="muted">(${e.spots.length} clusters)</span>` : ''}<span>${[e.r && `${num(e.r)} restaurant${e.r === 1 ? '' : 's'}`, e.c && `${num(e.c)} café${e.c === 1 ? '' : 's'}`, e.b && `${num(e.b)} bar${e.b === 1 ? '' : 's'}`].filter(Boolean).join(', ')}</span></div><div class="eat-km">${kmWord(e.km)}</div></li>`).join('')}</ul>
+            ${a.eat.within > a.eat.list.length ? `<p class="muted">and ${a.eat.within - a.eat.list.length} more further out.</p>` : ''}`
+              : `<p>Nothing mapped within ${D.meta.eating.km} km. The nearest is <b>${esc(a.eat.nearest.name)}</b>, ${num(a.eat.nearest.km)} km away (${eatPlaces(a.eat.nearest.n)}).</p>`}
+            <p class="muted" style="font-size:.85rem">From OpenStreetMap, which volunteers keep up: good in towns and holiday areas, thinner in villages, so read small numbers as "at least". No ratings: check those on Google Maps.</p>
+            <div class="links"><a class="btn" href="https://www.google.com/maps/search/restaurants/@${a.lat},${a.lon},13z" target="_blank" rel="noopener">Restaurants on Google Maps</a></div>
           </section>
           <section class="sec">
             <h2>${ICON.home} Homes</h2>
@@ -438,6 +451,8 @@
       L.circleMarker(c.top, { radius: 5, color: '#c4622d', fillColor: '#fff', fillOpacity: 1, weight: 2 }).addTo(map);
       pts.push(c.foot, c.top);
     });
+    a.eat.list.forEach((e) => e.spots.forEach(([la, lo, n]) => L.circle([la, lo], { radius: D.meta.eating.walk_m, color: EAT_GREEN, weight: 2, fillColor: EAT_GREEN, fillOpacity: 0.15 })
+      .addTo(map).bindTooltip(`${esc(e.name)}: ${eatPlaces(n)} within a 10-minute walk`)));
     L.marker([a.lat, a.lon], { icon: L.divIcon({ className: '', html: `<div class="pin">${a.rank || '•'}</div>`, iconSize: [30, 30], iconAnchor: [15, 15] }), title: a.name }).addTo(map);
     map.fitBounds(L.latLngBounds(pts).pad(0.1));
   }
@@ -577,6 +592,19 @@
     const order = [...Array(G.N).keys()].sort((a, b) => R.tot[a] - R.tot[b]);
     for (const i of order) dots[i] = L.circleMarker([G.lat[i], G.lon[i]], { renderer, radius: rad(), stroke: false, interactive: false, ...style(i) }).addTo(map);
     map.on('zoomend', () => { const r = rad(); dots.forEach((d) => d.setRadius(r)); });
+    // restaurant clusters, drawn once zoomed in far enough to tell a town from its neighbours
+    const EAT_ZOOM = 11, eatLayer = L.layerGroup().addTo(map);
+    let eatOn = store.get('dc-mock-eat', true);
+    const drawEat = () => {
+      eatLayer.clearLayers();
+      if (!eatOn || map.getZoom() < EAT_ZOOM) return;
+      const b = map.getBounds().pad(0.2), E = G.ec;
+      for (let j = 0; j < E.n.length; j++) {
+        if (!b.contains([E.lat[j], E.lon[j]])) continue;
+        L.circle([E.lat[j], E.lon[j]], { renderer, radius: D.meta.eating.walk_m, color: EAT_GREEN, weight: 2, fillColor: EAT_GREEN, fillOpacity: 0.12, interactive: false }).addTo(eatLayer);
+      }
+    };
+    map.on('moveend', drawEat);
     const pinLayer = L.layerGroup().addTo(map);
     const drawTop = () => {
       pinLayer.clearLayers();
@@ -587,8 +615,11 @@
       $('#legend').innerHTML = `<b>How well it suits you</b>
         <div class="lg-row">${BANDS.map((b, k) => `<span><i style="background:${colours[k]}"></i>${b}</span>`).join('')}</div>
         <div class="lg-row"><span><i style="background:#8a9097;opacity:.4"></i>Doesn't meet your must-haves</span><span><span class="pin mini">1</span> Top 12 places</span></div>
-        <p>Colours compare places with each other: the best 5% are “Excellent”.</p>`;
+        <p>Colours compare places with each other: the best 5% are “Excellent”.</p>
+        <label class="lg-eat"><input type="checkbox" id="eat-on" ${eatOn ? 'checked' : ''}><i></i>Restaurants within a 10-minute walk${map.getZoom() < EAT_ZOOM ? ' (zoom in to see)' : ''}</label>`;
+      $('#eat-on').onchange = (e) => { eatOn = e.target.checked; store.set('dc-mock-eat', eatOn); drawEat(); };
     };
+    map.on('zoomend', () => legend());
     // nearest point to a screen position, within reach of a finger
     const nearest = (latlng, px) => {
       const p0 = map.latLngToContainerPoint(latlng); let best = -1, bd = px * px;
@@ -638,6 +669,7 @@
           <li>${ICON.mountain}<span><b>${G.n[i]} big climbs</b> within 26 km</span></li>
           ${G.wr[i] != null ? `<li>${ICON.sun}<span><b>${num(G.wr[i])} good riding days</b> a year</span></li>` : ''}
           <li>${ICON.plane}<span>${ap ? `<b>${esc(ap.name)}, ${mins(ap.min)}</b> · ${esc(flightsWord(ap))}` : 'No airport with direct flights near'}</span></li>
+          <li>${ICON.fork}<span>${G.ej[i] >= 0 ? `<b>${esc(G.ec.name[G.ej[i]])}, ${kmWord(G.ek[i])}</b> · ${eatPlaces(G.ec.n[G.ej[i]])}${G.en[i] > 1 ? `; ${G.en[i]} towns and villages with restaurants within ${D.meta.eating.km} km` : ''}` : 'No restaurants mapped nearby'}</span></li>
           ${GRID_EUR ? `<li>${ICON.home}<span>${p ? `<b>About €${num(Math.round(p / 50) * 50)} per m²</b>` : 'No price looked up here yet'}</span></li>` : ''}
         </ul>
         ${tags.length ? `<div class="tags">${tags.map((t) => `<span class="tag">${t}</span>`).join('')}</div>` : ''}
@@ -648,7 +680,7 @@
       $('#xinfo').hidden = false;
       $('.xclose').onclick = close;
     }
-    legend(); drawTop();
+    legend(); drawTop(); drawEat();
     redraw = () => {
       R = gScore(); colours = ramp();
       for (let i = 0; i < G.N; i++) dots[i].setStyle(style(i));
@@ -667,6 +699,7 @@
         <li><b>Riding weather:</b> days that are dry, at least 11 °C and not too windy, at the height of those climbs, mostly October to May.</li>
         <li><b>Flights:</b> the drive to an airport with direct flights from Edinburgh or Glasgow.</li>
         <li><b>Quiet roads, walking, easy rides and gravel:</b> how much of each lies within reach, from OpenStreetMap.</li>
+        <li><b>Eating out</b> (shown, not scored): restaurants, cafés and bars from OpenStreetMap, grouped into clusters, each counted within about a 10-minute walk (${num(D.meta.eating.walk_m)} m in a straight line). Distances are in a straight line. Villages are often under-mapped, so small numbers mean “at least”.</li>
         <li><b>Quieter surroundings:</b> places in or beside big towns and resort strips move down a little.</li>
       </ul>
       <p>In this mock-up the list holds the best ${A.length} areas under the agreed balance; the real site will rank every area of Spain.</p>

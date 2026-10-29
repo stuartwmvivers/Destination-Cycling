@@ -8,16 +8,19 @@ weather at the base itself:
 - the high at the base's own height: the weather point's daily high (2017-2025), moved from the model's height
   to the base's height (Copernicus DEM) at LAPSE degrees per km, as weather_score.py does for the climbs;
 - dry days (< 1 mm); "sit-out" days (high >= 18 C and dry); rideable days as the score's (at the climbs' height).
+Eating out: the eating-out centres from pipeline/score/extract_eating.py within EAT_KM, centres of one name merged.
 Writes mockup/data/areas.json and, if the private join exists, mockup/data/prices.json (private: mockup/data is git-ignored).
 Usage (score venv, DC_CACHE set): python mockup/make_data.py
 """
 import datetime as dt, json, math, os, sys
 import numpy as np, rasterio
+from scipy.spatial import cKDTree
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'pipeline', 'score'))
 from common import ROOT, WORK, DEM, dem_name
 from price_shortlist import airport_curve, PROVINCES
 
 AREAS, REGION_MIN, SPREAD_KM, LAPSE = 80, 8, 15, 6.5
+EAT_KM, EAT_LIST = 10, 8   # eating-out centres within EAT_KM in a straight line (about a 15-minute drive); the nearest EAT_LIST names
 REGIONS = {'balearics': lambda lat, lon: 38.5 < lat < 40.3 and lon > 1.1,   # as app.js's WHERE filters
            'canaries': lambda lat, lon: lat < 30}
 OUT = os.path.join(ROOT, 'mockup', 'data')
@@ -73,6 +76,24 @@ def main():
         return cache[pid]
 
     airports = {a['code']: a for a in d['airports']}
+    E = json.load(open(os.path.join(WORK, 'eating.json'), encoding='utf-8')); EC = E['centres']
+    exy = lambda la, lo: (np.asarray(lo) * 111.195 * np.cos(np.radians(la)), np.asarray(la) * 111.195)
+    etree = cKDTree(np.column_stack(exy(np.array([c['lat'] for c in EC]), np.array([c['lon'] for c in EC]))))
+    def eating(i):
+        q = np.array(exy(B['lat'][i], B['lon'][i]))
+        by = {}
+        for j in etree.query_ball_point(q, EAT_KM + 5):   # a town counts if any of its spots is within EAT_KM, and then all of them
+            c = EC[j]; k = math.dist(q, exy(c['lat'], c['lon']))
+            town = c['name'].split(', ')[-1]   # a city's districts ("Albaicín Alto, Granada") count under the city
+            e = by.setdefault(town, {'name': town, 'km': k, 'n': 0, 'r': 0, 'c': 0, 'b': 0, 'spots': []})
+            e['km'] = min(e['km'], k); e['spots'].append([c['lat'], c['lon'], c['n']])
+            for f in 'nrcb': e[f] += c[f]
+        out = sorted((e for e in by.values() if e['km'] <= EAT_KM), key=lambda e: e['km'])
+        for e in out: e['km'] = round(e['km'], 1)
+        res = {'within': len(out), 'list': out[:EAT_LIST]}
+        if not out:   # nothing within EAT_KM: say where the nearest is
+            dd, j = etree.query(q); res['nearest'] = {'name': EC[j]['name'], 'km': round(float(dd)), 'n': EC[j]['n']}
+        return res
     areas = []
     for rank, i in enumerate(top, 1):
         z = elevation(B['lat'][i], B['lon'][i])
@@ -99,12 +120,13 @@ def main():
             'any': {'min': B['any_min'][i], **(ap(B['any_code'][i]) or {})} if B['any_code'][i] else None,
             'm': {k: B['m_' + k][i] for k in ['quiet_km', 'loops', 'flat_km', 'gravel_km', 'walk_km', 'peaks']},
             'ride': B['w_month'][i], 'ride_year': B['w_ride'][i], 'own_weather': B['w_own'][i],
-            'high': high, 'dry': dry, 'sit': sit, 'climbs': climbs,
+            'high': high, 'dry': dry, 'sit': sit, 'climbs': climbs, 'eat': eating(i),
         })
     os.makedirs(OUT, exist_ok=True)
     meta = {'generated': d['generated'], 'weights': W, 'seasonal_credit': d['seasonal_credit'], 'built': d['built'], 'gate_n': d['gate_n'],
             'weather': d['weather'], 'airports_status': d['airports_status'],
-            'airports': {a['code']: {'name': a['name'], 'edi': a.get('edi'), 'gla': a.get('gla')} for a in d['airports']}}
+            'airports': {a['code']: {'name': a['name'], 'edi': a.get('edi'), 'gla': a.get('gla')} for a in d['airports']},
+            'eating': {'walk_m': E['walk_m'], 'min_n': E['min_n'], 'km': EAT_KM, 'osm': E['osm']}}
     json.dump({'meta': meta, 'areas': areas}, open(os.path.join(OUT, 'areas.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
     print(f'{len(areas)} areas -> mockup/data/areas.json ({os.path.getsize(os.path.join(OUT, "areas.json")) // 1024} KB)')
 
@@ -118,7 +140,13 @@ def main():
             **{k: [r2(x) for x in B['c_' + k]] for k in ['climbing', 'weather', 'quiet', 'walking', 'flat', 'gravel', 'built']},
             'ym': B['yr_min'], 'yc': [codes.index(c) if c in codes else -1 for c in B['yr_code']],
             'am': B['any_min'], 'ac': [codes.index(c) if c in codes else -1 for c in B['any_code']], 'wr': [None if x is None else round(x) for x in B['w_ride']],
-            'area': {a['id']: a['base'] for a in areas}}
+            'area': {a['id']: a['base'] for a in areas},
+            # eating out for the Explore map: every centre, and for each base the nearest centre and how many are within EAT_KM
+            'ec': {'lat': [c['lat'] for c in EC], 'lon': [c['lon'] for c in EC], 'n': [c['n'] for c in EC], 'name': [c['name'] for c in EC]}}
+    near = [etree.query(np.array(exy(B['lat'][i], B['lon'][i]))) for i in range(N)]
+    grid['ek'] = [round(float(dd), 1) if dd < 50 else None for dd, _ in near]
+    grid['ej'] = [int(j) if dd < 50 else -1 for dd, j in near]
+    grid['en'] = [len({EC[j]['name'].split(', ')[-1] for j in etree.query_ball_point(np.array(exy(B['lat'][i], B['lon'][i])), EAT_KM)}) for i in range(N)]
     json.dump(grid, open(os.path.join(OUT, 'grid.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
     print(f'{N:,} bases -> mockup/data/grid.json ({os.path.getsize(os.path.join(OUT, "grid.json")) // 1024} KB)')
 
