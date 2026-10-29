@@ -1,6 +1,6 @@
 # Interface plan: from an explorer to a family decision tool (DC-27)
 
-Status: **thinking, 27 October 2026.** Nothing here is built. The owner's brief:
+Status: **signed off by the owner, 29 October 2026.** The clickable mock-up (`mockup/`, refined after the owner's testing) is the design to build into the real site after the weather rerun. Further tweaks are handled as they arise; family replies, if they come, are treated the same way. The owner's brief:
 - the site must be attractive, informative, intuitive and a delight to use, with as little challenge as possible;
 - family members are stakeholders in where to buy, so if they find it hard, or it doesn't tell them what they need, the site has failed.
 
