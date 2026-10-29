@@ -459,7 +459,8 @@
   function comparePage() {
     rank();
     const list = cmp.map((id) => byId[id]).filter(Boolean);
-    const candidates = [...favs.map((id) => byId[id]).filter(Boolean), ...ORDER.slice(0, 8)].filter((a, i, arr) => arr.indexOf(a) === i);
+    // favourites, then the top 8 for the current priorities, then anything else being compared (so it can always be taken out)
+    const candidates = [...favs.map((id) => byId[id]).filter(Boolean), ...ORDER.slice(0, 8), ...list].filter((a, i, arr) => arr.indexOf(a) === i);
     const rows = [
       ['Rank (based on current priorities)', (a) => a.rank || '–', (a) => -(a.rank || 999)],
       ['January afternoons', (a) => `${winterHigh(a)}°C`, (a) => a.high[0]],
@@ -473,7 +474,8 @@
       ...(Object.keys(PRICE).length ? [['Homes, € per m²', (a) => (priceOf(a) ? `€${num(Math.round(priceOf(a).eur_m2 / 50) * 50)}` : '–'), (a) => (priceOf(a) ? -priceOf(a).eur_m2 : null)]] : []),
     ];
     app.innerHTML = `<section class="intro"><h1>Compare</h1><p>Up to three places side by side. The best in each row is shaded.</p></section>
-      <div class="pick" role="group" aria-label="Choose places to compare">${candidates.map((a) => `<button type="button" class="chip" data-pick="${a.id}" aria-pressed="${cmp.includes(a.id)}">${favs.includes(a.id) ? '★ ' : ''}${esc(a.name)}</button>`).join('')}</div>
+      <p class="pick-hint">Your favourites (<span class="fav-mark inline" aria-hidden="true">${ICON.star}</span>), then the top 8 for your current priorities. Tap a place to add or remove it. Choosing a fourth replaces the first you picked.</p>
+      <div class="pick" role="group" aria-label="Choose places to compare">${candidates.map((a) => `<button type="button" class="chip" data-pick="${a.id}" aria-pressed="${cmp.includes(a.id)}"${favs.includes(a.id) ? ` aria-label="${esc(a.name)}, favourite"` : ''}>${esc(a.name)}${favs.includes(a.id) ? `<span class="fav-mark" aria-hidden="true">${ICON.star}</span>` : ''}</button>`).join('')}</div>
       ${list.length ? `<div class="cmp-wrap"><table class="cmp"><thead><tr><th></th>${list.map((a) => `<th scope="col"><a href="#/area/${a.id}">${esc(a.name)}</a><div class="muted" style="font:400 .9rem var(--sans)">${esc(a.province)}</div></th>`).join('')}</tr></thead>
         <tbody>${rows.map(([label, f, key]) => {
           const vals = key ? list.map(key) : []; const best = key && list.length > 1 ? Math.max(...vals.filter((v) => v != null)) : null;
