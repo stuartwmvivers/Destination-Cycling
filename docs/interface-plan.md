@@ -93,7 +93,7 @@ These needs are assumptions until the family is asked (section 6).
 
 **Explore the map (owner, 28 October 2026):** a separate page for browsing at leisure, in addition to Places. It changes nothing on the other pages.
 - **The colours:** every 5 km point in Spain, coloured from *Limited* to *Excellent*. The bands are the bottom 20%, then up to 50%, 80% and 95%, then the top 5% of points that meet the must-haves. Points that don't meet them are grey.
-- **Shared settings:** it uses the same "What matters most?" choices and Adjust panel as the list, so the colours always match.
+- **Shared settings:** it uses the same "Priorities" choices and Adjust panel as the list, so the colours always match.
 - **Getting around:** "Go to" buttons jump to Málaga & Granada, Costa Blanca, Girona, the Pyrenees, Mallorca and the Canaries.
 - **Tapping a spot** shows its name, band, climbs, riding days, airport, price (in the private copy) and strengths, with a link to the nearest listed place.
 - **On a PC,** hovering shows the name.

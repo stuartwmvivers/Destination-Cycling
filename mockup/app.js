@@ -166,11 +166,11 @@
       <section class="intro">
         <h1>Places worth a look</h1>
         <p>Areas of Spain for cycling holidays and a holiday home, best first. Each is judged on the climbs nearby, the winter weather,
-        flights from Edinburgh and Glasgow, quiet roads and walking. Choose what matters most, or open <b>Adjust</b> to fine-tune.</p>
+        flights from Edinburgh and Glasgow, quiet roads and walking. Choose your priorities, or open <b>Adjust</b> to fine-tune them.</p>
       </section>
       <div class="bar">
-        <span class="bar-lab">What matters most?</span>
-        <div class="chips" role="group" aria-label="What matters most">
+        <span class="bar-lab">Priorities</span>
+        <div class="chips" role="group" aria-label="Priorities">
           ${PRESETS.map((p) => `<button type="button" class="chip" data-preset="${p.id}" aria-pressed="${pre && pre.id === p.id}">${esc(p.label)}</button>`).join('')}
         </div>
         <button type="button" class="btn ${adjustOpen ? 'primary' : ''}" id="adjust-btn" aria-expanded="${adjustOpen}">${adjustOpen ? 'Close Adjust' : 'Adjust…'}</button>
@@ -461,7 +461,7 @@
     const list = cmp.map((id) => byId[id]).filter(Boolean);
     const candidates = [...favs.map((id) => byId[id]).filter(Boolean), ...ORDER.slice(0, 8)].filter((a, i, arr) => arr.indexOf(a) === i);
     const rows = [
-      ['Rank on your list', (a) => a.rank || '–', (a) => -(a.rank || 999)],
+      ['Rank (based on current priorities)', (a) => a.rank || '–', (a) => -(a.rank || 999)],
       ['January afternoons', (a) => `${winterHigh(a)}°C`, (a) => a.high[0]],
       ['Good riding days, Oct to May', (a) => winterRide(a), winterRide],
       ['Warm enough to sit out, Oct to May', (a) => Math.round(WINTER.reduce((s, m) => s + a.sit[m], 0)) + ' days', (a) => WINTER.reduce((s, m) => s + a.sit[m], 0)],
@@ -532,7 +532,8 @@
       <section class="xhead">
         <div><h1>Explore the map</h1><p class="muted">Every spot in Spain, coloured by how well it suits your choices. Wander, zoom in, tap anywhere.</p></div>
         <div class="bar">
-          <div class="chips" role="group" aria-label="What matters most">
+          <span class="bar-lab">Priorities</span>
+          <div class="chips" role="group" aria-label="Priorities">
             ${PRESETS.map((p) => `<button type="button" class="chip" data-preset="${p.id}" aria-pressed="${pre && pre.id === p.id}">${esc(p.label)}</button>`).join('')}
           </div>
           <button type="button" class="btn ${adjustOpen ? 'primary' : ''}" id="adjust-btn" aria-expanded="${adjustOpen}">${adjustOpen ? 'Close Adjust' : 'Adjust…'}</button>
