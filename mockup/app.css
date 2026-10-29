@@ -181,7 +181,6 @@ main { max-width: 1440px; margin: 0 auto; padding: 24px max(20px, env(safe-area-
 .pick .chip { position: relative; }
 .fav-mark { position: absolute; top: -7px; right: -5px; width: 20px; height: 20px; border-radius: 50%; background: var(--panel); box-shadow: 0 0 0 1px var(--line); display: grid; place-items: center; }
 .fav-mark svg { width: 14px; height: 14px; fill: var(--star); stroke: var(--star); stroke-width: 1.5; }
-.fav-mark.inline { position: static; display: inline-grid; vertical-align: -4px; box-shadow: none; background: none; width: auto; height: auto; }
 
 /* ---------- about ---------- */
 .prose { max-width: 72ch; display: grid; gap: 14px; }

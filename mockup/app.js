@@ -474,7 +474,7 @@
       ...(Object.keys(PRICE).length ? [['Homes, € per m²', (a) => (priceOf(a) ? `€${num(Math.round(priceOf(a).eur_m2 / 50) * 50)}` : '–'), (a) => (priceOf(a) ? -priceOf(a).eur_m2 : null)]] : []),
     ];
     app.innerHTML = `<section class="intro"><h1>Compare</h1><p>Up to three places side by side. The best in each row is shaded.</p></section>
-      <p class="pick-hint">Your favourites (<span class="fav-mark inline" aria-hidden="true">${ICON.star}</span>), then the top 8 for your current priorities. Tap a place to add or remove it. Choosing a fourth replaces the first you picked.</p>
+      <p class="pick-hint">Your favourites, then the top 8 for your current priorities. Tap a place to add or remove it. Choosing a fourth replaces the first you picked.</p>
       <div class="pick" role="group" aria-label="Choose places to compare">${candidates.map((a) => `<button type="button" class="chip" data-pick="${a.id}" aria-pressed="${cmp.includes(a.id)}"${favs.includes(a.id) ? ` aria-label="${esc(a.name)}, favourite"` : ''}>${esc(a.name)}${favs.includes(a.id) ? `<span class="fav-mark" aria-hidden="true">${ICON.star}</span>` : ''}</button>`).join('')}</div>
       ${list.length ? `<div class="cmp-wrap"><table class="cmp"><thead><tr><th></th>${list.map((a) => `<th scope="col"><a href="#/area/${a.id}">${esc(a.name)}</a><div class="muted" style="font:400 .9rem var(--sans)">${esc(a.province)}</div></th>`).join('')}</tr></thead>
         <tbody>${rows.map(([label, f, key]) => {
