@@ -297,7 +297,7 @@
     box.innerHTML = `<h2>${esc(B.name[i] || 'Base')}</h2>
       <p class="cb-note">${status} · ${B.lat[i].toFixed(3)}, ${B.lon[i].toFixed(3)}</p>
       <p class="sc-total">${num(total[i], 1)}<span class="cb-tile-unit">/ 100</span></p>
-      ${PR ? `<p class="sc-price-line">${priceOf(i) ? `<b>${num(priceOf(i).eur_m2)} €/m²</b> in ${esc(priceOf(i).name)} (${esc(priceOf(i).province)}): average of notarised sales over the last 12 months, checked ${esc(priceOf(i).checked)}` : 'No price looked up yet for this municipality'}</p>` : ''}
+      ${PR ? `<p class="sc-price-line">${priceOf(i) ? `<b>${num(priceOf(i).eur_m2)} €/m²</b> in ${esc(priceOf(i).name)} (${esc(priceOf(i).province)}): average of notarised sales over the last 12 months, checked ${esc(priceOf(i).checked)}` : PR[i] === -2 ? 'Too few sales for a price' : 'No price looked up yet for this municipality'}</p>` : ''}
       <div class="sc-bars">${rows}</div>
       ${monthBars ? `<p class="cb-note">Rideable days by month at the climbs' height (modelled, 2017–2025):</p>${monthBars}` : ''}
       <h3 class="sc-h3">Near climbs (foot within 26 km by road)</h3>

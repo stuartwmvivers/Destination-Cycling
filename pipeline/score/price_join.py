@@ -25,7 +25,7 @@ def main():
     out = {'source': prices['source'],
            'munis': [{'name': munis[m]['portal_name'], 'province': munis[m]['portal_province'], 'eur_m2': munis[m]['eur_m2'],
                       'checked': munis[m]['checked']} for m in keys],
-           'base_muni': [slot.get(m, -1) for m in mu['base_muni']]}
+           'base_muni': [slot.get(m, -2 if str(m) in prices['prices'] else -1) for m in mu['base_muni']]}   # -2: looked up, too few sales
     json.dump(out, open(os.path.join(PRIVATE, 'score_prices.json'), 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
     print(f"{len(keys)} municipalities with a price; {sum(s >= 0 for s in out['base_muni']):,} of {n:,} bases priced -> data/private/score_prices.json")
 
