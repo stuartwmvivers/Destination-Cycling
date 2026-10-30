@@ -258,6 +258,7 @@ etwork.npz` (194 MB).
     - decide whether the seasonal mode should be the default.
   - **Nothing has been tuned to the list yet.** The owner decides.
 - **When the weather completes:** rerun `weather_score.py`, then `score_export.py`, then rebuild. The weather normalisation and the ranks will shift.
+- **Done 30 October 2026:** all 566 points fetched and the steps above run, with no change of method or weights. 9,653 of 10,762 bases have their own point; the rest use the nearest. The default list now opens with Callosa d'en Sarrià, Cenes de la Vega, Arona, Agost and Arucas. The owner's review of the new ranking is still to come (DC-18).
 
 ### Phase 5 revision (owner, 25 October 2026): reach measures per km² of land, built-up roads penalised more
 

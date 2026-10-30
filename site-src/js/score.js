@@ -346,7 +346,9 @@
 
   const status = () => {
     const w = D.weather, borrowed = B.w_own.filter((x) => !x).length;
-    $('#sc-status').innerHTML = `<b>Prototype, data of ${esc(D.generated)}.</b> Weather from ${w.points_fetched} of ${w.points_total} points so far: ${num(borrowed)} of ${num(N)} bases borrow the nearest fetched point for now. `
+    $('#sc-status').innerHTML = `<b>Prototype, data of ${esc(D.generated)}.</b> `
+      + (w.points_fetched < w.points_total ? `Weather from ${w.points_fetched} of ${w.points_total} points so far: ${num(borrowed)} of ${num(N)} bases borrow the nearest fetched point for now. `
+        : `Weather from all ${w.points_total} points: ${num(borrowed)} of ${num(N)} bases have no point of their own and use the nearest. `)
       + `Winter flights were checked on 27 Oct 2026 for January and February 2027. `
       + (PR ? `<b>Private copy with property prices: not for sharing.</b> The price filter is the first box below; the score-against-price chart is under the tables.` : `Nothing here includes property prices yet.`);
   };

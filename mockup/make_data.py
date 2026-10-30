@@ -79,6 +79,10 @@ def main():
     E = json.load(open(os.path.join(WORK, 'eating.json'), encoding='utf-8')); EC = E['centres']
     exy = lambda la, lo: (np.asarray(lo) * 111.195 * np.cos(np.radians(la)), np.asarray(la) * 111.195)
     etree = cKDTree(np.column_stack(exy(np.array([c['lat'] for c in EC]), np.array([c['lon'] for c in EC]))))
+    # some bases are too far from a named place for score_export.py to name: "near" the closest one, so no list shows a blank
+    PL = json.load(open(os.path.join(WORK, 'names.json'), encoding='utf-8'))['places']
+    ptree = cKDTree(np.column_stack(exy(np.array([p['lat'] for p in PL]), np.array([p['lon'] for p in PL]))))
+    B['name'] = [n or f"near {PL[ptree.query(np.array(exy(la, lo)))[1]]['name']}" for n, la, lo in zip(B['name'], B['lat'], B['lon'])]
     def eating(i):
         q = np.array(exy(B['lat'][i], B['lon'][i]))
         by = {}

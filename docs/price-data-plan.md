@@ -91,4 +91,5 @@ A similar, shorter request to the Catastro would ask whether the urban value-zon
   - a municipal average mixes flats and houses, and a coastal resort with its inland villages (Vélez-Málaga includes Torre del Mar);
   - a few figures look low for their towns (one Murcia town in particular) and should be checked with the detailed statistics before relying on them.
   - No portal figures are written in this repo, in documents or code. They live in `data/private/` only.
+- **Refresh after the full weather (30 October 2026):** the shortlist changed, so 37 more municipalities were looked up in the same way: 191 of 202 now have a figure, covering 881 bases. Tijarafe and Famorca had too few sales ("Without info"). The older lookups (27 Oct) were kept, not repeated. Search by name can land on the wrong town ("Lucena" offers Llucena first, "Elche" offers Elche de la Sierra), so check the name shown before recording a figure.
 - **To refresh or extend:** rerun `price_shortlist.py [N]` after the weather completes, look up the new municipalities, then `price_join.py` and the private build.
