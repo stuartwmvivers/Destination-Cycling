@@ -125,7 +125,7 @@ def main():
             'near_n': len(B['near'][i]),
             'yr': {'min': B['yr_min'][i], **(ap(B['yr_code'][i]) or {})} if B['yr_code'][i] else None,
             'any': {'min': B['any_min'][i], **(ap(B['any_code'][i]) or {})} if B['any_code'][i] else None,
-            'm': {k: B['m_' + k][i] for k in ['quiet_km', 'loops', 'flat_km', 'gravel_km', 'walk_km', 'peaks']},
+            'm': {k: B['m_' + k][i] for k in ['quiet_km', 'loops', 'flat_km', 'gravel_km', 'walk_km', 'waymarked_km', 'peak_n']},
             'ride': B['w_month'][i], 'ride_year': B['w_ride'][i], 'own_weather': B['w_own'][i],
             'high': high, 'dry': dry, 'sit': sit, 'climbs': climbs, 'eat': eating(i),
         })

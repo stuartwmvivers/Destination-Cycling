@@ -13,8 +13,13 @@ than road distances across whole countries, and close enough for these secondary
   gravel_km   gravel tracks (features cat 1) x countryside quality from land cover (forest, scrub, grass,
               wetland 1.0; farmland 0.6 (pleasant but not "nice countryside" in the way woods and hills are); bare 0.6; snow 0.5; built-up 0.2; water 0). Radius 15 km.
   walk_km     paths 1.0 (0.3 in built-up land), mountain paths 2.0, rough tracks 0.5, plus their length again if
-              part of a waymarked hiking route. Radius 15 km.
-  peaks       named peaks >= 300 m, weighted by height / 1000. Radius 15 km.
+              part of a waymarked hiking route. Waymarked gravel tracks count 1.0, the same as a waymarked rough
+              track (31 Oct 2026: much of Portugal's waymarked walking is on tracks, which counted nothing). Radius 15 km.
+  waymarked_km  length of waymarked hiking routes on every surface, roads and lanes included. Shown on the page, not
+              scored. Radius 15 km.
+  peaks       peaks >= 300 m with a height, named or not, weighted by height / 1000: a sum of heights, not a count.
+              Radius 15 km.
+  peak_n      the number of those peaks. Shown on the page, not scored. Radius 15 km.
   land15/20   km2 of usable land within 15 / 20 km: land in WorldCover (not water, not sea or no-data) AND within
               LAND_NEAR_KM of a junction of the network, so France and Andorra (outside the OSM
               extracts, so roadless here) don't count as empty land. score_export.py divides by it (25 Oct 2026).
@@ -30,7 +35,7 @@ from scipy.signal import fftconvolve
 from common import WORK, LANDCOVER
 
 AREAS = {'mainland': (35.8, 44.0, -9.6, 4.6),'canaries': (27.5, 29.5, -18.3, -13.3), 'madeira': (32.4, 33.3, -17.5, -16.1)}
-RADIUS = {'quiet_km': 20, 'loops': 20, 'flat_km': 20, 'gravel_km': 15, 'walk_km': 15, 'peaks': 15}
+RADIUS = {'quiet_km': 20, 'loops': 20, 'flat_km': 20, 'gravel_km': 15, 'walk_km': 15, 'waymarked_km': 15, 'peaks': 15, 'peak_n': 15}
 URBAN_QUIET = 0.1      # quiet roads and junctions in built-up land
 LAND_NEAR_KM = 3
 ROAD_W = {'tertiary': 1.0, 'tertiary_link': 1.0, 'unclassified': 1.0, 'secondary': 0.5, 'secondary_link': 0.5, 'road': 0.5}
@@ -124,15 +129,17 @@ def main(check):
     quality = np.vectorize(lambda c: LC_QUALITY.get(int(c), 0.5))(np.arange(256))[cls].astype(np.float32)
     gravel = flen * (fcat == 1) * quality
     walk_w = np.select([fcat == 2, fcat == 3, fcat == 4], [np.where(cls == 50, 0.3, 1.0), 2.0, 0.5], 0.0).astype(np.float32)
-    walk = flen * walk_w * (1 + frt)
+    walk = flen * (walk_w * (1 + frt) + ((fcat == 1) & (frt == 1)))
+    waymarked = flen * frt
     pk = f['peak_ele'] >= 300
+    plat_, plon_ = f['peak_lat'][pk].astype(np.float64), f['peak_lon'][pk].astype(np.float64)
     print(f'features weighted ({time.time() - t:.0f} s)', flush=True)
     out = {}
     for area, box in AREAS.items():
         G = Grid(*box)
         layers = {'quiet_km': G.add(*R['quiet']), 'flat_km': G.add(*R['flat']), 'loops': G.add(*R['loops']),
-                  'gravel_km': G.add(flat_, flon, gravel), 'walk_km': G.add(flat_, flon, walk),
-                  'peaks': G.add(f['peak_lat'][pk].astype(np.float64), f['peak_lon'][pk].astype(np.float64), f['peak_ele'][pk] / 1000)}
+                  'gravel_km': G.add(flat_, flon, gravel), 'walk_km': G.add(flat_, flon, walk), 'waymarked_km': G.add(flat_, flon, waymarked),
+                  'peaks': G.add(plat_, plon_, f['peak_ele'][pk] / 1000), 'peak_n': G.add(plat_, plon_, np.ones(len(plat_), np.float32))}
         for k, g in layers.items():
             out[f'{area}_{k}'] = G.disc_sum(g, RADIUS[k])
         land, built = land_grid(G, lc, R['nodes'])

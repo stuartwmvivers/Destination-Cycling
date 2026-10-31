@@ -419,7 +419,8 @@
           <section class="sec">
             <h2>${ICON.walk} Walking and running</h2>
             ${rate('walking', 'Walking', `${num(a.m.walk_km)} km of paths and tracks`)}
-            ${a.m.peaks ? `<p>${num(a.m.peaks)} hills and peaks marked on the map within reach, to walk or run up.</p>` : ''}
+            ${a.m.waymarked_km ? `<p>${num(a.m.waymarked_km)} km of waymarked walking routes within reach, on every surface.</p>` : ''}
+            ${a.m.peak_n ? `<p>${num(a.m.peak_n)} hills and peaks marked on the map within reach, to walk or run up.</p>` : ''}
           </section>
           <section class="sec">
             <h2>${ICON.fork} Eating out</h2>

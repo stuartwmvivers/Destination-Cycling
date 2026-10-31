@@ -271,7 +271,7 @@
       weather: B.w_ride[i] == null ? 'no weather yet' : `${num(B.w_ride[i])} rideable days a year at about ${num(B.w_height[i])} m${B.w_own[i] ? '' : ' (borrowed from the nearest point fetched so far)'}`,
       airport: airText(i),
       quiet: `${num(B.m_quiet_km[i])} km of minor roads (weighted), ${num(B.m_loops[i])} junctions within 20 km; ${num(B.land20[i])}% of that circle is land, and the score is per km² of land`,
-      walking: `${num(B.m_walk_km[i])} km of paths (weighted) within 15 km; peaks ${num(B.m_peaks[i])}`,
+      walking: `${num(B.m_walk_km[i])} km of paths and waymarked tracks (weighted) within 15 km; ${num(B.m_waymarked_km[i])} km of waymarked routes on every surface; ${num(B.m_peak_n[i])} peaks`,
       flat: `${num(B.m_flat_km[i])} km of minor roads under 2% within 20 km`,
       gravel: `${num(B.m_gravel_km[i])} km of gravel tracks (countryside-weighted) within 15 km`,
     };

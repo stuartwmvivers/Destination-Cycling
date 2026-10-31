@@ -7,6 +7,7 @@ Categories (one per way):
   2 path           highway=path/footway/bridleway outside obvious urban use (no sidewalks, crossings, steps).
   3 mountain path  a path with sac_scale mountain_hiking or harder (proper hill walking).
   4 rough track    highway=track grade4-5: walkable, not much fun to ride.
+  0 other          roads, lanes and anything else, kept only if waymarked: they count towards waymarked km alone.
 Each way is stored as segment midpoints with segment lengths, plus whether it is part of a waymarked hiking route
 (route=hiking/foot relations). Peaks: natural=peak nodes with a height.
 Output: WORK/features.npz.  Usage (score venv): python pipeline/score/extract_features.py
@@ -70,11 +71,11 @@ def main():
                 continue
             if not o.is_way() or 'highway' not in o.tags or o.id in seen_way: continue
             c = category(o.tags)
-            if not c: continue
+            r = 1 if o.id in routes else 0
+            if not c and not r: continue
             pts = [(n.lat, n.lon) for n in o.nodes if n.location.valid()]
             if len(pts) < 2: continue
             seen_way.add(o.id)
-            r = 1 if o.id in routes else 0
             p = np.array(pts)
             seg = np.hypot(np.diff(p[:, 0]) * 111195.0, np.diff(p[:, 1]) * 111195.0 * np.cos(np.radians(p[:-1, 0])))
             mid = (p[:-1] + p[1:]) / 2
@@ -82,7 +83,7 @@ def main():
             cat.extend([c] * len(seg)); rt.extend([r] * len(seg))
         print(f'  {len(ln) - n0:,} segments ({time.time() - t:.0f} s)', flush=True)
     L, C, R = np.frombuffer(ln, np.float32), np.frombuffer(cat, np.int8), np.frombuffer(rt, np.int8)
-    for c, name in [(1, 'gravel'), (2, 'path'), (3, 'mountain path'), (4, 'rough track')]:
+    for c, name in [(0, 'other'), (1, 'gravel'), (2, 'path'), (3, 'mountain path'), (4, 'rough track')]:
         print(f'{name:14} {L[C == c].sum() / 1000:10,.0f} km, of which in waymarked routes {L[(C == c) & (R == 1)].sum() / 1000:8,.0f} km')
     print(f'peaks with a height: {len(pele):,}')
     np.savez_compressed(os.path.join(WORK, 'features.npz'), lat=np.frombuffer(lat, np.float64).astype(np.float32), lon=np.frombuffer(lon, np.float64).astype(np.float32),

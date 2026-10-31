@@ -170,7 +170,7 @@ etwork.npz` (194 MB).
   - Gravel tracks 804,000 km; paths 209,000 km; mountain paths 21,000 km; rough tracks 101,000 km.
   - About 270,000 ways in waymarked hiking routes; 82,000 peaks with heights.
 - **Measures:** `reach_measures.py`, on 1 km grids with straight-line discs (20 km for roads, 15 km for gravel, walking and peaks).
-  - Measures: quiet roads, loop-ability (junctions of three or more minor roads), flat roads (under 2%), gravel weighted by countryside quality, walking (paths, mountain paths ×2, waymarked bonus), peaks.
+  - Measures: quiet roads, loop-ability (junctions of three or more minor roads), flat roads (under 2%), gravel weighted by countryside quality, walking (paths, mountain paths ×2, waymarked bonus; waymarked unpaved tracks since 31 Oct 2026), peaks (every peak with a height, named or not, summed by height).
   - Judgement calls made on 25 Oct 2026, to review with the ranking in phase 5:
     - farmland counts 0.6 for gravel countryside, so tracks through woods and hills count more than vineyard tracks in La Mancha;
     - roads, junctions and paths in built-up land count 0.3.
