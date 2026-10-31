@@ -30,6 +30,9 @@ PLACES = [
     ('Deltebre (Ebro Delta)', 40.720, 0.710, 'fail'), ('Tomelloso (La Mancha)', 39.157, -3.025, 'fail'),
     ('Matalascañas (Huelva coast)', 36.993, -6.529, 'fail'), ('Valencia', 39.470, -0.376, 'fail'),
     ('Lleida', 41.617, 0.620, 'fail'), ('Badajoz', 38.879, -6.970, 'fail'),
+    ('Monchique', 37.317, -8.556, 'pass'), ('Covilhã (Serra da Estrela)', 40.281, -7.504, 'pass'), ('Sintra', 38.797, -9.388, '?'),
+    ('Azeitão (Arrábida)', 38.518, -9.013, '?'), ('Vila do Gerês', 41.727, -8.163, 'pass'), ('Funchal (Madeira)', 32.650, -16.908, 'pass'),
+    ('Aveiro', 40.640, -8.654, 'fail'), ('Beja', 38.015, -7.865, 'fail'),
 ]
 
 def adjacency(d, g, reverse=False):

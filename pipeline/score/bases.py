@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Candidate bases for the score: a 5 km grid over Spain's land, each snapped onto the cycling network, with its
+"""Candidate bases for the score: a 5 km grid over the land of Spain and Portugal, each snapped onto the cycling network, with its
 near climbs (foot within 26 km by road) and onward climbs (foot within 26 km of a near climb's top; spec section 8).
 
 Grid points more than SNAP_KM from a usable road junction are dropped (sea, empty mountainsides); points that snap
@@ -14,7 +14,9 @@ from graph import load, Snapper
 from gate import adjacency, within, REACH_KM, GATE_N
 
 STEP_KM, SNAP_KM = 5.0, 2.5
-AREAS = [(35.9, 43.9, -9.4, 4.4), (27.6, 29.4, -18.2, -13.4)]   # mainland + Balearics, Canaries
+# mainland + Balearics, Canaries, the coast west of Lisbon, Madeira and Porto Santo. New areas go on the end, leaving
+# the older grids where they are, so a base in Spain stays where it was
+AREAS = [(35.9, 43.9, -9.4, 4.4), (27.6, 29.4, -18.2, -13.4), (38.4, 39.4, -9.6, -9.4), (32.6, 33.15, -17.3, -16.25)]
 
 def grid_points():
     pts = []

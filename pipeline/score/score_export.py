@@ -29,13 +29,13 @@ the full circle would hold if it were all like the land part, so coastal bases a
 floor stops a headland with a sliver of land scoring as if it were dense. The other measures (not climbing or airport) are each scaled linearly between its 5th and 95th percentile over the gate-passing bases and
 clipped to 0-1, so a few extreme places (dense lowland road grids, Teide) don't squash everyone else.
 
-Output: data/processed/score/spain.json (ODbL: derived from OpenStreetMap). Prints the validation table.
+Output: data/processed/score/bases.json (ODbL: derived from OpenStreetMap). Prints the validation table.
 Usage (score venv): python pipeline/score/score_export.py
 """
 import datetime as dt, json, math, os
 import numpy as np
 from scipy.spatial import cKDTree
-from common import ROOT, WORK
+from common import ROOT, SCORE_JSON, WORK
 from gate import GATE_N, REACH_KM, PLACES
 from reach_measures import AREAS, Grid, RADIUS
 
@@ -166,8 +166,8 @@ def main():
            'airports_status': ap['status'],
            'places': [{'name': p[0], 'lat': p[1], 'lon': p[2], 'expect': p[3]} for p in PLACES],
            'climbs': out_climbs, 'bases': out_bases}
-    os.makedirs(os.path.join(ROOT, 'data', 'processed', 'score'), exist_ok=True)
-    path = os.path.join(ROOT, 'data', 'processed', 'score', 'spain.json')
+    os.makedirs(os.path.dirname(SCORE_JSON), exist_ok=True)
+    path = SCORE_JSON
     with open(path, 'w', encoding='utf-8', newline='\n') as f: json.dump(doc, f, ensure_ascii=False, separators=(',', ':'))
     print(f'{n:,} bases ({gate.sum():,} pass the gate), {len(climbs):,} climbs; weather from {wb["points_fetched"]} of {len(pts)} points '
           f'-> {os.path.relpath(path, ROOT)} ({os.path.getsize(path) / 1e6:.1f} MB)')

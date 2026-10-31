@@ -57,7 +57,7 @@ main { max-width: 1440px; margin: 0 auto; padding: 24px max(20px, env(safe-area-
 .mapwrap { position: sticky; top: 84px; height: calc(100vh - 110px); min-height: 420px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); box-shadow: var(--shadow); }
 #map { height: 100%; }
 #inset { position: absolute; left: 10px; top: 10px; width: 34%; max-width: 230px; aspect-ratio: 1.6; z-index: 500; border: 2px solid var(--panel); border-radius: 8px; box-shadow: var(--shadow); }
-#inset::after { content: 'Canary Islands'; position: absolute; top: 4px; left: 6px; z-index: 600; font-size: .75rem; font-weight: 600; background: var(--panel); padding: 0 6px; border-radius: 4px; }
+#inset::after { content: 'Canaries & Madeira';position: absolute; top: 4px; left: 6px; z-index: 600; font-size: .75rem; font-weight: 600; background: var(--panel); padding: 0 6px; border-radius: 4px; }
 @media (max-width: 1100px) {
   .layout, .layout.adjusting { grid-template-columns: 1fr; }
   .mapwrap { position: relative; top: 0; height: 340px; min-height: 0; order: -1; }

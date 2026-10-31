@@ -187,21 +187,24 @@ score_regions = [os.path.basename(f)[:-5] for f in sorted(glob.glob(J('data', 'p
 for sid in score_regions:
     rel = f'data/score/{sid}.json'
     sizes[rel] = write(rel, read(J('data', 'processed', 'score', f'{sid}.json')))
-    # private prices (notaries' portal: personal and family use only), from pipeline/score/price_join.py
-    priv = J('data', 'private', 'score_prices.json') if sid == 'spain' else None
+    # private prices (notaries' portal, personal and family use only; Statistics Portugal), from pipeline/score/price_join.py
+    priv = J('data', 'private', 'score_prices.json') if sid == 'bases' else None
     has_prices = bool(PRIVATE and priv and os.path.exists(priv))
     if PRIVATE and not has_prices: print(f'  --private: no {priv}; run pipeline/score/price_join.py first')
     if has_prices: sizes[f'data/score/{sid}-prices.json'] = write(f'data/score/{sid}-prices.json', read(priv))
     credits = SCORE_CREDITS + (' <b>Private copy.</b> Property prices: Portal Estadístico del Notariado (Consejo General del Notariado), '
                                'average price per m² of notarised sales over the last 12 months, for personal and family use only; '
-                               'not for sharing or publication.' if has_prices else '')
-    page(f'score/{sid}/index.html', 'Cycling bases in Spain: score explorer',
-         'Explore candidate cycling bases across Spain, scored on climbs within reach, weather at the climbs, airports with flights from Scotland, quiet roads and walking.',
+                               'not for sharing or publication. In Portugal: Statistics Portugal (INE), median price per m² of sales over the last 12 months.' if has_prices else '')
+    page(f'score/{sid}/index.html', 'Cycling bases in Spain and Portugal: score explorer',
+         'Explore candidate cycling bases across Spain and Portugal, scored on climbs within reach, weather at the climbs, airports with flights from Scotland, quiet roads and walking.',
          [f'vendor/leaflet-{LEAFLET}/leaflet.css', 'dashboard', 'score'], read(J('site-src', 'pages', 'score.html')),
          credits + ABOUT_LINK, [
         f'<script src="{{{{ROOT}}}}vendor/leaflet-{LEAFLET}/leaflet.js"></script>',
         '<script>window.DC_SCORE = ' + json.dumps({'region': sid, 'root': '{{ROOT}}', 'prices': has_prices}) + ';</script>',
         '<script src="{{ROOT}}js/score.js"></script>'])
+if score_regions:   # the page's address until it took in Portugal (30 October 2026)
+    write('score/spain/index.html', '<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><title>Moved</title>'
+          '<meta http-equiv="refresh" content="0; url=../bases/"></head><body><a href="../bases/">The score explorer has moved.</a></body></html>')
 
 # ---------- about page ----------
 page('about/index.html', 'About Destination Cycling', 'How the Destination Cycling figures are made, how far to trust them, and where the data come from.',
@@ -222,10 +225,10 @@ def card(reg):
     return (f'      <a class="lp-card" href="{reg["id"]}/">\n        <span class="lp-tag">Available</span>\n'
             f'        <h3>{esc(reg["card"]["title"])}</h3>\n        <p>{esc(text)}</p>\n'
             f'        <span class="lp-go">{esc(reg["card"]["link"])}</span>\n      </a>')
-score_cards = ''.join('\n      <a class="lp-card" href="score/spain/">\n        <span class="lp-tag">Prototype</span>\n'
-                      '        <h3>Cycling bases in Spain</h3>\n        <p>Every 5 km of Spain scored on climbs within riding distance, weather at the climbs, '
+score_cards = ''.join('\n      <a class="lp-card" href="score/bases/">\n        <span class="lp-tag">Prototype</span>\n'
+                      '        <h3>Cycling bases in Spain and Portugal</h3>\n        <p>Every 5 km of both countries scored on climbs within riding distance, weather at the climbs, '
                       'flights from Scotland, quiet roads and walking, with weights you can change.</p>\n'
-                      '        <span class="lp-go">Explore the score</span>\n      </a>' for sid in score_regions if sid == 'spain')
+                      '        <span class="lp-go">Explore the score</span>\n      </a>' for sid in score_regions if sid == 'bases')
 index_body = fill(read(J('site-src', 'pages', 'index.html')),
                   {'RIDE_BARS': bars, 'REGION_CARDS': '\n'.join(card(r) for r in regions) + score_cards, 'YEARS': YEARS_LABEL})
 page('index.html', 'Destination Cycling',

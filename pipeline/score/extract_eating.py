@@ -26,11 +26,12 @@ def xy(lat, lon):
     lat, lon = np.asarray(lat, float), np.asarray(lon, float)
     return np.column_stack([lon * M * np.cos(np.radians(lat)), lat * M])
 
-def read(f):
-    pois, places = [], []
+def read(f, pois, places, seen):
     fp = osmium.FileProcessor(f).with_locations().with_filter(osmium.filter.KeyFilter('amenity', 'place'))
     for o in fp:
         tg = o.tags; k = KINDS.get(tg.get('amenity'))
+        if (o.is_node(), o.id) in seen: continue
+        seen.add((o.is_node(), o.id))
         if o.is_node() and not k:
             p = tg.get('place')
             if (p in TOWN or p in DISTRICT) and tg.get('name') and o.location.valid():
@@ -42,7 +43,6 @@ def read(f):
         elif o.is_way():
             pts = [(n.lat, n.lon) for n in o.nodes if n.location.valid()]
             if pts: pois.append((sum(p[0] for p in pts) / len(pts), sum(p[1] for p in pts) / len(pts), k))
-    return pois, places
 
 def centres(pois, places):
     lat = np.array([p[0] for p in pois]); lon = np.array([p[1] for p in pois]); kind = np.array([p[2] for p in pois])
@@ -74,12 +74,12 @@ def centres(pois, places):
     return out
 
 def main():
-    allc, total = [], 0
+    pois, places, seen = [], [], set()
     for f in sorted(glob.glob(os.path.join(OSM, '*-latest.osm.pbf'))):
-        t = time.time(); pois, places = read(f)
-        cs = centres(pois, places); allc += cs; total += len(pois)
-        print(f'{os.path.basename(f)}: {len(pois):,} places to eat and drink, {len(places):,} place names, '
-              f'{len(cs):,} eating-out centres ({time.time() - t:.0f} s)', flush=True)
+        t = time.time(); read(f, pois, places, seen)
+        print(f'{os.path.basename(f)}: {len(pois):,} places to eat and drink, {len(places):,} place names so far ({time.time() - t:.0f} s)', flush=True)
+    allc = centres(pois, places); total = len(pois)
+    print(f'{len(allc):,} eating-out centres', flush=True)
     allc.sort(key=lambda c: -c['n'])
     src = {os.path.basename(f): time.strftime('%Y-%m-%d', time.gmtime(os.path.getmtime(f))) for f in glob.glob(os.path.join(OSM, '*-latest.osm.pbf'))}
     json.dump({'walk_m': WALK_M, 'min_n': MIN_N, 'sep_m': SEP_M, 'osm': src, 'pois': total, 'centres': allc},

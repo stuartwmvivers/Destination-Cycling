@@ -21,10 +21,11 @@
     { id: 'ignore', label: 'Ignore flights', def: 'The airport factor is left out of the total.' },
   ];
   const FRAMES = [
-    { id: 'spain', label: 'All Spain', b: [[35.9, -9.4], [43.8, 4.4]] }, { id: 'mallorca', label: 'Mallorca', b: [[39.25, 2.3], [40.0, 3.5]] },
+    { id: 'spain', label: 'Spain & Portugal', b: [[35.9, -9.6], [43.8, 4.4]] }, { id: 'mallorca', label: 'Mallorca', b: [[39.25, 2.3], [40.0, 3.5]] },
     { id: 'girona', label: 'Girona', b: [[41.7, 2.3], [42.45, 3.3]] }, { id: 'pyrenees', label: 'Pyrenees', b: [[42.15, -1.6], [42.85, 2.2]] },
     { id: 'blanca', label: 'Costa Blanca', b: [[38.3, -0.75], [39.0, 0.3]] }, { id: 'malaga', label: 'Málaga & Granada', b: [[36.55, -5.4], [37.4, -3.1]] },
-    { id: 'canaries', label: 'Canaries', b: [[27.6, -18.2], [29.3, -13.4]] },
+    { id: 'canaries', label: 'Canaries', b: [[27.6, -18.2], [29.3, -13.4]] }, { id: 'portugal', label: 'Portugal', b: [[36.9, -9.6], [42.2, -6.1]] },
+    { id: 'madeira', label: 'Madeira', b: [[32.6, -17.3], [33.15, -16.25]] },
   ];
   const DEFAULTS = { w: AGREED, on: Object.fromEntries(COMPS.map((c) => [c.id, true])), flights: 'year_round', gate: true, gateN: 3, built: true, builtS: 20, pmin: null, pmax: null, ponly: false, spread: true, frame: 'spain', sel: null };
   const KEY = 'dc-score-' + CFG.region;
@@ -297,7 +298,7 @@
     box.innerHTML = `<h2>${esc(B.name[i] || 'Base')}</h2>
       <p class="cb-note">${status} · ${B.lat[i].toFixed(3)}, ${B.lon[i].toFixed(3)}</p>
       <p class="sc-total">${num(total[i], 1)}<span class="cb-tile-unit">/ 100</span></p>
-      ${PR ? `<p class="sc-price-line">${priceOf(i) ? `<b>${num(priceOf(i).eur_m2)} €/m²</b> in ${esc(priceOf(i).name)} (${esc(priceOf(i).province)}): average of notarised sales over the last 12 months, checked ${esc(priceOf(i).checked)}` : PR[i] === -2 ? 'Too few sales for a price' : 'No price looked up yet for this municipality'}</p>` : ''}
+      ${PR ? `<p class="sc-price-line">${priceOf(i) ? `<b>${num(priceOf(i).eur_m2)} €/m²</b> in ${esc(priceOf(i).name)} (${esc(priceOf(i).province)}): ${priceOf(i).src === 'ine' ? 'median of sales' : 'average of notarised sales'} over the last 12 months, ${priceOf(i).src === 'ine' ? 'to the' : 'checked'} ${esc(priceOf(i).checked)}` : PR[i] === -2 ? 'Too few sales for a price' : 'No price looked up yet for this municipality'}</p>` : ''}
       <div class="sc-bars">${rows}</div>
       ${monthBars ? `<p class="cb-note">Rideable days by month at the climbs' height (modelled, 2017–2025):</p>${monthBars}` : ''}
       <h3 class="sc-h3">Near climbs (foot within 26 km by road)</h3>

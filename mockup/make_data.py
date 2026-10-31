@@ -2,7 +2,8 @@
 """Data for the interface mock-up (docs/interface-plan.md, DC-27). Not part of the site build.
 
 Areas: bases one per SPREAD_KM (as the score page's "one per area" list): the best AREAS under the agreed default settings,
-the best AREAS counting summer-only flights, and the best REGION_MIN on the Balearics and the Canaries.
+the best AREAS counting summer-only flights, the best REGION_MIN on the Balearics, the Canaries and Madeira, and the
+best PORTUGAL_MIN on mainland Portugal.
 For each: its score components (so the mock-up can re-rank live), place, setting, airports, near climbs, and the year's
 weather at the base itself:
 - the high at the base's own height: the weather point's daily high (2017-2025), moved from the model's height
@@ -16,13 +17,13 @@ import datetime as dt, json, math, os, sys
 import numpy as np, rasterio
 from scipy.spatial import cKDTree
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'pipeline', 'score'))
-from common import ROOT, WORK, DEM, dem_name
-from price_shortlist import airport_curve, PROVINCES
+from common import ROOT, SCORE_JSON, WORK, DEM, dem_name
+from price_shortlist import airport_curve, province
 
-AREAS, REGION_MIN, SPREAD_KM, LAPSE = 80, 8, 15, 6.5
+AREAS, REGION_MIN, PORTUGAL_MIN, SPREAD_KM, LAPSE = 80, 8, 16, 15, 6.5
 EAT_KM, EAT_LIST = 10, 8   # eating-out centres within EAT_KM in a straight line (about a 15-minute drive); the nearest EAT_LIST names
 REGIONS = {'balearics': lambda lat, lon: 38.5 < lat < 40.3 and lon > 1.1,   # as app.js's WHERE filters
-           'canaries': lambda lat, lon: lat < 30}
+           'canaries': lambda lat, lon: lat < 30, 'madeira': lambda lat, lon: 32 < lat < 34}
 OUT = os.path.join(ROOT, 'mockup', 'data')
 
 def setting(built):
@@ -36,14 +37,15 @@ def elevation(lat, lon):
     return None if v < -100 else float(v)
 
 def main():
-    d = json.load(open(os.path.join(ROOT, 'data', 'processed', 'score', 'spain.json'), encoding='utf-8'))
+    d = json.load(open(SCORE_JSON, encoding='utf-8'))
     B, W, C = d['bases'], d['weights'], d['climbs']; N = len(B['lat'])
-    # spain.json lists bases as score_export.py does (bases.json with a near climb, in order); weather is keyed by network node
+    # the score file lists bases as score_export.py does (WORK/bases.json with a near climb, in order); weather is keyed by network node
     nodes = [b['node'] for b in json.load(open(os.path.join(WORK, 'bases.json')))['bases'] if b['near']]
-    assert len(nodes) == N, 'bases.json out of step with spain.json'
+    assert len(nodes) == N, 'WORK/bases.json out of step with the score file'
     wnode = {w['node']: w for w in json.load(open(os.path.join(WORK, 'weather_bases.json')))['bases']}
     wb = [wnode[n] for n in nodes]
     mu = json.load(open(os.path.join(WORK, 'municipalities.json'), encoding='utf-8'))
+    portuguese = lambda i: mu['base_muni'][i] >= 0 and mu['munis'][mu['base_muni'][i]]['ine'].startswith('PT')
     def total(i, seasonal):
         ap = airport_curve(B['yr_min'][i])
         if seasonal: ap = max(ap, d['seasonal_credit'] * airport_curve(B['any_min'][i]))
@@ -65,6 +67,7 @@ def main():
     top += spread(gated, AREAS, True, top)
     for region in REGIONS.values():
         top += spread([i for i in gated if region(B['lat'][i], B['lon'][i])], REGION_MIN, True, top)
+    top += spread([i for i in gated if portuguese(i) and B['lat'][i] > 34], PORTUGAL_MIN, True, top)
     top.sort(key=lambda i: -total(i, False))
 
     d0 = dt.date(2017, 1, 1); month = np.array([(d0 + dt.timedelta(days=k)).month for k in range(3287)])
@@ -116,7 +119,7 @@ def main():
         ap = lambda code: {'code': code, 'name': airports[code]['name'], 'edi': airports[code].get('edi'), 'gla': airports[code].get('gla')} if code else None
         areas.append({
             'id': f'a{i}', 'base': i, 'default_rank': rank, 'name': B['name'][i], 'lat': B['lat'][i], 'lon': B['lon'][i],
-            'muni': mm['name'] if mm else None, 'province': PROVINCES.get(mm['ine'][:2], '') if mm else '',
+            'muni': mm['name'] if mm else None, 'province': province(mm['ine']) if mm else '', 'country': 'PT' if portuguese(i) else 'ES',
             'elev': None if z is None else round(z), 'built5': B['built5'][i], 'setting': setting(B['built5'][i] or 0),
             'c': {k: B['c_' + k][i] for k in ['climbing', 'weather', 'quiet', 'walking', 'flat', 'gravel', 'built']},
             'near_n': len(B['near'][i]),
@@ -139,7 +142,7 @@ def main():
     names = sorted(set(B['name'])); name_ix = {n: k for k, n in enumerate(names)}
     r2 = lambda x: None if x is None else round(x, 2)
     grid = {'codes': codes, 'names': names,
-            'munis': [[m['name'], PROVINCES.get(m['ine'][:2], '')] for m in mu['munis']], 'mu': mu['base_muni'],
+            'munis': [[m['name'], province(m['ine'])] for m in mu['munis']], 'mu': mu['base_muni'],
             'lat': B['lat'], 'lon': B['lon'], 'nm': [name_ix[n] for n in B['name']], 'n': [len(x) for x in B['near']],
             **{k: [r2(x) for x in B['c_' + k]] for k in ['climbing', 'weather', 'quiet', 'walking', 'flat', 'gravel', 'built']},
             'ym': B['yr_min'], 'yc': [codes.index(c) if c in codes else -1 for c in B['yr_code']],

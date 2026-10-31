@@ -15,7 +15,7 @@ Output: WORK/weather_bases.json. Usage (score venv): python pipeline/score/weath
 """
 import datetime as dt, glob, json, math, os, sys
 import numpy as np
-from common import WORK
+from common import WORK, weather_cell
 
 LAPSE = 6.5            # C per 1000 m
 SUMMER_W = 0.25        # weight of June-September against October-May
@@ -42,7 +42,7 @@ def main(check):
     arrays = {pid: (np.array(w['tmax'], float), np.array(w['precip'], float), np.array(w['gust'], float), w['model_elev']) for pid, w in got.items()}
     out, own = [], 0
     for b in bases:
-        key = (math.floor(b['lat'] * 111.2 / km), math.floor(b['lon'] * 111.2 * math.cos(math.radians(b['lat'])) / km))
+        key = weather_cell(b['lat'], b['lon'], km)
         pid = cell_of.get(key)
         if pid not in got:   # borrow the nearest fetched point
             i = int(np.argmin((glat - b['lat']) ** 2 + ((glon - b['lon']) * math.cos(math.radians(b['lat']))) ** 2)); pid = gid[i]

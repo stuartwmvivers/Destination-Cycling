@@ -11,13 +11,14 @@ from common import OSM, WORK
 PLACE_RANK = {'city': 3, 'town': 2, 'village': 1}
 
 def main():
-    places, passes = [], []
+    places, passes, seen = [], [], set()
     for f in sorted(glob.glob(os.path.join(OSM, '*-latest.osm.pbf'))):
         t = time.time()
         fp = osmium.FileProcessor(f, osmium.osm.NODE).with_filter(osmium.filter.KeyFilter('place', 'mountain_pass', 'natural'))
         for o in fp:
             tg = o.tags; name = tg.get('name')
-            if not name or not o.location.valid(): continue
+            if not name or not o.location.valid() or o.id in seen: continue
+            seen.add(o.id)
             la, lo = round(o.location.lat, 5), round(o.location.lon, 5)
             if tg.get('place') in PLACE_RANK:
                 try: pop = int(tg.get('population', '').replace('.', '').replace(',', '').strip())

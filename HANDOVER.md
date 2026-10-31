@@ -278,6 +278,7 @@ Conclusions:
 | AEMET OpenData | Spanish national stations | Owner holds a key (JWT, **expires ~29 Jan 2027**; the owner must re-request at opendata.aemet.es). Header `api_key` | Reuse authorised citing AEMET: "© AEMET, Agencia Estatal de Meteorología". |
 | ECA&D (KNMI) | Planned: station validation across Europe | No registration for station data. `www.ecad.eu` was allowlisted, but the site returned **HTTP 503** on 21 Oct 2026. Retry. Bulk files may be served from another host. | Non-commercial research and education only. Acknowledge data providers; cite Klein Tank et al. (2002), *Int. J. Climatol.* 22, 1441–1453. |
 | Met Office MIDAS Open (via CEDA) | UK baseline stations (Dunning, Bristol), since 24 Oct 2026 | The owner has a CEDA account. Scripted downloads need a short-lived **access token** in `CEDA_ACCESS_TOKEN` (in the git-ignored `.env`); directory listings are public. Host `dap.ceda.ac.uk`, dataset version 202607 (daily temperature, daily rain, hourly mean wind). | Open Government Licence v3. Credited on the page, footer and About page. Before any formal publication, add the dataset DOIs from the CEDA catalogue for version 202607 (not yet recorded here). |
+| Statistics Portugal (INE), indicator 0012234 | Portugal's property prices on the score's private copy, since 30 Oct 2026 | No key. `www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0012234&lang=EN`, read into the cache (`prices-portugal/`) | Free to reuse crediting INE, but kept private by the owner's decision, like Spain's prices (`docs/portugal-plan.md`). Credited on the private copy. |
 | OpenStreetMap tiles (`tile.openstreetmap.org`) | Map background, via Leaflet 1.9.4 (vendored) | No key. The [tile usage policy](https://operations.osmfoundation.org/policies/tiles/) allows light use like this site with visible attribution; no bulk or automated downloading (the tests serve blank tiles instead). If traffic grows, switch to a tile provider: change the URL in `initMap` in `site-src/js/dashboard.js`. | Data © OpenStreetMap contributors, ODbL; attribution shown on the map and in the footer. Leaflet is BSD-2. (The geo-maps / Natural Earth / es-atlas outlines used until 24 Oct 2026 are gone.) |
 
 **Secrets:** keys go in environment variables (`METEOCAT_API_KEY`, `AEMET_API_KEY`, `CEDA_ACCESS_TOKEN`) or a git-ignored `.env`. Never in code, commits, the built page or issues. **Ask the owner for keys; they're not in this repo.**
@@ -365,6 +366,8 @@ Decisions of 24 Oct 2026 (spec section 8): the **climbing gate** is at least 3 p
 ### 9.4 Coverage expansion
 Order agreed in principle: all of Spain (including the Canaries) → Portugal → France → UK → Italy, Croatia, Slovenia. Candidate areas the owner and Claude expect to score well, as hypotheses for the score to test: Axarquía hinterland (behind Nerja/Torrox), inland Costa Blanca (Calpe/Dénia/Coll de Rates), Gran Canaria and Tenerife, Algarve hinterland (Monchique), Ronda/Grazalema, Eastern Pyrenees/Roussillon (winter-at-altitude will penalise these). **Mallorca is the benchmark**: terrain and weather are ideal, but prices are out of reach, so a place scoring close to Mallorca at a lower price is the goal.
 
+**Portugal, with Madeira and Porto Santo, was added to the score on 31 October 2026** (`docs/portugal-plan.md`, section 6 has the results and the before/after comparison of Spain). The score file is now `data/processed/score/bases.json` and the page `/score/bases/`, with a redirect from `/score/spain/`. Adding an area shifts every existing score slightly, because components are scaled by percentiles of all gate-passing bases. France is next.
+
 ### 9.5 Later ideas
 - Sea temperature (Copernicus Marine), which matters for shoulder-season comfort.
 - Winter daylight hours (a big difference between Scotland and Andalucía, and it limits ride length).
@@ -395,6 +398,7 @@ Order agreed in principle: all of Spain (including the Canaries) → Portugal �
 - The UK baselines' station figures come from paired stations ~9–11 km from the towns (Bristol's temperature from Almondsbury, north of the city), and MIDAS days run 09–09 UTC rather than midnight to midnight.
 - The heatmap is dense at phone width but usable. On the map, labels in tight clusters (Nerja / Frigiliana / Torrox) hide each other until you zoom in.
 - A fresh Open-Meteo fetch differs slightly from the committed rain-based figures (see 4.1); the committed data is a 16–17 Oct 2026 snapshot.
+- Madeira's score weather is less certain than the mainland's: the model can't resolve the island's steep terrain, and it has 10 km weather cells rather than 25 km for that reason (`docs/portugal-plan.md` section 6). There's no station check there yet. The smaller Canary Islands may have the same problem at 25 km.
 
 ---
 

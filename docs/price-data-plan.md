@@ -75,7 +75,7 @@ A similar, shorter request to the Catastro would ask whether the urban value-zon
 - **Private files (`data/private/`, git-ignored):**
   - `prices.json`: the lookups (portal name, province, €/m², date checked);
   - `score_prices.json`: the join.
-- **Build:** `python build/build_site.py --private` adds `data/score/spain-prices.json` and a "private copy" footer to the score page. The normal build never does. Two guards:
+- **Build:** `python build/build_site.py --private` adds `data/score/bases-prices.json` and a "private copy" footer to the score page. The normal build never does. Two guards:
   - the private build refuses to run in GitHub Actions;
   - `tests/data_check.py` fails in GitHub Actions if a price file is in `_site`.
 - **Page (private copy only):**
@@ -92,4 +92,6 @@ A similar, shorter request to the Catastro would ask whether the urban value-zon
   - a few figures look low for their towns (one Murcia town in particular) and should be checked with the detailed statistics before relying on them.
   - No portal figures are written in this repo, in documents or code. They live in `data/private/` only.
 - **Refresh after the full weather (30 October 2026):** the shortlist changed, so 37 more municipalities were looked up in the same way: 191 of 202 now have a figure, covering 881 bases. Tijarafe and Famorca had too few sales ("Without info"). The older lookups (27 Oct) were kept, not repeated. Search by name can land on the wrong town ("Lucena" offers Llucena first, "Elche" offers Elche de la Sierra), so check the name shown before recording a figure.
+- **Portugal (30 October 2026):** `price_join.py` also reads Statistics Portugal's median €/m² for all 308 municipalities (`docs/portugal-plan.md`), so no lookups are needed there. Spain's lookups now join on the INE code, not the position in `municipalities.json`, which changes whenever the extracts do. The `shortlist` covers Spain only.
+- **After adding Portugal (31 October 2026):** 24 new Spanish municipalities came into the shortlist, 12 of them in Galicia, where Porto's airport lifted the score. All were looked up: 214 of 226 lookups now have a figure, covering 949 Spanish bases. Puntagorda had too few sales. Check the place on the map as well as the name: the portal's "Mieres" is the village in Girona (the Asturian town has no search entry, so its figure came from the municipality label on the map, reached through postal code 33600), "O Rosal" lands on Cañada Rosal unless you search "Rosal" and pick it, and Cangas de Morrazo is listed as "Cangas".
 - **To refresh or extend:** rerun `price_shortlist.py [N]` after the weather completes, look up the new municipalities, then `price_join.py` and the private build.

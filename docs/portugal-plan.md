@@ -1,12 +1,12 @@
-# Plan: adding Portugal (draft for the owner, 29 October 2026)
+# Plan: adding Portugal (29 October 2026)
 
-Status: **draft, not started.** The owner chose Portugal before France (29 October 2026), in line with the order in HANDOVER 9.4. Portugal is about a fifth of Spain's size, so it's a cheap first test of covering more than one country.
+Status: **built and published 31 October 2026** (results in section 6). Portugal's walking scores are still being checked. The owner chose Portugal before France (29 October 2026), in line with the order in HANDOVER 9.4. Portugal is about a fifth of Spain's size, so it's a cheap first test of covering more than one country.
 
 ## 1. Inputs
 
 | Input | Source | State on 29 Oct 2026 |
 |---|---|---|
-| Roads, paths, place names, restaurants | Geofabrik `portugal-latest.osm.pbf` (427 MB, data of 28 Oct 2026; includes Madeira and the Azores) | **Downloaded** into the cache, in `osm-portugal/`. It is kept out of `osm/` on purpose: every script reads all `*-latest.osm.pbf` there, so it would leak into the Spain rerun (DC-18). |
+| Roads, paths, place names, restaurants | Geofabrik `portugal-latest.osm.pbf` (427 MB, data of 28 Oct 2026; includes Madeira and the Azores) | **Downloaded** into the cache. It was kept in `osm-portugal/` until the Spain rerun finished; it is now in `osm/` with the other extracts, and Madeira's terrain and land-cover tiles are in `dem/` and `landcover/`. |
 | Terrain | Copernicus DEM GLO-30 | **Mainland already cached** (Spain's tiles reach 10° W). Madeira needs 3 more tiles. |
 | Land cover | ESA WorldCover | **Mainland already cached.** Madeira and Porto Santo need 2 more tiles. |
 | Weather | Open-Meteo, same method (HANDOVER 4) | Roughly 100 points, under a day at the daily limit. Can't start until Spain's download finishes (they share the allowance). |
@@ -59,3 +59,41 @@ Spain's numbers should not change except near the border, where bases gain Portu
 
 - **Madeira is included** (with Porto Santo): year-round direct flights from both airports, big climbs and mild winters. The Azores are left out for now: no direct flights.
 - **Portugal's prices stay private**, like Spain's, until the owner decides otherwise, even though INE's data could be published (section 2).
+
+## 6. What was built and found (31 October 2026)
+
+**Totals:** 19,956 bases on the 5 km grid, 9,216 past the gate; 4,126 climbs (68 in Madeira); 683 weather points; 101 areas in the mock-up (82 in Spain, 19 in Portugal, 5 of them in Madeira).
+
+**Known places** (rank among the 9,216 gate-passing bases, default weights):
+
+| Place | Expected | Gate | Rank | Weakest parts |
+|---|---|---|---|---|
+| Monchique | pass | pass | 903 | Walking |
+| Sintra | ? | pass | 1,792 | Gravel, walking |
+| Funchal | pass | pass | 2,740 | Gravel, flat roads |
+| Vila do Gerês | pass | pass | 3,780 | Weather (wet), flat roads |
+| Covilhã (Serra da Estrela) | pass | pass | 5,108 | Walking, quiet roads |
+| Azeitão (Arrábida) | ? | fail | - | Too few climbs nearby |
+| Aveiro, Beja | fail | fail | - | As expected |
+
+The best Portuguese areas in the default list are Montaria (47th), Silves (49th) and Madalena do Mar (51st). Mainland Portugal falls short of Spain on weather and, more sharply, walking: across the listed areas it averages 0.61 against 0.80 for weather and 0.13 against 0.58 for walking.
+
+**Portugal's walking score needs a check.** The median Portuguese gate-passing base has 267 km of mapped walking paths and 19 named peaks within reach, against 615 km and 109 in Spain east of 6° W. Some of that will be real, since Portugal has fewer high mountains, but some may be thinner OpenStreetMap mapping, and this hasn't been tested. Walking carries 10% of the score, so it could be holding Portuguese areas back by several points. Monchique's 0.09 looks low for a place on the Via Algarviana.
+
+**Madeira's weather needed smaller cells.** With 25 km cells, one model point on the island's spine served both coasts, giving Funchal 152 wet days and 180 windy days a year. The model's cell on the south coast gives 114 and 104. For comparison, real Funchal has about 80 wet days a year on a third-party figure, not IPMA's own, so the coastal cell overcounts by about 40%, in line with the 30–70% measured in Spain (HANDOVER 5.4), and the spine point by about double. Madeira and Porto Santo now use 10 km cells (`common.weather_cell`), and include every base with a near climb, so Porto Santo no longer borrows from Madeira. The rideable-day rule and every other area's points are unchanged. Funchal's weather component went from 0.11 to 0.47.
+
+Madeira's figures are still pessimistic and less certain than the mainland's. The model can't resolve the island's steep terrain, and there's no station check there yet. The same risk applies in principle to the smaller Canary Islands, whose 25 km cells were not changed.
+
+**Spain, before and after** (published file against the new one, 10,734 bases in both):
+
+- Spanish grid points and climbs: 16,609 of 16,609 bases are at the same grid point, and 3,107 of 3,113 climbs are identical (the others are border climbs).
+- Rank correlation 0.99; all of the old top 50 are still in the top 200, and 46 in the top 50. The top ten are the same bases in a slightly different order.
+- East of 6° W only 1 of 8,306 bases moved by more than one point. The small shifts everywhere come from the method, not from changed data: components are scaled between the 5th and 95th percentile of gate-passing bases, and those now include Portugal.
+- West of 6° W, 1,026 of 2,428 bases moved by more than a point, up to +18: 1,399 bases now have Porto as their nearest year-round airport, instead of Santander (990) or Madrid (409), and 2 have Lisbon. 7 border bases passed the gate because of climbs in Portugal.
+- 28 bases near the border are at slightly different positions, so they aren't matched in the count above. None is east of 6° W.
+- Every Spanish base with a price kept the same figure.
+- This qualifies section 3's "should not change except near the border": every Spanish score can shift slightly, usually by less than a point, whenever a new area is added.
+
+**Prices:** 24 more Spanish lookups were needed (`docs/price-data-plan.md`), 12 of them in Galicia, where Porto's airport lifted the score. Portugal's 308 municipalities come from INE; 304 matched OSM.
+
+**A fetch stopped overnight** on 31 October after 23 of the 99 new points, with no error logged. Rerunning it resumed from where it stopped.

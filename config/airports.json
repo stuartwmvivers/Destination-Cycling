@@ -1,5 +1,5 @@
 {
-  "status": "Checked 27 Oct 2026 (owner asked Claude to do it): Wikipedia's Edinburgh and Glasgow airlines-and-destinations tables, then Google Flights direct-only searches for Wed 13 Jan and Wed 10 Feb 2027 (which also show the nearest days with direct flights). Winter frequencies are estimates from those searches, not timetables. Re-check each autumn.",
+  "status": "Checked 27 Oct 2026 (owner asked Claude to do it): Wikipedia's Edinburgh and Glasgow airlines-and-destinations tables, then Google Flights direct-only searches for Wed 13 Jan and Wed 10 Feb 2027 (which also show the nearest days with direct flights). Winter frequencies are estimates from those searches, not timetables. Re-check each autumn. Portugal's four airports were checked the same way on 29 Oct 2026.",
   "rule": "Spec: drive time to the nearest airport with YEAR-ROUND direct flights from Edinburgh (EDI) or Glasgow (GLA). 'year_round' counts in full; 'seasonal' counts much less in winter; 'none' or 'unknown' don't count until confirmed. The score page lets the user choose: year-round direct only, seasonal direct counted at reduced credit, or flights ignored (owner, 25 Oct 2026). Owner, 27 Oct 2026: both EDI and GLA count (routes are similar; the choice is by flight times). Year-round means direct flights every month November-March, at least about twice a week, because trips range from a few days at short notice to a couple of months.",
   "sources": [
     "Wikipedia: Edinburgh Airport and Glasgow Airport, 'Airlines and destinations' (read 27 Oct 2026)",
@@ -188,6 +188,46 @@
       "gla": "none",
       "confidence": "high",
       "note": "Wikipedia lists Vueling year-round, but no direct flights found on or near 13 Jan or 10 Feb 2027; easyJet resumes 30 Mar 2027"
+    },
+    {
+      "code": "FAO",
+      "name": "Faro",
+      "lat": 37.014,
+      "lon": -7.966,
+      "edi": "year_round",
+      "gla": "seasonal",
+      "confidence": "medium",
+      "note": "Ryanair from EDI about 2 a week in January (Mon, Sat), 3 in February: only just meets the rule. GLA: none found in mid-January; easyJet and Jet2 back by February"
+    },
+    {
+      "code": "LIS",
+      "name": "Lisbon",
+      "lat": 38.774,
+      "lon": -9.134,
+      "edi": "year_round",
+      "gla": "seasonal",
+      "confidence": "high",
+      "note": "Ryanair from EDI about 5 a week in January. GLA: none found in mid-January; easyJet by February"
+    },
+    {
+      "code": "OPO",
+      "name": "Porto",
+      "lat": 41.248,
+      "lon": -8.681,
+      "edi": "year_round",
+      "gla": "seasonal",
+      "confidence": "high",
+      "note": "Ryanair from EDI about 3 a week in January (Sun, Mon, Fri). GLA: none in January; from February"
+    },
+    {
+      "code": "FNC",
+      "name": "Funchal",
+      "lat": 32.698,
+      "lon": -16.774,
+      "edi": "year_round",
+      "gla": "seasonal",
+      "confidence": "high",
+      "note": "Jet2 from EDI 2 a week (Mon, Thu). GLA: Jet2 weekly all winter (Mon), below the twice-a-week rule"
     }
   ]
 }

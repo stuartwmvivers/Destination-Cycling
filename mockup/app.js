@@ -30,9 +30,11 @@
     { id: 'quiet', label: 'Quietest', w: { climbing: 25, weather: 15, airport: 10, quiet: 25, walking: 15, flat: 5, gravel: 5 } },
   ];
   const WHERE = [
-    { id: 'all', label: 'All Spain', f: () => true },
-    { id: 'main', label: 'Mainland', f: (a) => a.lat > 30 && !isBalearic(a) },
+    { id: 'all', label: 'Spain & Portugal', f: () => true },
+    { id: 'main', label: 'Mainland Spain', f: (a) => a.country === 'ES' && a.lat > 30 && !isBalearic(a) },
+    { id: 'portugal', label: 'Portugal', f: (a) => a.country === 'PT' && a.lat > 34 },
     { id: 'canaries', label: 'Canary Islands', f: (a) => a.lat < 30 },
+    { id: 'madeira', label: 'Madeira', f: (a) => a.lat > 30 && a.lat < 34 },
     { id: 'balearics', label: 'Balearics', f: (a) => isBalearic(a) },
   ];
   const isBalearic = (a) => a.lat > 38.5 && a.lat < 40.3 && a.lon > 1.1;
@@ -65,6 +67,7 @@
     return S.quieter ? base * (1 - D.meta.built.strength * (a.c.built || 0)) : base;
   }
   const priceOf = (a) => PRICE[a.id] || null;
+  const priceKind = (p) => (p.src === 'ine' ? 'median' : 'average');
   const passes = (a) => {
     if (a.near_n < S.minClimbs) return false;
     if (!WHERE.find((w) => w.id === S.where).f(a)) return false;
@@ -170,7 +173,7 @@
     app.innerHTML = `
       <section class="intro">
         <h1>Places worth a look</h1>
-        <p>Areas of Spain for cycling holidays and a holiday home, best first. Each is judged on the climbs nearby, the winter weather,
+        <p>Areas of Spain and Portugal for cycling holidays and a holiday home, best first. Each is judged on the climbs nearby, the winter weather,
         flights from Edinburgh and Glasgow, quiet roads and walking. Choose your priorities, or open <b>Adjust</b> to fine-tune them.</p>
       </section>
       <div class="bar">
@@ -186,7 +189,7 @@
       <div class="layout ${adjustOpen ? 'adjusting' : ''}">
         ${adjustOpen ? `<aside class="adjust" aria-label="Adjust the ranking">${adjustHtml()}</aside>` : ''}
         <section class="list" id="list" aria-label="Places, best first"></section>
-        <div class="mapwrap"><div id="map" role="region" aria-label="Map of the places"></div><div id="inset" aria-label="Canary Islands"></div></div>
+        <div class="mapwrap"><div id="map" role="region" aria-label="Map of the places"></div><div id="inset" aria-label="Canary Islands and Madeira"></div></div>
       </div>`;
     app.querySelectorAll('[data-preset]').forEach((b) => b.onclick = () => { S.w = { ...PRESETS.find((p) => p.id === b.dataset.preset).w }; save(); refresh(); });
     app.querySelectorAll('[data-where]').forEach((b) => b.onclick = () => { S.where = b.dataset.where; save(); refresh(true); });
@@ -222,7 +225,7 @@
         <div class="fact">${ICON.fork}<div>${(() => { const e = eatHead(a); return e
           ? `<b>${esc(e.name)}, ${kmWord(e.km)}</b><span>${eatPlaces(e.n)}${a.eat.within > 1 ? `; ${a.eat.within - 1} more town${a.eat.within > 2 ? 's' : ''} or village${a.eat.within > 2 ? 's' : ''} within ${D.meta.eating.km} km` : ''}</span>`
           : `<b>Eating out: ${esc(a.eat.nearest.name)}, ${num(a.eat.nearest.km)} km</b><span>nothing closer on the map</span>`; })()}</div></div>
-        ${Object.keys(PRICE).length ? `<div class="fact">${ICON.home}<div><b>${p ? `About €${num(Math.round(p.eur_m2 / 50) * 50)} per m²` : 'No price yet'}</b><span>${p ? 'average of recent sales' : 'too few sales recorded'}</span></div></div>` : ''}
+        ${Object.keys(PRICE).length ? `<div class="fact">${ICON.home}<div><b>${p ? `About €${num(Math.round(p.eur_m2 / 50) * 50)} per m²` : 'No price yet'}</b><span>${p ? `${priceKind(p)} of recent sales` : 'too few sales recorded'}</span></div></div>` : ''}
       </div>
       <div class="strip" aria-hidden="true">
         <div class="strip-cap">Afternoon warmth, month by month</div>
@@ -250,7 +253,7 @@
     p.getElement()?.firstChild?.classList.toggle('hl', on);
     if (on) p.setZIndexOffset(1000); else p.setZIndexOffset(0);
   }
-  let inset = null;   // the Canaries, as on Spanish maps: a small inset, so the main map can stay close on the mainland
+  let inset = null;   // the Canaries and Madeira, as on Spanish maps: a small inset, so the main map can stay close on the mainland
   const tiles = () => L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 17, attribution: '© OpenStreetMap contributors' });
   function drawMap() {
     map = L.map('map', { scrollWheelZoom: false, zoomSnap: 0.25, zoomControl: false });
@@ -258,7 +261,7 @@
     tiles().addTo(map);
     inset = L.map('inset', { zoomControl: false, attributionControl: false, dragging: false, scrollWheelZoom: false, doubleClickZoom: false, boxZoom: false, keyboard: false, touchZoom: false });
     tiles().addTo(inset);
-    inset.fitBounds([[27.6, -18.2], [29.4, -13.4]]);
+    inset.fitBounds([[27.6, -18.2], [33.2, -13.4]]);
     map.on('unload', () => { inset.remove(); inset = null; });
     drawPins(true);
   }
@@ -266,7 +269,7 @@
     if (!map) return;
     Object.values(pins).forEach((p) => p.remove()); pins = {};
     const items = ORDER.slice(0, shown);
-    const canary = (a) => a.lat < 30, mixed = items.some(canary) && items.some((a) => !canary(a));
+    const canary = (a) => a.lat < 34, mixed = items.some(canary) && items.some((a) => !canary(a));
     $('#inset').style.display = mixed ? '' : 'none';
     items.slice().reverse().forEach((a) => {
       const icon = L.divIcon({ className: '', html: `<div class="pin${favs.includes(a.id) ? ' fav' : ''}">${a.rank}</div>`, iconSize: [30, 30], iconAnchor: [15, 15] });
@@ -315,7 +318,7 @@
         <h3>Home prices (private)</h3>
         <div class="price-in"><label>From € <input type="number" id="pmin" min="0" step="100" inputmode="numeric" value="${S.pmin ?? ''}"></label>
         <label>to € <input type="number" id="pmax" min="0" step="100" inputmode="numeric" value="${S.pmax ?? ''}"></label><span>per m²</span></div>
-        <p class="hint">Average price of recent sales in the municipality. Leave empty to see everywhere.</p>
+        <p class="hint">Average or median price of recent sales in the municipality. Leave empty to see everywhere.</p>
       </div>` : ''}
       <button type="button" class="btn" id="reset">Back to our agreed balance</button>`;
   }
@@ -368,7 +371,7 @@
         <div class="tile"><div class="k">Good riding days</div><div class="v">${num(a.ride_year)}</div><div class="s">a year, ${winterRide(a)} of them Oct to May</div></div>
         <div class="tile"><div class="k">Big climbs nearby</div><div class="v">${a.near_n}</div><div class="s">300 m or more, within 26 km</div></div>
         <div class="tile"><div class="k">Nearest useful airport</div><div class="v">${ap ? mins(ap.min) : '–'}</div><div class="s">${ap ? `${esc(ap.name)}, ${esc(flightsWord(ap))}` : 'none with direct flights'}</div></div>
-        ${Object.keys(PRICE).length ? `<div class="tile"><div class="k">Homes</div><div class="v">${p ? `€${num(Math.round(p.eur_m2 / 50) * 50)}` : '–'}</div><div class="s">${p ? 'per m², recent sales average' : 'too few sales recorded'}</div></div>` : ''}
+        ${Object.keys(PRICE).length ? `<div class="tile"><div class="k">Homes</div><div class="v">${p ? `€${num(Math.round(p.eur_m2 / 50) * 50)}` : '–'}</div><div class="s">${p ? `per m², recent sales ${priceKind(p)}` : 'too few sales recorded'}</div></div>` : ''}
       </div>
       <div class="agrid">
         <div>
@@ -429,7 +432,7 @@
           </section>
           <section class="sec">
             <h2>${ICON.home} Homes</h2>
-            ${p ? `<p>Homes in ${esc(p.name)} sold for <b>about €${num(Math.round(p.eur_m2 / 50) * 50)} per m²</b> on average over the last 12 months (all homes: flats, town houses and country houses together). A broad guide only; real prices depend on the property.</p>`
+            ${p ? `<p>Homes in ${esc(p.name)} sold for <b>about €${num(Math.round(p.eur_m2 / 50) * 50)} per m²</b> ${p.src === 'ine' ? 'at the median' : 'on average'} over the last 12 months (all homes: flats, town houses and country houses together). A broad guide only; real prices depend on the property.</p>`
               : Object.keys(PRICE).length ? '<p>No price yet: too few sales recorded in this municipality.</p>' : '<p class="soon">Prices appear in the private family copy.</p>'}
             <div class="links">
               <a class="btn" href="https://www.google.com/search?q=${q}+casas+en+venta+idealista" target="_blank" rel="noopener">Homes for sale (Idealista)</a>
@@ -499,12 +502,13 @@
     app.querySelectorAll('[data-pick]').forEach((b) => b.onclick = () => { toggleCmp(b.dataset.pick); comparePage(); });
   }
 
-  // ---------- explore: every 5 km point in Spain, coloured by how well it suits the current choices ----------
+  // ---------- explore: every 5 km point in Spain and Portugal, coloured by how well it suits the current choices ----------
   const FRAMES = [
-    { id: 'spain', label: 'All Spain', b: [[35.9, -9.4], [43.8, 4.4]] }, { id: 'malaga', label: 'Málaga & Granada', b: [[36.55, -5.4], [37.4, -3.1]] },
+    { id: 'spain', label: 'Spain & Portugal', b: [[35.9, -9.6], [43.8, 4.4]] }, { id: 'malaga', label: 'Málaga & Granada', b: [[36.55, -5.4], [37.4, -3.1]] },
     { id: 'blanca', label: 'Costa Blanca', b: [[38.3, -0.75], [39.0, 0.3]] }, { id: 'girona', label: 'Girona', b: [[41.7, 2.3], [42.45, 3.3]] },
     { id: 'pyrenees', label: 'Pyrenees', b: [[42.15, -1.6], [42.85, 2.2]] }, { id: 'mallorca', label: 'Mallorca', b: [[39.25, 2.3], [40.0, 3.5]] },
-    { id: 'canaries', label: 'Canary Islands', b: [[27.6, -18.2], [29.3, -13.4]] },
+    { id: 'canaries', label: 'Canary Islands', b: [[27.6, -18.2], [29.3, -13.4]] }, { id: 'portugal', label: 'Portugal', b: [[36.9, -9.6], [42.2, -6.1]] },
+    { id: 'madeira', label: 'Madeira', b: [[32.6, -17.3], [33.15, -16.25]] },
   ];
   const BANDS = ['Limited', 'Fair', 'Good', 'Very good', 'Excellent'];
   const CUTS = [0.2, 0.5, 0.8, 0.95];   // share of qualifying points below each band: the top 5% are Excellent
@@ -547,7 +551,7 @@
     const pre = PRESETS.find((p) => FACTORS.every((f) => (+S.w[f.id] || 0) === p.w[f.id]));
     app.innerHTML = `
       <section class="xhead">
-        <div><h1>Explore the map</h1><p class="muted">Every spot in Spain, coloured by how well it suits your choices. Wander, zoom in, tap anywhere.</p></div>
+        <div><h1>Explore the map</h1><p class="muted">Every spot in Spain and Portugal, coloured by how well it suits your choices. Wander, zoom in, tap anywhere.</p></div>
         <div class="bar">
           <span class="bar-lab">Priorities</span>
           <div class="chips" role="group" aria-label="Priorities">
@@ -559,10 +563,10 @@
       </section>
       ${adjustOpen ? `<aside class="adjust drawer" aria-label="Adjust the colours">${adjustHtml()}</aside>` : ''}
       <div class="xwrap">
-        <div id="xmap" role="region" aria-label="Map of Spain coloured by suitability"></div>
+        <div id="xmap" role="region" aria-label="Map of Spain and Portugal coloured by suitability"></div>
         <div class="legend" id="legend"></div>
         <div class="xinfo" id="xinfo" hidden></div>
-        <div class="xloading" id="xloading">Colouring in Spain…</div>
+        <div class="xloading" id="xloading">Colouring in the map…</div>
       </div>`;
     rank();
     app.querySelectorAll('[data-preset]').forEach((b) => b.onclick = () => { S.w = { ...PRESETS.find((p) => p.id === b.dataset.preset).w }; save(); refresh(); });
@@ -692,7 +696,7 @@
   function aboutPage() {
     app.innerHTML = `<section class="prose">
       <h1>About this site</h1>
-      <p>It helps us find areas of Spain that suit our cycling holidays, and perhaps a holiday home. Every place is judged the same way, from open data, so the list is a fair starting point for a closer look, not a verdict.</p>
+      <p>It helps us find areas of Spain and Portugal that suit our cycling holidays, and perhaps a holiday home. Every place is judged the same way, from open data, so the list is a fair starting point for a closer look, not a verdict.</p>
       <h2>How places are judged</h2>
       <ul>
         <li><b>Climbing:</b> climbs of 300 m or more whose foot is within 26 km by road.</li>
@@ -702,9 +706,9 @@
         <li><b>Eating out</b> (shown, not scored): restaurants, cafés and bars from OpenStreetMap, grouped into clusters, each counted within about a 10-minute walk (${num(D.meta.eating.walk_m)} m in a straight line). Distances are in a straight line. Villages are often under-mapped, so small numbers mean “at least”.</li>
         <li><b>Quieter surroundings:</b> places in or beside big towns and resort strips move down a little.</li>
       </ul>
-      <p>In this mock-up the list holds the best ${A.length} areas under the agreed balance; the real site will rank every area of Spain.</p>
+      <p>In this mock-up the list holds the best ${A.length} areas under the agreed balance; the real site will rank every area of both countries.</p>
       <h2>Sources</h2>
-      <p>Map data © OpenStreetMap contributors (ODbL). Terrain: Copernicus DEM GLO-30. Land cover: ESA WorldCover 2021. Weather: Open-Meteo historical archive (2017–2025). Flights checked ${esc(D.meta.airports_status.slice(8, 19))}.${Object.keys(PRICE).length ? ' Home prices: Portal Estadístico del Notariado, for personal and family use only.' : ''}</p>
+      <p>Map data © OpenStreetMap contributors (ODbL). Terrain: Copernicus DEM GLO-30. Land cover: ESA WorldCover 2021. Weather: Open-Meteo historical archive (2017–2025). Flights checked ${esc(D.meta.airports_status.slice(8, 19))}.${Object.keys(PRICE).length ? ' Home prices: Portal Estadístico del Notariado, for personal and family use only; in Portugal, Statistics Portugal (INE).' : ''}</p>
     </section>`;
   }
 

@@ -74,14 +74,15 @@ def structure(tags):
     if tags.get('bridge') not in (None, 'no'): return 1
     return 0
 
-def read_ways(path, keep=keep, oneway=oneway, cls_of=CLS):
-    """Way node ids and coordinates for kept ways, as flat arrays plus per-way offsets and attributes."""
+def read_ways(path, seen, keep=keep, oneway=oneway, cls_of=CLS):
+    """Way node ids and coordinates for kept ways not in seen, as flat arrays plus per-way offsets and attributes."""
     ids, lat, lon, off, cls, ow, st = array('q'), array('d'), array('d'), array('q', [0]), array('b'), array('b'), array('b')
     fp = osmium.FileProcessor(path).with_locations().with_filter(osmium.filter.KeyFilter('highway'))
     for o in fp:
-        if not o.is_way() or not keep(o.tags): continue
+        if not o.is_way() or o.id in seen or not keep(o.tags): continue
         refs = [(n.ref, n.lat, n.lon) for n in o.nodes if n.location.valid()]
         if len(refs) < 2: continue
+        seen.add(o.id)
         d = oneway(o.tags)
         if d == -1: refs.reverse(); d = 1
         for r, la, lo in refs: ids.append(r); lat.append(la); lon.append(lo)
@@ -100,9 +101,9 @@ def main(drive=False):
         name = 'drive.npz'
     else:
         classes, rules, name = CLASSES, {}, 'network.npz'
-    parts = []
+    parts, seen = [], set()
     for f in sorted(glob.glob(os.path.join(OSM, '*-latest.osm.pbf'))):
-        t = time.time(); parts.append(read_ways(f, **rules))
+        t = time.time(); parts.append(read_ways(f, seen, **rules))
         print(f'{os.path.basename(f)}: {len(parts[-1][3]) - 1:,} ways kept ({time.time() - t:.0f} s)', flush=True)
     ids = np.concatenate([p[0] for p in parts]); lat = np.concatenate([p[1] for p in parts]); lon = np.concatenate([p[2] for p in parts])
     offs, base = [], 0

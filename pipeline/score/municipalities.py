@@ -1,33 +1,42 @@
 #!/usr/bin/env python3
 """Municipality of every base, for property prices (phase 6; docs/price-data-plan.md).
 
-Municipal boundaries are OSM boundary=administrative, admin_level=8 areas, with the INE municipality code
-(`ine:municipio`) where tagged. Each base takes the municipality it lies in (or the nearest within 2 km, for a point
-just offshore or on a boundary gap).
+Municipal boundaries are OSM boundary=administrative areas: admin_level=8 in Spain, with the INE municipality code
+(`ine:municipio`) where tagged; admin_level=7 in Portugal (the 308 concelhos; level 8 is a parish), with Statistics
+Portugal's four-digit code in `ref:ine`, stored as 'PT' + the code. Each base takes the municipality it lies in (or
+the nearest within 2 km, for a point just offshore or on a boundary gap).
 Output: WORK/municipalities.json: {'munis': [{id, name, ine, lat, lon}], 'base_muni': [index per base in
-data/processed/score/spain.json order, or -1]}.
+data/processed/score/bases.json order, or -1]}. Ids change when the extracts do: join on `ine`, not `id`.
 Usage (score venv): python pipeline/score/municipalities.py
 """
 import glob, json, os, time
 import numpy as np
 import osmium, shapely
 from shapely import wkb
-from common import OSM, ROOT, WORK
+from common import OSM, SCORE_JSON, WORK
+
+def code(tags):
+    """The municipality's code ('' if it has none), or None if this boundary isn't a municipality."""
+    es, pt = tags.get('ine:municipio', ''), tags.get('ref:ine', '')
+    if pt and not es: return 'PT' + pt if tags.get('admin_level') == '7' else None
+    return es if tags.get('admin_level') == '8' else None
 
 def main():
     t = time.time()
     fab = osmium.geom.WKBFactory()
-    names, ines, geoms = [], [], []
+    names, ines, geoms, seen = [], [], [], set()
     for f in sorted(glob.glob(os.path.join(OSM, '*-latest.osm.pbf'))):
         fp = osmium.FileProcessor(f).with_areas(osmium.filter.TagFilter(('boundary', 'administrative')))
         for o in fp:
-            if not isinstance(o, osmium.osm.Area) or o.tags.get('admin_level') != '8' or o.from_way(): continue
+            if not isinstance(o, osmium.osm.Area) or o.from_way() or o.orig_id() in seen: continue
+            k = code(o.tags)
+            if k is None: continue
             try: g = wkb.loads(fab.create_multipolygon(o), hex=True)
             except Exception: continue
-            names.append(o.tags.get('name', '')); ines.append(o.tags.get('ine:municipio', '')); geoms.append(g)
+            seen.add(o.orig_id()); names.append(o.tags.get('name', '')); ines.append(k); geoms.append(g)
         print(f'{os.path.basename(f)}: {len(geoms):,} municipalities so far ({time.time() - t:.0f} s)', flush=True)
     tree = shapely.STRtree(geoms)
-    B = json.load(open(os.path.join(ROOT, 'data', 'processed', 'score', 'spain.json'), encoding='utf-8'))['bases']
+    B = json.load(open(SCORE_JSON, encoding='utf-8'))['bases']
     pts = shapely.points(np.array(B['lon']), np.array(B['lat']))
     base_muni = np.full(len(pts), -1)
     hit_pt, hit_geom = tree.query(pts, predicate='within')

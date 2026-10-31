@@ -56,6 +56,7 @@ def ele(v):
 def main():
     lat, lon, ln, cat, rt = array('d'), array('d'), array('f'), array('b'), array('b')
     plat, plon, pele = array('d'), array('d'), array('f')
+    seen_way, seen_peak = set(), set()
     for f in sorted(glob.glob(os.path.join(OSM, '*-latest.osm.pbf'))):
         t = time.time(); routes = route_ways(f)
         print(f'{os.path.basename(f)}: {len(routes):,} ways in hiking routes ({time.time() - t:.0f} s)', flush=True)
@@ -63,15 +64,16 @@ def main():
         fp = osmium.FileProcessor(f).with_locations().with_filter(osmium.filter.KeyFilter('highway', 'natural'))
         for o in fp:
             if o.is_node():
-                if o.tags.get('natural') == 'peak':
+                if o.tags.get('natural') == 'peak' and o.id not in seen_peak:
                     e = ele(o.tags.get('ele'))
-                    if e is not None: plat.append(o.location.lat); plon.append(o.location.lon); pele.append(e)
+                    if e is not None: plat.append(o.location.lat); plon.append(o.location.lon); pele.append(e); seen_peak.add(o.id)
                 continue
-            if not o.is_way() or 'highway' not in o.tags: continue
+            if not o.is_way() or 'highway' not in o.tags or o.id in seen_way: continue
             c = category(o.tags)
             if not c: continue
             pts = [(n.lat, n.lon) for n in o.nodes if n.location.valid()]
             if len(pts) < 2: continue
+            seen_way.add(o.id)
             r = 1 if o.id in routes else 0
             p = np.array(pts)
             seg = np.hypot(np.diff(p[:, 0]) * 111195.0, np.diff(p[:, 1]) * 111195.0 * np.cos(np.radians(p[:-1, 0])))

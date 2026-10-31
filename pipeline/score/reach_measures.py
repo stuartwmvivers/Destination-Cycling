@@ -3,7 +3,7 @@
 (network.npz + profiles.npz), off-road features (features.npz) and ESA WorldCover land cover.
 
 Each measure sums features within a straight-line radius of a point (a disc, by FFT convolution): far faster
-than road distances for all of Spain, and close enough for these secondary measures.
+than road distances across whole countries, and close enough for these secondary measures.
   quiet_km    minor paved roads: tertiary(+link) and unclassified 1.0, secondary(+link) and 'road' 0.5;
               primary roads and town streets (residential) don't count; roads in built-up land (WorldCover) count
               URBAN_QUIET (0.1; 0.3 until 25 Oct 2026, when Barcelona's suburbs still ranked high), so suburban sprawl
@@ -16,11 +16,11 @@ than road distances for all of Spain, and close enough for these secondary measu
               part of a waymarked hiking route. Radius 15 km.
   peaks       named peaks >= 300 m, weighted by height / 1000. Radius 15 km.
   land15/20   km2 of usable land within 15 / 20 km: land in WorldCover (not water, not sea or no-data) AND within
-              LAND_NEAR_KM of a junction of the Spanish network, so Portugal, France and Andorra (outside the OSM
-              extract, so roadless here) don't count as empty land. score_export.py divides by it (25 Oct 2026).
+              LAND_NEAR_KM of a junction of the network, so France and Andorra (outside the OSM
+              extracts, so roadless here) don't count as empty land. score_export.py divides by it (25 Oct 2026).
   built5/land5  km2 of built-up land (WorldCover class 50) and of usable land within 5 km: how built-up the base's
               own surroundings are, for the page's built-up penalty (owner, 25 Oct 2026).
-Output: WORK/reach.npz (one grid per area: mainland + Balearics, Canaries).
+Output: WORK/reach.npz (one grid per area: mainland + Balearics, Canaries, Madeira).
 Usage (score venv): python pipeline/score/reach_measures.py [--check]
 """
 import glob, os, sys, time
@@ -29,7 +29,7 @@ from rasterio.enums import Resampling
 from scipy.signal import fftconvolve
 from common import WORK, LANDCOVER
 
-AREAS = {'mainland': (35.8, 44.0, -9.6, 4.6), 'canaries': (27.5, 29.5, -18.3, -13.3)}
+AREAS = {'mainland': (35.8, 44.0, -9.6, 4.6),'canaries': (27.5, 29.5, -18.3, -13.3), 'madeira': (32.4, 33.3, -17.5, -16.1)}
 RADIUS = {'quiet_km': 20, 'loops': 20, 'flat_km': 20, 'gravel_km': 15, 'walk_km': 15, 'peaks': 15}
 URBAN_QUIET = 0.1      # quiet roads and junctions in built-up land
 LAND_NEAR_KM = 3

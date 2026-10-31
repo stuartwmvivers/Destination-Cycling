@@ -180,7 +180,7 @@ etwork.npz` (194 MB).
 ## Phase 4: weather at the climbs (IN PROGRESS from 25 October 2026)
 
 - **Candidate bases (`bases.py`):** a 5 km grid over Spain snapped onto the cycling network. 16,609 bases, each with its near and onward climbs; **7,415 (45%) pass the gate** (≥ 3 near climbs). Output `WORK/bases.json`; runs in under a minute.
-- **Weather points (`weather_points.py`):** one per 25 km square containing a gate-passing base, at the mean position of those bases. **566 points**, ordered busiest-first (the first 140 cover 3,259 of the 7,415 bases).
+- **Weather points (`weather_points.py`):** one per 25 km square containing a gate-passing base, at the mean position of those bases. **566 points**, ordered busiest-first (the first 140 cover 3,259 of the 7,415 bases). Portugal added 99 more, and Madeira and Porto Santo use 10 km cells (`docs/portugal-plan.md` section 6): 683 points in all.
 - **The download (`weather_fetch.py`):** Open-Meteo daily high, precipitation and max gust, 2017–2025, Europe/Madrid (as HANDOVER 4.1, minus the variables the score doesn't need).
   - **The free tier allows roughly 140 points a day**: each request weighs about 70 "calls" against about 10,000 a day. That is about 2 hours of downloading a day, **about 4 days in all.** The first plan said "a few hours", which was wrong.
   - Every point is saved to `WORK/weather/<id>.json` as it arrives. It resumes after stopping.
@@ -210,9 +210,9 @@ etwork.npz` (194 MB).
 
 - **New scripts:**
   - `extract_names.py`: OSM towns and villages (8,970) and named passes, saddles and peaks (57,000) → `WORK/names.json`, for labels (8 s).
-  - `score_export.py`: precomputes every component (0–1) per base and writes **`data/processed/score/spain.json`** (committed, ODbL, 3.9 MB, about 1 MB gzipped). It prints the validation table.
+  - `score_export.py`: precomputes every component (0–1) per base and writes **`data/processed/score/bases.json`** (`spain.json` until Portugal was added; committed, ODbL, 3.9 MB, about 1 MB gzipped). It prints the validation table.
 - **`weather_score.py` now scores every base with at least 1 near climb** (10,762), not only the gate-passing 7,415, so the page can relax the gate. Weather for gate-passing bases is unchanged.
-- **Page `/score/spain/`** (`site-src/pages/score.html`, `js/score.js`, `css/score.css`), linked from the landing page as "Prototype". It has:
+- **Page `/score/spain/`, now `/score/bases/`** (`site-src/pages/score.html`, `js/score.js`, `css/score.css`), linked from the landing page as "Prototype". It has:
   - a weight slider, on/off box and "only" button per component;
   - presets: agreed defaults, weather first (20/35/15/12/10/4/4), climbing only;
   - flights mode: year-round only, seasonal at half credit, ignored;
@@ -369,7 +369,7 @@ Decided with the owner: prices from the notaries' portal, for **private family u
 
 - `python build/build_site.py --private`
 - `node tests/serve.js _site 8000`
-- open http://127.0.0.1:8000/score/spain/
+- open http://127.0.0.1:8000/score/bases/
 
 Rebuild without `--private` before anything else uses `_site`. Next: the login-protected family copy (Cloudflare Pages + Access), once the weather is complete and the ranking is checked.
 
