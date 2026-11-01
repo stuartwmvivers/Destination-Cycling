@@ -17,7 +17,7 @@ than road distances across whole countries, and close enough for these secondary
               track (31 Oct 2026: much of Portugal's waymarked walking is on tracks, which counted nothing). Radius 15 km.
   waymarked_km  length of waymarked hiking routes on every surface, roads and lanes included. Shown on the page, not
               scored. Radius 15 km.
-  peaks       peaks >= 300 m with a height, named or not, weighted by height / 1000: a sum of heights, not a count.
+  peaks       named peaks >= 300 m with a height, weighted by height / 1000: a sum of heights, not a count.
               Radius 15 km.
   peak_n      the number of those peaks. Shown on the page, not scored. Radius 15 km.
   land15/20   km2 of usable land within 15 / 20 km: land in WorldCover (not water, not sea or no-data) AND within

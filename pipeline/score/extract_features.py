@@ -9,7 +9,8 @@ Categories (one per way):
   4 rough track    highway=track grade4-5: walkable, not much fun to ride.
   0 other          roads, lanes and anything else, kept only if waymarked: they count towards waymarked km alone.
 Each way is stored as segment midpoints with segment lengths, plus whether it is part of a waymarked hiking route
-(route=hiking/foot relations). Peaks: natural=peak nodes with a height.
+(route=hiking/foot relations). Peaks: named natural=peak nodes with a height (owner, 1 Nov 2026: unnamed ones are
+mostly mass-mapped points on slopes and ridges, not hills, in the regions where they are numerous).
 Output: WORK/features.npz.  Usage (score venv): python pipeline/score/extract_features.py
 """
 import glob, os, re, time
@@ -65,7 +66,7 @@ def main():
         fp = osmium.FileProcessor(f).with_locations().with_filter(osmium.filter.KeyFilter('highway', 'natural'))
         for o in fp:
             if o.is_node():
-                if o.tags.get('natural') == 'peak' and o.id not in seen_peak:
+                if o.tags.get('natural') == 'peak' and o.tags.get('name') and o.id not in seen_peak:
                     e = ele(o.tags.get('ele'))
                     if e is not None: plat.append(o.location.lat); plon.append(o.location.lon); pele.append(e); seen_peak.add(o.id)
                 continue
@@ -85,7 +86,7 @@ def main():
     L, C, R = np.frombuffer(ln, np.float32), np.frombuffer(cat, np.int8), np.frombuffer(rt, np.int8)
     for c, name in [(0, 'other'), (1, 'gravel'), (2, 'path'), (3, 'mountain path'), (4, 'rough track')]:
         print(f'{name:14} {L[C == c].sum() / 1000:10,.0f} km, of which in waymarked routes {L[(C == c) & (R == 1)].sum() / 1000:8,.0f} km')
-    print(f'peaks with a height: {len(pele):,}')
+    print(f'named peaks with a height: {len(pele):,}')
     np.savez_compressed(os.path.join(WORK, 'features.npz'), lat=np.frombuffer(lat, np.float64).astype(np.float32), lon=np.frombuffer(lon, np.float64).astype(np.float32),
                         length=L, cat=C, route=R, peak_lat=np.frombuffer(plat, np.float64).astype(np.float32),
                         peak_lon=np.frombuffer(plon, np.float64).astype(np.float32), peak_ele=np.frombuffer(pele, np.float32))

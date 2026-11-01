@@ -368,7 +368,9 @@ Order agreed in principle: all of Spain (including the Canaries) â†’ Portugal â†
 
 **Portugal, with Madeira and Porto Santo, was added to the score on 31 October 2026** (`docs/portugal-plan.md`, section 6 has the results and the before/after comparison of Spain). The score file is now `data/processed/score/bases.json` and the page `/score/bases/`, with a redirect from `/score/spain/`. Adding an area shifts every existing score slightly, because components are scaled by percentiles of all gate-passing bases. France is next.
 
-**Walking method change, 31 October 2026:** waymarked unpaved tracks now count 1.0 km per km towards walking, after a check of Portugal's low walking scores (`docs/portugal-plan.md`, section 7). 2 bases moved by more than a point. This doesn't touch the climate method or the reference values in 4.4. Whether to count named peaks only is still the owner's decision.
+**Walking method change, 31 October 2026:** waymarked unpaved tracks now count 1.0 km per km towards walking, after a check of Portugal's low walking scores (`docs/portugal-plan.md`, section 7). 2 bases moved by more than a point. This doesn't touch the climate method or the reference values in 4.4.
+
+**Walking method change, 1 November 2026 (owner's decision):** walking now counts named peaks only, because unnamed peaks in the regions where they're numerous are mostly not hills (`docs/portugal-plan.md`, section 8). 654 bases moved by more than a point, and 43 of the top 50 stayed. This doesn't touch the climate method or the reference values in 4.4.
 
 ### 9.5 Later ideas
 - Sea temperature (Copernicus Marine), which matters for shoulder-season comfort.

@@ -18,8 +18,8 @@ Components (judgement calls of 25 Oct 2026, to review with the owner at the phas
   quiet      0.6 x minor-road km + 0.4 x junctions of 3+ minor roads (reach_measures.py).
   flat       minor roads under 2% average gradient.
   gravel     gravel tracks weighted by countryside quality.
-  walking    0.75 x path km (mountain paths x2, waymarked bonus, waymarked gravel tracks) + 0.25 x peaks weighted by
-             height. waymarked_km and peak_n are written for the page but not scored.
+  walking    0.75 x path km (mountain paths x2, waymarked bonus, waymarked gravel tracks) + 0.25 x named peaks weighted
+             by height. waymarked_km and peak_n are written for the page but not scored.
   airport    NOT normalised: the spec's curve of drive minutes, computed in the page from the minutes stored here
              (1 up to 60 min, 0.5 at 120, then towards 0.15, never 0), so the flights mode can switch variants.
 Built-up penalty (owner, 25 Oct 2026): the built-up share of usable land within 5 km of the base (WorldCover), 0 up

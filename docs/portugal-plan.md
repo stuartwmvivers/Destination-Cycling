@@ -124,6 +124,46 @@ Madeira's figures are still pessimistic and less certain than the mainland's. Th
 
 Portugal's median walking score barely moved, because Spain gained too and the top of the scale rose. Monchique went from 0.09 to 0.11, with 251 km of waymarked routes within 15 km. Waymarked km is the better guide to what's there, and the area card now shows it.
 
-**Still open:** the docs used to say named peaks, but the code has always counted every peak with a height. Counting named peaks only would match that wording and remove a mapping artefact, but it would change seven of the top 50 (Cómpeta would fall from 41st to 49th) and help Portugal by almost nothing. That's the owner's decision. Until then, the docs describe what the code does.
+The docs used to say named peaks, but the code counted every peak with a height. Section 8 settles that.
 
 Not tested: Portugal's gravel score may be slightly flattered, because 90% of its tracks have no grade and ungraded tracks default to rideable gravel.
+
+## 8. Named peaks only (1 November 2026)
+
+**Owner's decision: walking counts named peaks only.** `m_peaks` is still a sum of heights and `m_peak_n` is now a count of named peaks. The 300 m minimum and the 25% share of the walking score are unchanged. Only named peaks are extracted now, so a future change back would need a re-extract.
+
+**Why:** where unnamed peaks are numerous in Spain, they're mostly not hills. A sample of about 7,000 peaks was measured against the Copernicus terrain model, by how far each rises above the ground linking it to anything higher, in a window about 5 km across. Peaks near tile edges were skipped.
+
+| Area | Unnamed share of mapped peaks | Unnamed: typical rise | Named: typical rise | Peaks rising 100 m+ that are named |
+|---|---:|---:|---:|---:|
+| Axarquía / Tejeda | 87% | 6 m | 37 m | 72% |
+| Sierra Nevada, Granada | 75% | 6 m | 20 m | 77% |
+| Asturias-Cantabria | 58% | 3 m | 29 m | 83% |
+| Tenerife-Gran Canaria | 70% | 3 m | 19 m | 83% |
+| Catalonia | 11% | 18 m | 16 m | 93% |
+| Northern Portugal | 44% | 49 m | 62 m | 89% |
+| Central Portugal | 43% | 47 m | 73 m | 90% |
+| Algarve-Alentejo | 58% | 46 m | 69 m | 89% |
+
+**Known weaknesses:**
+
+- **Naming is uneven.** The share of peaks of 300 m or more that are named runs from 25% in Andalucía through 50–57% in mainland Portugal and 86% in Catalunya to 100% in the País Vasco.
+- **Maps help some regions.** 53% of Catalunya's named peaks carry a survey source tag, and they typically rise only 16 m, so it gains partly from its map names.
+- **Portugal loses some small real hills.** Its unnamed peaks are mostly real, but this costs almost no points.
+- **A fairer rule exists but wasn't scored.** Filtering mapped peaks by height above their surroundings wouldn't depend on names. Consider it if France's naming turns out very different.
+
+**Effect, against the file before this change (9,216 gate-passing bases):** rank correlation 0.9992. 654 bases moved by more than a point (-2.04 to +1.47). 43 of the top 50 stayed, and 9 of the top 10. Only `c_walking`, `m_peaks`, `m_peak_n` and the peak anchors (now 4.1 to 292.8) changed; every other column is identical.
+
+- **Left the top 50:** Arenas (22nd to 57th), Torrox (29th to 58th), Adeje (42nd to 69th), El Tanque (44th to 53rd), Sedella (46th to 87th), Guía de Isora (47th to 72nd) and Valleseco (50th to 51st).
+- **Entered:** Argentona (51st to 33rd), Agua García (60th to 39th), Arucas (54th to 42nd), Vilalba Sasserra (79th to 43rd), Vallgorguina (74th to 44th), Alhama de Murcia (56th to 46th) and Tagoro (77th to 50th).
+- **Cómpeta:** 41st to 49th, with walking 0.84 to 0.77 and peaks within 15 km 970 to 105. Its real summits, such as Maroma and Navachica, stay.
+
+| Group (medians, gate-passing bases) | Peaks before | Peaks now | Walking before | Walking now | Points |
+|---|---:|---:|---:|---:|---:|
+| Mainland Portugal | 40 | 23 | 0.06 | 0.06 | +0.02 |
+| Madeira and Porto Santo | 36 | 36 | 0.78 | 0.82 | +0.42 |
+| Canaries | 229 | 73 | 0.77 | 0.73 | -0.29 |
+| Spain west of 6° W | 73 | 48 | 0.13 | 0.14 | +0.10 |
+| Spain east of 6° W | 125 | 77 | 0.33 | 0.34 | +0.15 |
+
+**Known places now** (default weights, rank among gate-passing bases, as printed by `score_export.py`): Monchique 887, Sintra 1,884, Funchal 2,663, Vila do Gerês 3,696, Covilhã 5,010.
