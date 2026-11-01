@@ -124,6 +124,6 @@ Madeira's figures are still pessimistic and less certain than the mainland's. Th
 
 Portugal's median walking score barely moved, because Spain gained too and the top of the scale rose. Monchique went from 0.09 to 0.11, with 251 km of waymarked routes within 15 km. Waymarked km is the better guide to what's there, and the area card now shows it.
 
-**Still open:** the docs used to say named peaks, but the code has always counted every peak with a height. Counting named peaks only would match that wording and remove a mapping artefact, but it would change nine of the top 50 (Cómpeta would fall by about 30 places) and help Portugal by almost nothing. That's the owner's decision. Until then, the docs describe what the code does.
+**Still open:** the docs used to say named peaks, but the code has always counted every peak with a height. Counting named peaks only would match that wording and remove a mapping artefact, but it would change seven of the top 50 (Cómpeta would fall from 41st to 49th) and help Portugal by almost nothing. That's the owner's decision. Until then, the docs describe what the code does.
 
 Not tested: Portugal's gravel score may be slightly flattered, because 90% of its tracks have no grade and ungraded tracks default to rideable gravel.
