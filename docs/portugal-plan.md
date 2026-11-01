@@ -68,11 +68,11 @@ Spain's numbers should not change except near the border, where bases gain Portu
 
 | Place | Expected | Gate | Rank | Weakest parts |
 |---|---|---|---|---|
-| Monchique | pass | pass | 865 | Walking |
-| Sintra | ? | pass | 1,857 | Gravel, walking |
+| Monchique | pass | pass | 864 | Walking |
+| Sintra | ? | pass | 1,854 | Gravel, walking |
 | Funchal | pass | pass | 2,742 | Gravel, flat roads |
-| Vila do Gerês | pass | pass | 3,717 | Weather (wet), flat roads |
-| Covilhã (Serra da Estrela) | pass | pass | 5,023 | Walking, quiet roads |
+| Vila do Gerês | pass | pass | 3,719 | Weather (wet), flat roads |
+| Covilhã (Serra da Estrela) | pass | pass | 5,018 | Walking, quiet roads |
 | Azeitão (Arrábida) | ? | fail | - | Too few climbs nearby |
 | Aveiro, Beja | fail | fail | - | As expected |
 
