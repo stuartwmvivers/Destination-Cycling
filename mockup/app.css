@@ -229,3 +229,41 @@ main { max-width: 1440px; margin: 0 auto; padding: 24px max(20px, env(safe-area-
   .xinfo { top: auto; bottom: 10px; right: 10px; left: 10px; width: auto; max-height: 60%; }
   .legend { display: none; }
 }
+
+/* photos and descriptions (trial for a few areas, mockup/make_places.py) */
+.card-photo { grid-column: 1 / -1; width: 100%; height: auto; aspect-ratio: 16 / 6.5; object-fit: cover; border-radius: 8px; margin-bottom: 8px; background: var(--soft); }
+.blurb { grid-column: 2 / -1; margin: 6px 0 0; font-size: .95rem; }
+.hero { margin: 0 0 18px; }
+.hero img { display: block; width: 100%; max-height: 440px; aspect-ratio: 16 / 7; object-fit: cover; border-radius: var(--radius); background: var(--soft); }
+.hero figcaption { font-size: .8rem; color: var(--muted); margin-top: 4px; text-align: right; }
+.about-place { margin-bottom: 22px; }
+.about-place h3 { margin: 14px 0 2px; font-size: 1rem; }
+.about-place p { margin: 0; max-width: 72ch; }
+.about-place .note { margin-top: 12px; font-size: .85rem; }
+
+/* phones: keep the month grid and the climbs table inside the screen (both ran about 25 px over at 400 px) */
+.agrid > * { min-width: 0; }
+.year { overflow-x: auto; }
+@media (max-width: 480px) {
+  .climbs { font-size: .88rem; }
+  .climbs td, .climbs th { padding-left: 4px; padding-right: 4px; }
+  .sec { padding: 16px 14px; }
+}
+/* photo galleries and bike shops (trial, 5 Nov 2026) */
+.thumbs { display: flex; gap: 8px; margin-top: 8px; overflow-x: auto; padding-bottom: 2px; }
+.thumbs button { flex: 0 0 auto; padding: 0; border: 2px solid transparent; border-radius: 8px; background: none; cursor: pointer; line-height: 0; }
+.thumbs button[aria-pressed="true"] { border-color: var(--accent); }
+.thumbs button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.thumbs img { width: 96px; height: 64px; object-fit: cover; border-radius: 6px; display: block; }
+@media (max-width: 480px) { .thumbs img { width: 72px; height: 50px; } }
+.fac { list-style: none; margin: 0 0 8px; padding: 0; }
+.fac li { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--line); }
+.fac li:last-child { border-bottom: 0; }
+.fac li span:first-child { min-width: 0; overflow-wrap: anywhere; }
+.fac i { font-style: normal; font-size: .78rem; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 0 6px; margin-left: 4px; white-space: nowrap; }
+.fac .n { white-space: nowrap; color: var(--muted); font-size: .95rem; }
+/* holidays and second homes (trial, 5 Nov 2026) */
+.rating .dots.neutral i.on { background: var(--accent); }
+.hol-facts { margin: 10px 0 6px; padding-left: 1.1rem; }
+.hol-facts li { margin: 3px 0; }
+@media (max-width: 480px) { .hol .rating { grid-template-columns: 7.5rem 1fr; } .hol .rating .what { grid-column: 1 / -1; margin-top: -6px; } }

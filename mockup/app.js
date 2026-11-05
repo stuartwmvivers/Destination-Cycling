@@ -1,5 +1,5 @@
 // Interface mock-up (docs/interface-plan.md, DC-27): places first, plain words, the full controls in "Adjust".
-// Data: data/areas.json (mockup/make_data.py) and, in a private copy only, data/prices.json.
+// Data: data/areas.json (mockup/make_data.py), data/places.json (photos and descriptions, mockup/make_places.py), data/facilities.json (bike shops and hire, mockup/make_facilities.py), data/appeal.json (leisure appeal and busyness, mockup/make_appeal.py) and, in a private copy only, data/prices.json.
 (() => {
   const $ = (s, el = document) => el.querySelector(s);
   const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
@@ -47,7 +47,7 @@
   let shown = 12, prevOrder = null;
   const save = () => store.set('dc-mock-settings', S);
 
-  let D, A, PRICE = {};
+  let D, A, PRICE = {}, PLACE = {}, FAC = null, APPEAL = null;
   const byId = {};
 
   // ---------- scoring (as the score page: weighted mean of 0-1 components, built-up penalty, airport curve) ----------
@@ -108,6 +108,69 @@
   const eatHead = (a) => a.eat.list.find((e) => e.n >= 10) || a.eat.list[0] || null;
   const eatPlaces = (n) => `${num(n)} place${n === 1 ? '' : 's'} to eat and drink`;
   const winterRide = (a) => Math.round(WINTER.reduce((s, m) => s + a.ride[m], 0));
+  // "Why cycle here": written from the area's own figures, so every area has one and it stays current
+  function cycleWhy(a) {
+    const c = a.climbs[0], ap = a.yr || a.any;
+    const weak = FACTORS.filter((f) => ['quiet', 'walking', 'flat', 'gravel'].includes(f.id) && comp(a, f.id) < 0.25).map((f) => f.label.toLowerCase());
+    return [
+      `${a.near_n} big climbs within 26 km${c ? `, the biggest ${c.name} (${num(c.gain)} m of climbing in ${Number(c.km.toFixed(1)).toLocaleString('en-GB')} km)` : ''}.`,
+      `${winterRide(a)} good riding days from October to May, with January afternoons around ${winterHigh(a)} °C.`,
+      `${num(a.m.quiet_km)} km of quiet roads within reach${ap ? `, and ${ap.name} airport ${mins(ap.min)} away, with direct flights ${flightsWord(ap)}` : ''}.`,
+      weak.length ? `Less to offer for ${weak.join(' and ')}.` : '',
+    ].filter(Boolean).join(' ');
+  }
+  // photos (Wikimedia Commons) and descriptions written with AI help from Wikipedia: a trial for a few areas
+  const firstSentence = (s) => (s.match(/^.*?[.!?](\s|$)/) || [s])[0].trim();
+  const photoCredit = (ph) => `Photo: <a href="${esc(ph.credit.page)}" target="_blank" rel="noopener">${esc(ph.credit.artist)}</a>, ${ph.credit.licence_url ? `<a href="${esc(ph.credit.licence_url)}" target="_blank" rel="noopener">${esc(ph.credit.licence)}</a>` : esc(ph.credit.licence)}, via Wikimedia Commons`;
+  // Leisure appeal: percentiles among the listed areas of Wikipedia views, Commons photographers and (private copy) price.
+  // Busyness: holiday-let beds per 100 residents, on a fixed scale. Shown, not scored.
+  const BUSY = [[2, 'Very quiet'], [5, 'Quiet'], [12, 'Some holiday lets'], [30, 'Busy in season'], [Infinity, 'Very busy in season']];
+  const busyVal = (r) => (r.beds_per_100 != null ? r.beds_per_100 : r.lets_unit === 'none within 3 km' ? 0 : null);
+  function appealOf(a) {
+    const r = APPEAL && APPEAL.areas[a.id];
+    if (!r) return null;
+    const all = Object.values(APPEAL.areas);
+    const pct = (v, xs) => (v == null || xs.length < 2 ? null : xs.filter((x) => x < v).length / (xs.length - 1));
+    const of = (k) => all.map((x) => x[k]).filter((x) => x != null);
+    const p = priceOf(a);
+    const same = A.filter((x) => x.country === a.country && priceOf(x)).map((x) => priceOf(x).eur_m2);
+    const pricePct = p ? pct(p.eur_m2, same) : null;
+    const parts = [pct(r.views, of('views')), pct(r.photographers, of('photographers')), pricePct].filter((x) => x != null);
+    const b = busyVal(r);
+    return { r, appeal: parts.length ? parts.reduce((t, x) => t + x, 0) / parts.length : null, pricePct, busy: b, busyStep: b == null ? null : BUSY.findIndex(([lim]) => b < lim) };
+  }
+  const appealWord = (x) => (x >= 0.8 ? 'Very high' : x >= 0.6 ? 'High' : x >= 0.4 ? 'Moderate' : x >= 0.2 ? 'Modest' : 'Low');
+  function holidays(a) {
+    const ap = appealOf(a);
+    if (!ap) return '';
+    const { r } = ap;
+    const row = (label, n, word, cls) => `<div class="rating"><b>${label}</b><span class="dots${cls ? ` ${cls}` : ''}" aria-label="${word}">${[1, 2, 3, 4, 5].map((i) => `<i class="${n != null && i <= n ? 'on' : ''}"></i>`).join('')}</span><span class="what">${word}</span></div>`;
+    const country = a.country === 'PT' ? 'Portugal' : 'Spain';
+    const facts = [
+      r.views != null ? `${num(r.views)} Wikipedia views in the last 12 months, for the article on ${esc(r.item.replace(/^Freguesia de /, ''))}` : '',
+      r.photographers != null ? (r.photographers ? `${num(r.photographers)} different ${r.photographers === 1 ? 'person has' : 'people have'} shared photos taken within 2 km of the centre on Wikimedia Commons` : 'No one has shared photos taken within 2 km of the centre on Wikimedia Commons') : '',
+      ap.pricePct != null ? (ap.pricePct >= 0.995 ? `Homes cost more here than in any other listed area in ${country}` : ap.pricePct <= 0.005 ? `Homes cost less here than in any other listed area in ${country}` : `Homes cost more than in ${Math.round(ap.pricePct * 100)}% of the listed areas in ${country}`) : '',
+      ap.busy == null ? (a.country === 'PT' && a.lon < -10 ? 'No holiday-let figures for Madeira yet' : r.lets != null ? `${num(r.lets)} registered holiday ${r.lets === 1 ? 'let' : 'lets'} with ${num(r.let_beds)} beds in ${esc(r.lets_name)} (the parish), but no resident count to compare with` : 'No holiday-let figures yet')
+        : r.lets_unit === 'none within 3 km' ? 'No registered holiday lets within 3 km'
+        : `${num(ap.busy, ap.busy < 10 ? 1 : 0)} holiday-let beds for every 100 residents in ${esc(r.lets_name)} (${r.lets_unit === 'parish' ? 'the parish' : 'the municipality'})`,
+    ].filter(Boolean);
+    return `<section class="sec hol">
+      <h2>${ICON.home} Holidays and second homes</h2>
+      ${row('Leisure appeal', ap.appeal == null ? null : dots(ap.appeal), ap.appeal == null ? 'Not enough data' : appealWord(ap.appeal))}
+      ${row('Busyness', ap.busyStep == null ? null : ap.busyStep + 1, ap.busyStep == null ? 'No data' : BUSY[ap.busyStep][1], 'neutral')}
+      <ul class="hol-facts">${facts.map((t) => `<li>${t}</li>`).join('')}</ul>
+      <p class="muted note">Shown, not used in the ranking. Leisure appeal compares this place with the other ${A.length - 1} areas on the list, from Wikipedia views and photographers${Object.keys(PRICE).length ? ' and home prices' : ''}: busy holiday places score high. Busyness is holiday-let beds per resident: under 2 for every 100 residents is very quiet, 30 or more is resort level.</p>
+    </section>`;
+  }
+  function facilities(a) {
+    const f = FAC && FAC.areas[a.id];
+    if (!f) return '';
+    const n = (v, one, many) => `${num(v)} ${v === 1 ? one : many}`;
+    const head = f.shops || f.hire ? `${n(f.shops, 'bike shop', 'bike shops')} within ${FAC.radius_km} km${f.hire ? `, ${f.hire} ${f.hire === 1 ? 'place' : 'places'} to hire a bike` : ''}${f.repair_stations ? `, and ${n(f.repair_stations, 'public repair stand', 'public repair stands')}` : ''}.` : `No bike shops or hire within ${FAC.radius_km} km are on OpenStreetMap.`;
+    const li = (x) => `<li><span>${x.web ? `<a href="${esc(x.web)}" target="_blank" rel="noopener nofollow">${esc(x.name || 'Unnamed bike shop')}</a>` : esc(x.name || (x.kind === 'shop' ? 'Unnamed bike shop' : 'Bike hire'))}${x.kind === 'hire' ? ` <i>${x.points > 1 ? `hire, ${x.points} points` : 'hire'}</i>` : x.hire ? ' <i>also hires</i>' : ''}</span><span class="n">${kmWord(x.km)}</span></li>`;
+    return `<section class="sec"><h2>${ICON.bike} Bike shops and hire</h2><p>${head}</p>${f.near.length ? `<ul class="fac">${f.near.map(li).join('')}</ul>` : ''}<p class="muted" style="font-size:.85rem">Nearest first, in a straight line, from OpenStreetMap. Shops in villages are sometimes missing, so check before relying on one.</p></section>`;
+  }
+  const dayWord = (d) => new Date(d + 'T12:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 
   const ICON = {
     sun: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',
@@ -161,6 +224,15 @@
   document.addEventListener('click', (e) => {
     const s = e.target.closest('[data-star]');
     if (s) { e.preventDefault(); e.stopPropagation(); toggleFav(s.dataset.star); return; }
+    const ph = e.target.closest('[data-photo]');
+    if (ph) {
+      const pl = PLACE[(location.hash.match(/#\/area\/([^/?]+)/) || [])[1]]; const i = +ph.dataset.photo;
+      if (!pl || !pl.photos[i]) return;
+      const img = $('#hero-img'); img.src = `data/${pl.photos[i].img}`; img.alt = img.alt.replace(/photo \d+ of/, `photo ${i + 1} of`);
+      $('#hero-cap').innerHTML = photoCredit(pl.photos[i]);
+      ph.parentNode.querySelectorAll('[data-photo]').forEach((b) => b.setAttribute('aria-pressed', b === ph));
+      return;
+    }
     const c = e.target.closest('[data-cmp]');
     if (c) { e.preventDefault(); toggleCmp(c.dataset.cmp); c.setAttribute('aria-pressed', cmp.includes(c.dataset.cmp)); c.lastChild.textContent = cmp.includes(c.dataset.cmp) ? ' In compare' : ' Compare'; return; }
   });
@@ -212,12 +284,15 @@
     const p = priceOf(a);
     const was = prevOrder ? prevOrder.indexOf(a.id) : -1;
     const move = prevOrder && was >= 0 && was + 1 !== a.rank ? (was + 1 > a.rank ? `<span class="move up">▲ ${was + 1 - a.rank}</span>` : `<span class="move down">▼ ${a.rank - was - 1}</span>`) : prevOrder && was < 0 ? '<span class="move up">New</span>' : '';
-    return `<article class="card" data-id="${a.id}">
+    const pl = PLACE[a.id];
+    return `<article class="card${pl ? ' has-photo' : ''}" data-id="${a.id}">
+      ${pl ? `<img class="card-photo" src="data/${esc(pl.photos[0].thumb)}" srcset="data/${esc(pl.photos[0].thumb)} 480w, data/${esc(pl.photos[0].img)} 1280w" sizes="(max-width: 600px) 100vw, 420px" alt="${esc(a.name)}" loading="lazy" width="640" height="260">` : ''}
       ${move}
       <div class="rank" aria-label="Rank ${a.rank}">${a.rank}</div>
       <h2><a href="#/area/${a.id}">${esc(a.name)}</a></h2>
       ${starBtn(a)}
       <div class="sub">${esc(where(a))} · ${esc(a.setting)}${a.elev != null ? `, ${num(a.elev)} m up` : ''}</div>
+      ${pl ? `<p class="blurb">${esc(firstSentence(pl.place))}</p>` : ''}
       <div class="facts">
         <div class="fact">${ICON.sun}<div><b>${winterHigh(a)}° in January</b><span>${winterRide(a)} good riding days, Oct to May</span></div></div>
         <div class="fact">${ICON.mountain}<div><b>${a.near_n} big climbs</b><span>within 26 km by road</span></div></div>
@@ -357,6 +432,7 @@
     const barRow = (label, vals, sun) => `<div class="rl">${label}</div>${vals.map((v) => `<div class="bars${sun ? ' sun' : ''}" title="${num(v)} days"><i style="height:${Math.max(2, (v / maxDays) * 100)}%"></i></div>`).join('')}`;
     const rate = (k, label, what) => `<div class="rating"><b>${label}</b><span class="dots" aria-label="${level(comp(a, k))}">${[1, 2, 3, 4, 5].map((i) => `<i class="${i <= dots(comp(a, k)) ? 'on' : ''}"></i>`).join('')}</span><span class="what">${level(comp(a, k))}${what ? ` · ${what}` : ''}</span></div>`;
     const q = encodeURIComponent(`${a.muni || a.name}, ${a.province}`);
+    const pl = PLACE[a.id];
     app.innerHTML = `
       <a class="btn subtle back" href="#/">← All places</a>
       <div class="ahead">
@@ -366,6 +442,18 @@
           <button type="button" class="btn" data-cmp="${a.id}" aria-pressed="${cmp.includes(a.id)}">${ICON.compare.replace('<svg', '<svg class="ico"')} ${cmp.includes(a.id) ? 'In compare' : 'Compare'}</button>
         </div>
       </div>
+      ${pl ? `<figure class="hero"><img id="hero-img" src="data/${esc(pl.photos[0].img)}" alt="${esc(a.name)}, photo 1 of ${pl.photos.length}"><figcaption id="hero-cap">${photoCredit(pl.photos[0])}</figcaption>
+        ${pl.photos.length > 1 ? `<div class="thumbs" role="group" aria-label="More photos of ${esc(a.name)}">${pl.photos.map((ph, i) => `<button type="button" data-photo="${i}" aria-pressed="${i === 0}" aria-label="Show photo ${i + 1} of ${pl.photos.length}"><img src="data/${esc(ph.thumb)}" alt="" loading="lazy"></button>`).join('')}</div>` : ''}</figure>` : ''}
+      <section class="sec about-place">
+        <h2>${ICON.bike} About ${esc(a.name)}</h2>
+        <h3>Why cycle here</h3>
+        <p>${esc(cycleWhy(a))}</p>
+        ${pl ? `<h3>The place</h3><p>${esc(pl.place)}</p>
+        <h3>Living there</h3><p>${esc(pl.living)}</p>
+        <p class="muted note">“The place” and “Living there” were written with AI help from Wikipedia${pl.wiki ? ` (<a href="${esc(pl.wiki)}" target="_blank" rel="noopener">read more</a>)` : ''} and checked ${dayWord(pl.checked)}, but may still contain mistakes. “Why cycle here” comes from this site's own figures.</p>`
+          : '<p class="muted note">A photo and a description of the place are only in this trial for a few areas so far. “Why cycle here” comes from this site\'s own figures.</p>'}
+      </section>
+      ${holidays(a)}
       <div class="tiles">
         <div class="tile"><div class="k">January afternoons</div><div class="v">${winterHigh(a)}°C</div><div class="s">typical high, here at ${num(a.elev)} m</div></div>
         <div class="tile"><div class="k">Good riding days</div><div class="v">${num(a.ride_year)}</div><div class="s">a year, ${winterRide(a)} of them Oct to May</div></div>
@@ -411,6 +499,7 @@
               <a class="btn" href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${a.lat},${a.lon}" target="_blank" rel="noopener">Street View</a>
             </div>
           </section>
+          ${facilities(a)}
           <section class="sec">
             <h2>${ICON.plane} Getting there</h2>
             ${a.yr ? `<p><b>${esc(a.yr.name)}</b> is ${mins(a.yr.min)} away by car, with direct flights ${esc(flightsWord(a.yr))}.</p>` : '<p>No airport with all-year direct flights from Edinburgh or Glasgow is within easy reach.</p>'}
@@ -709,7 +798,7 @@
       </ul>
       <p>In this mock-up the list holds the best ${A.length} areas under the agreed balance; the real site will rank every area of both countries.</p>
       <h2>Sources</h2>
-      <p>Map data © OpenStreetMap contributors (ODbL). Terrain: Copernicus DEM GLO-30. Land cover: ESA WorldCover 2021. Weather: Open-Meteo historical archive (2017–2025). Flights checked ${esc(D.meta.airports_status.slice(8, 19))}.${Object.keys(PRICE).length ? ' Home prices: Portal Estadístico del Notariado, for personal and family use only; in Portugal, Statistics Portugal (INE).' : ''}</p>
+      <p>Map data © OpenStreetMap contributors (ODbL). Terrain: Copernicus DEM GLO-30. Land cover: ESA WorldCover 2021. Weather: Open-Meteo historical archive (2017–2025). Flights checked ${esc(D.meta.airports_status.slice(8, 19))}.${Object.keys(PLACE).length ? ' Photos: Wikimedia Commons, credited on each photo. Place descriptions: written with AI help from Wikipedia articles, each linked from its place.' : ''}${FAC ? ' Bike shops and hire: OpenStreetMap.' : ''}${APPEAL ? ' Leisure appeal and busyness: Wikimedia page views and Commons; holiday lets from INE (Spain, experimental statistics, May 2026) and Turismo de Portugal (RNAL); residents from the 2021 census (INE, via ineAtlas.data) and Wikidata.' : ''}${Object.keys(PRICE).length ? ' Home prices: Portal Estadístico del Notariado, for personal and family use only; in Portugal, Statistics Portugal (INE).' : ''}</p>
     </section>`;
   }
 
@@ -717,8 +806,14 @@
   Promise.all([
     fetch('data/areas.json').then((r) => r.json()),
     fetch('data/prices.json').then((r) => (r.ok ? r.json() : null)).catch(() => null),
-  ]).then(([d, pr]) => {
+    fetch('data/places.json').then((r) => (r.ok ? r.json() : null)).catch(() => null),
+    fetch('data/facilities.json').then((r) => (r.ok ? r.json() : null)).catch(() => null),
+    fetch('data/appeal.json').then((r) => (r.ok ? r.json() : null)).catch(() => null),
+  ]).then(([d, pr, pl, fa, ap]) => {
+    if (ap && ap.areas) APPEAL = ap;
+    if (fa && fa.areas) FAC = fa;
     D = d; A = d.areas; A.forEach((a) => { byId[a.id] = a; });
+    if (pl && pl.places) PLACE = pl.places;
     if (pr && pr.prices) PRICE = pr.prices;
     if (pr && pr.grid_eur) GRID_EUR = pr.grid_eur;
     favs = favs.filter((id) => byId[id]); cmp = cmp.filter((id) => byId[id]);

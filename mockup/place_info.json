@@ -1,0 +1,143 @@
+{
+  "about": "Trial of photos and short descriptions for 10 mock-up areas (4 Nov 2026). Keys are area name|municipality as in mockup/data/areas.json. 'photos' are up to five Wikimedia Commons files, the first shown largest, chosen by eye from the place's Wikidata image and Commons category. 'place' and 'living' were written with AI help from the English, Spanish, Catalan and Portuguese Wikipedia articles (linked by 'qid'; 'wiki' is the one shown), keeping only facts found there or widely known; 'checked' is the date. 'Why cycle here' is not stored: app.js writes it from the area's own figures. Run mockup/make_places.py to fetch the photos and credits.",
+  "places": {
+    "Callosa d'en Sarrià|Callosa d'en Sarrià": {
+      "qid": "Q1770160",
+      "photos": [
+        "File:Callosa d'en Sarrià des del Ponoig.jpg",
+        "File:CV-715 in Callosa d'en Sarrià, la Marina Baixa, Alicante, Valencia, Spain, 2025 February.jpg",
+        "File:Font de L'Algar hike (26308849303).jpg",
+        "File:Le rio algar - panoramio.jpg",
+        "File:Font de L'Algar hike (26819251822).jpg"
+      ],
+      "place": "A working town of about 8,000 people in the valleys of the Algar and Guadalest rivers, 10 km inland from Altea, ringed by the Aitana, Bèrnia and Xortà ranges. It's Spain's main loquat-growing town, with terraced orchards climbing the hillsides. The Fonts de l'Algar, a string of waterfalls and pools on the river Algar, is the best-known sight, and the hills around are popular walking country.",
+      "living": "A real town that lives all year rather than a resort, with the beaches of Altea and the bigger towns of the Costa Blanca about a quarter of an hour away.",
+      "checked": "2026-11-04",
+      "wiki": "https://en.wikipedia.org/wiki/Callosa_d%27en_Sarri%C3%A0"
+    },
+    "Cenes de la Vega|Cenes de la Vega": {
+      "qid": "Q555126",
+      "photos": [
+        "File:Cenes de la Vega (Granada).jpg",
+        "File:Casas en Cenes de la Vega (Granada).jpg",
+        "File:Cenes de la Vega, en Granada (España).jpg",
+        "File:Storm cenes.jpg"
+      ],
+      "place": "A small town of about 8,000 people on the river Genil, just upstream of Granada and on the city's bus network. It sits at about 750 m on the road up into the Sierra Nevada, so the high mountains are close above it and the Alhambra, old town and tapas bars of Granada are a short trip below.",
+      "living": "A practical, lived-in place rather than a pretty village: mostly modern housing for people who work in Granada. Winters are cold for Andalucía, with a January average of about 6 °C, though the afternoons are often sunny.",
+      "checked": "2026-11-04",
+      "wiki": "https://en.wikipedia.org/wiki/Cenes_de_la_Vega"
+    },
+    "Arona|Arona": {
+      "qid": "Q698246",
+      "photos": [
+        "File:Arona Church.JPG",
+        "File:Arona IMG 6514 Montana de Guaza. Guaza.jpg",
+        "File:Camino Aldea Blanca - Buzanada - panoramio.jpg",
+        "File:Camino Viejo de Adeje - panoramio.jpg",
+        "File:Arona-Two-Green-Doors-2024.jpg"
+      ],
+      "place": "The old hill town of Arona, at about 600 m, is the centre of a municipality that runs down to the big resorts of Los Cristianos and Playa de las Américas on Tenerife's sunny south coast. Up here it's quieter: a church square shaded by trees, old farming terraces and volcanic hills. Beaches, restaurants and the ferry to La Gomera are at Los Cristianos below.",
+      "living": "The coast is mostly holiday flats and very busy; the hill villages are more Canarian and residential. It's mild all year, with no winter shutdown, but the south of Tenerife is dry and its hills brown for much of the year.",
+      "checked": "2026-11-04",
+      "wiki": "https://en.wikipedia.org/wiki/Arona%2C_Tenerife"
+    },
+    "Agaete|Agaete": {
+      "qid": "Q390069",
+      "photos": [
+        "File:Agaete, en Gran Canaria (Las Palmas, España).jpg",
+        "File:Agaete, Las Palmas, Canarias,Spain - panoramio.jpg",
+        "File:Agaete - Plaza 1.jpg",
+        "File:Agaete - panoramio (2).jpg",
+        "File:Cola del dragón - panoramio - Javier B.jpg"
+      ],
+      "place": "A white village of about 5,700 people in Gran Canaria's north-west, at the mouth of a green valley that runs up towards the pine forest of Tamadaba. Its little port, Puerto de las Nieves, has fish restaurants and the ferry to Tenerife, and the valley grows tropical fruit and coffee.",
+      "living": "Quiet and traditional compared with the big resorts of the south. It's mild all year, though the north-west is cloudier than the south and the sea a little cooler.",
+      "checked": "2026-11-04",
+      "wiki": "https://en.wikipedia.org/wiki/Agaete"
+    },
+    "Cómpeta|Cómpeta": {
+      "qid": "Q1623982",
+      "photos": [
+        "File:Competa Malaga-3.jpg",
+        "File:Competa, Malaga, Plaza Almijara.jpg",
+        "File:Plaza de España, Cómpeta, Spanien.jpg",
+        "File:Vista de Cómpeta.jpg",
+        "File:Puesta del sol en Cómpeta.jpg"
+      ],
+      "place": "A white hill village of about 3,800 people at 640 m in the Axarquía, 18 km above the Costa del Sol, under the Sierra de Almijara and La Maroma (2,065 m), the highest peak of the Sierra de Tejeda. It's known for its wine, celebrated every 15 August at the Noche del Vino, and for walking in the Sierras de Tejeda, Almijara y Alhama Natural Park.",
+      "living": "Many residents come from the UK and elsewhere in northern Europe, so there's an established foreign community. The coast at Torrox and Nerja is a short drive down the mountain road.",
+      "checked": "2026-11-04",
+      "wiki": "https://en.wikipedia.org/wiki/C%C3%B3mpeta"
+    },
+    "Argentona|Argentona": {
+      "qid": "Q11539",
+      "photos": [
+        "File:Argentona (El Maresme, Catalunya)-1.jpg",
+        "File:Argentona - 20220805 190421.jpg",
+        "File:Camí paral·lel a la Ronda - 20220805 182824.jpg",
+        "File:Argentona - 20220805 185058.jpg"
+      ],
+      "place": "A town of about 12,900 people in the Maresme, just inland from Mataró and about 30 km north-east of Barcelona, at the foot of the coastal hills. It was a summer retreat for Barcelona families and keeps their modernista houses, including Puig i Cadafalch's own, and a museum of water jugs with four pieces by Picasso. The beaches of the Maresme coast are a few kilometres away.",
+      "living": "A commuter town as much as a holiday one, lived in all year, with trains to Barcelona from Mataró next door.",
+      "checked": "2026-11-04",
+      "wiki": "https://en.wikipedia.org/wiki/Argentona"
+    },
+    "Monistrol de Montserrat|Monistrol de Montserrat": {
+      "qid": "Q16704",
+      "photos": [
+        "File:Cara sud Monistrol de Montserrat (gener 2007) - panoramio.jpg",
+        "File:Monistrol.jpg",
+        "File:Monistral Monserrat 520DSC 0083 (49937302806).jpg",
+        "File:Monistral Monserrat 520DSC 0085 (49936791878).jpg",
+        "File:Monistral Monserrat 520DSC 0089 (49937607817).jpg"
+      ],
+      "place": "A village of about 3,200 people on the river Llobregat at the foot of Montserrat, the jagged massif whose Benedictine monastery is one of Catalonia's best-known sights. A rack railway climbs from the village to the monastery, the mountain has some of the region's best walking, and the bridge over the river dates from the 14th century.",
+      "living": "Day visitors fill the mountain, but the village itself is quiet and lived in all year. Trains run to Barcelona every half hour.",
+      "checked": "2026-11-04",
+      "wiki": "https://en.wikipedia.org/wiki/Monistrol_de_Montserrat"
+    },
+    "Montaria|Viana do Castelo": {
+      "qid": "Q1945628",
+      "photos": [
+        "File:Montaria 1.jpg",
+        "File:Montaria DSCF8180 (53887785557).jpg",
+        "File:Serra de Arga em Montaria 2.jpg",
+        "File:Serra de Arga em Montaria 1.jpg",
+        "File:Serra de Arga em Montaria 5.jpg"
+      ],
+      "place": "A small mountain parish of about 450 people in the Serra de Arga, inland from Viana do Castelo in Portugal's green north-west, the Minho. Stone villages and watermills in the valleys, and granite moorland with horses grazing and wind turbines on the tops. Viana do Castelo, an old port with Atlantic beaches, is the nearest town.",
+      "living": "Very rural, with few shops or services in the parish itself. The Minho is the wettest part of Portugal: it's green because it rains a lot from autumn to spring.",
+      "checked": "2026-11-04",
+      "wiki": "https://pt.wikipedia.org/wiki/Montaria"
+    },
+    "Madalena do Mar|Ponta do Sol": {
+      "qid": "Q2991252",
+      "photos": [
+        "File:Madalena do Mar in 2026.jpg",
+        "File:DSCN7028 Madalena do Mar - Avenida de 1o de fevereiro -Est.jpg",
+        "File:0 Igreja Matriz Madalena do Mar Madeira.jpg",
+        "File:0 Vereda do Nateiro Madalena do Mar Madeira.jpg",
+        "File:Hillside houses of Madalena do Mar, Ponta do Sol, Madeira, 2023 May.jpg"
+      ],
+      "place": "A tiny seaside parish of about 500 people on Madeira's south-west coast, squeezed between the Atlantic and steep cliffs and planted almost entirely with bananas. It has a pebble beach and seafront road, and paragliders land here from the cliffs above. Ponta do Sol and Calheta, with its marina and sandy beach, are a few minutes along the coast.",
+      "living": "A parish this small has few homes for sale, so it's worth looking along the coast too. The south-west coast is one of the sunniest parts of Madeira.",
+      "checked": "2026-11-04",
+      "wiki": "https://en.wikipedia.org/wiki/Madalena_do_Mar"
+    },
+    "Silves|Silves": {
+      "qid": "Q749180",
+      "photos": [
+        "File:Cidade de Silves.jpg",
+        "File:Arredores de Silves - Portugal (51848350541).jpg",
+        "File:Countryside near Slives (37182610581).jpg",
+        "File:Mercado Municipal de Silves - Portugal (52156297867).jpg",
+        "File:House ruins along the Via Algarviana footpath, Silves, Portugal (PPL1-Corrected) julesvernex2-2.jpg"
+      ],
+      "place": "The old Moorish capital of the Algarve, a town of about 6,300 people on the river Arade, crowned by a red sandstone castle and a Gothic cathedral. Orange groves and low hills surround it, the Via Algarviana long-distance path crosses the hills to the north, and the beaches at Armação de Pêra and Portimão are on the coast to the south.",
+      "living": "A real town that lives all year, and a member of the Cittaslow network of slow towns, with the busy coast close but not on the doorstep.",
+      "checked": "2026-11-04",
+      "wiki": "https://en.wikipedia.org/wiki/Silves%2C_Portugal"
+    }
+  }
+}
