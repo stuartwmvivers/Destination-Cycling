@@ -269,3 +269,9 @@ main { max-width: 1440px; margin: 0 auto; padding: 24px max(20px, env(safe-area-
 
 /* private family copy only (build_site.py --private) */
 .copy-note { margin: 0; padding: 6px 20px; font-size: .85rem; color: var(--muted); background: var(--soft); text-align: center; }
+
+/* narrow screens with wide fonts (Linux, some Android phones, larger text): nothing may push the page sideways */
+.agrid > *, .hero, .sec { min-width: 0; }
+.sec { grid-template-columns: minmax(0, 1fr); }
+@media (max-width: 480px) { .rating { grid-template-columns: 7.5rem 1fr; } .rating .what { grid-column: 1 / -1; margin-top: -6px; } }
+@media (max-width: 480px) { .climbs { display: block; max-width: 100%; overflow-x: auto; font-size: .85rem; } }
