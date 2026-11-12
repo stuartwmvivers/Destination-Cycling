@@ -10,5 +10,3 @@ _site/
 # Private property prices (notaries portal: personal/family use only, never commit; see docs/price-data-plan.md)
 data/private/
 
-# interface mock-up data (may include private prices)
-mockup/data/

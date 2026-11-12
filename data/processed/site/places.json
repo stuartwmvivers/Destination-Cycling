@@ -1,0 +1,670 @@
+{
+ "places": {
+  "a2651": {
+   "photos": [
+    {
+     "img": "img/Q1770160-0.jpg",
+     "thumb": "img/Q1770160-0-t.jpg",
+     "w": 1280,
+     "h": 860,
+     "credit": {
+      "artist": "Joanbanjo",
+      "licence": "CC BY-SA 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Callosa_d%27en_Sarri%C3%A0_des_del_Ponoig.jpg"
+     }
+    },
+    {
+     "img": "img/Q1770160-1.jpg",
+     "thumb": "img/Q1770160-1-t.jpg",
+     "w": 1280,
+     "h": 853,
+     "credit": {
+      "artist": "Ximonic (Simo Räsänen)",
+      "licence": "CC BY-SA 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:CV-715_in_Callosa_d%27en_Sarri%C3%A0,_la_Marina_Baixa,_Alicante,_Valencia,_Spain,_2025_February.jpg"
+     }
+    },
+    {
+     "img": "img/Q1770160-2.jpg",
+     "thumb": "img/Q1770160-2-t.jpg",
+     "w": 1280,
+     "h": 960,
+     "credit": {
+      "artist": "Brett Hodnett",
+      "licence": "CC BY-SA 2.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/2.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Font_de_L%27Algar_hike_(26308849303).jpg"
+     }
+    },
+    {
+     "img": "img/Q1770160-3.jpg",
+     "thumb": "img/Q1770160-3-t.jpg",
+     "w": 1280,
+     "h": 960,
+     "credit": {
+      "artist": "chisloup",
+      "licence": "CC BY 3.0",
+      "licence_url": "https://creativecommons.org/licenses/by/3.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Le_rio_algar_-_panoramio.jpg"
+     }
+    },
+    {
+     "img": "img/Q1770160-4.jpg",
+     "thumb": "img/Q1770160-4-t.jpg",
+     "w": 1280,
+     "h": 960,
+     "credit": {
+      "artist": "Brett Hodnett",
+      "licence": "CC BY-SA 2.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/2.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Font_de_L%27Algar_hike_(26819251822).jpg"
+     }
+    }
+   ],
+   "place": "A working town of about 8,000 people in the valleys of the Algar and Guadalest rivers, 10 km inland from Altea, ringed by the Aitana, Bèrnia and Xortà ranges. It's Spain's main loquat-growing town, with terraced orchards climbing the hillsides. The Fonts de l'Algar, a string of waterfalls and pools on the river Algar, is the best-known sight, and the hills around are popular walking country.",
+   "living": "A real town that lives all year rather than a resort, with the beaches of Altea and the bigger towns of the Costa Blanca about a quarter of an hour away.",
+   "wiki": "https://en.wikipedia.org/wiki/Callosa_d%27en_Sarri%C3%A0",
+   "qid": "Q1770160",
+   "checked": "2026-11-04"
+  },
+  "a688": {
+   "photos": [
+    {
+     "img": "img/Q555126-0.jpg",
+     "thumb": "img/Q555126-0-t.jpg",
+     "w": 1280,
+     "h": 832,
+     "credit": {
+      "artist": "Lopezsuarez",
+      "licence": "CC0",
+      "licence_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "page": "https://commons.wikimedia.org/wiki/File:Cenes_de_la_Vega_(Granada).jpg"
+     }
+    },
+    {
+     "img": "img/Q555126-1.jpg",
+     "thumb": "img/Q555126-1-t.jpg",
+     "w": 1280,
+     "h": 880,
+     "credit": {
+      "artist": "Act898",
+      "licence": "CC BY-SA 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Casas_en_Cenes_de_la_Vega_(Granada).jpg"
+     }
+    },
+    {
+     "img": "img/Q555126-2.jpg",
+     "thumb": "img/Q555126-2-t.jpg",
+     "w": 1280,
+     "h": 960,
+     "credit": {
+      "artist": "Lopezsuarez",
+      "licence": "CC0",
+      "licence_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "page": "https://commons.wikimedia.org/wiki/File:Cenes_de_la_Vega,_en_Granada_(Espa%C3%B1a).jpg"
+     }
+    },
+    {
+     "img": "img/Q555126-3.jpg",
+     "thumb": "img/Q555126-3-t.jpg",
+     "w": 1280,
+     "h": 960,
+     "credit": {
+      "artist": "Act898",
+      "licence": "CC BY-SA 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Storm_cenes.jpg"
+     }
+    }
+   ],
+   "place": "A small town of about 8,000 people on the river Genil, just upstream of Granada and on the city's bus network. It sits at about 750 m on the road up into the Sierra Nevada, so the high mountains are close above it and the Alhambra, old town and tapas bars of Granada are a short trip below.",
+   "living": "A practical, lived-in place rather than a pretty village: mostly modern housing for people who work in Granada. Winters are cold for Andalucía, with a January average of about 6 °C, though the afternoons are often sunny.",
+   "wiki": "https://en.wikipedia.org/wiki/Cenes_de_la_Vega",
+   "qid": "Q555126",
+   "checked": "2026-11-04"
+  },
+  "a12582": {
+   "photos": [
+    {
+     "img": "img/Q698246-0.jpg",
+     "thumb": "img/Q698246-0-t.jpg",
+     "w": 1280,
+     "h": 960,
+     "credit": {
+      "artist": "Javier1989canario",
+      "licence": "CC BY-SA 3.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/3.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Arona_Church.JPG"
+     }
+    },
+    {
+     "img": "img/Q698246-1.jpg",
+     "thumb": "img/Q698246-1-t.jpg",
+     "w": 1280,
+     "h": 573,
+     "credit": {
+      "artist": "Bjoertvedt",
+      "licence": "CC BY-SA 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Arona_IMG_6514_Montana_de_Guaza._Guaza.jpg"
+     }
+    },
+    {
+     "img": "img/Q698246-2.jpg",
+     "thumb": "img/Q698246-2-t.jpg",
+     "w": 1280,
+     "h": 853,
+     "credit": {
+      "artist": "javiersanp",
+      "licence": "CC BY-SA 3.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/3.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Camino_Aldea_Blanca_-_Buzanada_-_panoramio.jpg"
+     }
+    },
+    {
+     "img": "img/Q698246-3.jpg",
+     "thumb": "img/Q698246-3-t.jpg",
+     "w": 1280,
+     "h": 853,
+     "credit": {
+      "artist": "javiersanp",
+      "licence": "CC BY-SA 3.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/3.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Camino_Viejo_de_Adeje_-_panoramio.jpg"
+     }
+    },
+    {
+     "img": "img/Q698246-4.jpg",
+     "thumb": "img/Q698246-4-t.jpg",
+     "w": 1280,
+     "h": 875,
+     "credit": {
+      "artist": "Tuxyso",
+      "licence": "CC BY-SA 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Arona-Two-Green-Doors-2024.jpg"
+     }
+    }
+   ],
+   "place": "The old hill town of Arona, at about 600 m, is the centre of a municipality that runs down to the big resorts of Los Cristianos and Playa de las Américas on Tenerife's sunny south coast. Up here it's quieter: a church square shaded by trees, old farming terraces and volcanic hills. Beaches, restaurants and the ferry to La Gomera are at Los Cristianos below.",
+   "living": "The coast is mostly holiday flats and very busy; the hill villages are more Canarian and residential. It's mild all year, with no winter shutdown, but the south of Tenerife is dry and its hills brown for much of the year.",
+   "wiki": "https://en.wikipedia.org/wiki/Arona%2C_Tenerife",
+   "qid": "Q698246",
+   "checked": "2026-11-04"
+  },
+  "a12587": {
+   "photos": [
+    {
+     "img": "img/Q390069-0.jpg",
+     "thumb": "img/Q390069-0-t.jpg",
+     "w": 825,
+     "h": 463,
+     "credit": {
+      "artist": "Toni Teror",
+      "licence": "CC BY 3.0",
+      "licence_url": "https://creativecommons.org/licenses/by/3.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Agaete,_en_Gran_Canaria_(Las_Palmas,_Espa%C3%B1a).jpg"
+     }
+    },
+    {
+     "img": "img/Q390069-1.jpg",
+     "thumb": "img/Q390069-1-t.jpg",
+     "w": 1280,
+     "h": 960,
+     "credit": {
+      "artist": "trolvag",
+      "licence": "CC BY-SA 3.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/3.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Agaete,_Las_Palmas,_Canarias,Spain_-_panoramio.jpg"
+     }
+    },
+    {
+     "img": "img/Q390069-2.jpg",
+     "thumb": "img/Q390069-2-t.jpg",
+     "w": 1280,
+     "h": 960,
+     "credit": {
+      "artist": "Wolfgang Sauber",
+      "licence": "CC BY-SA 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Agaete_-_Plaza_1.jpg"
+     }
+    },
+    {
+     "img": "img/Q390069-3.jpg",
+     "thumb": "img/Q390069-3-t.jpg",
+     "w": 1280,
+     "h": 853,
+     "credit": {
+      "artist": "trolvag",
+      "licence": "CC BY-SA 3.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/3.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Agaete_-_panoramio_(2).jpg"
+     }
+    },
+    {
+     "img": "img/Q390069-4.jpg",
+     "thumb": "img/Q390069-4-t.jpg",
+     "w": 1280,
+     "h": 846,
+     "credit": {
+      "artist": "Javier B",
+      "licence": "CC BY 3.0",
+      "licence_url": "https://creativecommons.org/licenses/by/3.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Cola_del_drag%C3%B3n_-_panoramio_-_Javier_B.jpg"
+     }
+    }
+   ],
+   "place": "A white village of about 5,700 people in Gran Canaria's north-west, at the mouth of a green valley that runs up towards the pine forest of Tamadaba. Its little port, Puerto de las Nieves, has fish restaurants and the ferry to Tenerife, and the valley grows tropical fruit and coffee.",
+   "living": "Quiet and traditional compared with the big resorts of the south. It's mild all year, though the north-west is cloudier than the south and the sea a little cooler.",
+   "wiki": "https://en.wikipedia.org/wiki/Agaete",
+   "qid": "Q390069",
+   "checked": "2026-11-04"
+  },
+  "a248": {
+   "photos": [
+    {
+     "img": "img/Q1623982-0.jpg",
+     "thumb": "img/Q1623982-0-t.jpg",
+     "w": 1280,
+     "h": 778,
+     "credit": {
+      "artist": "Rufus46",
+      "licence": "CC BY-SA 3.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/3.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Competa_Malaga-3.jpg"
+     }
+    },
+    {
+     "img": "img/Q1623982-1.jpg",
+     "thumb": "img/Q1623982-1-t.jpg",
+     "w": 1280,
+     "h": 960,
+     "credit": {
+      "artist": "Salamandracompeta",
+      "licence": "CC BY-SA 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Competa,_Malaga,_Plaza_Almijara.jpg"
+     }
+    },
+    {
+     "img": "img/Q1623982-2.jpg",
+     "thumb": "img/Q1623982-2-t.jpg",
+     "w": 1280,
+     "h": 847,
+     "credit": {
+      "artist": "Grenzlandstern",
+      "licence": "CC BY-SA 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Plaza_de_Espa%C3%B1a,_C%C3%B3mpeta,_Spanien.jpg"
+     }
+    },
+    {
+     "img": "img/Q1623982-3.jpg",
+     "thumb": "img/Q1623982-3-t.jpg",
+     "w": 1280,
+     "h": 960,
+     "credit": {
+      "artist": "Maluoliveira",
+      "licence": "CC BY-SA 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Vista_de_C%C3%B3mpeta.jpg"
+     }
+    },
+    {
+     "img": "img/Q1623982-4.jpg",
+     "thumb": "img/Q1623982-4-t.jpg",
+     "w": 1280,
+     "h": 960,
+     "credit": {
+      "artist": "Maluoliveira",
+      "licence": "CC BY-SA 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Puesta_del_sol_en_C%C3%B3mpeta.jpg"
+     }
+    }
+   ],
+   "place": "A white hill village of about 3,800 people at 640 m in the Axarquía, 18 km above the Costa del Sol, under the Sierra de Almijara and La Maroma (2,065 m), the highest peak of the Sierra de Tejeda. It's known for its wine, celebrated every 15 August at the Noche del Vino, and for walking in the Sierras de Tejeda, Almijara y Alhama Natural Park.",
+   "living": "Many residents come from the UK and elsewhere in northern Europe, so there's an established foreign community. The coast at Torrox and Nerja is a short drive down the mountain road.",
+   "wiki": "https://en.wikipedia.org/wiki/C%C3%B3mpeta",
+   "qid": "Q1623982",
+   "checked": "2026-11-04"
+  },
+  "a7576": {
+   "photos": [
+    {
+     "img": "img/Q11539-0.jpg",
+     "thumb": "img/Q11539-0-t.jpg",
+     "w": 1280,
+     "h": 851,
+     "credit": {
+      "artist": "1997",
+      "licence": "CC BY 3.0",
+      "licence_url": "https://creativecommons.org/licenses/by/3.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Argentona_(El_Maresme,_Catalunya)-1.jpg"
+     }
+    },
+    {
+     "img": "img/Q11539-1.jpg",
+     "thumb": "img/Q11539-1-t.jpg",
+     "w": 1280,
+     "h": 960,
+     "credit": {
+      "artist": "Pere López Brosa",
+      "licence": "CC BY-SA 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Argentona_-_20220805_190421.jpg"
+     }
+    },
+    {
+     "img": "img/Q11539-2.jpg",
+     "thumb": "img/Q11539-2-t.jpg",
+     "w": 1280,
+     "h": 960,
+     "credit": {
+      "artist": "Pere López Brosa",
+      "licence": "CC BY-SA 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Cam%C3%AD_paral%C2%B7lel_a_la_Ronda_-_20220805_182824.jpg"
+     }
+    },
+    {
+     "img": "img/Q11539-3.jpg",
+     "thumb": "img/Q11539-3-t.jpg",
+     "w": 1280,
+     "h": 960,
+     "credit": {
+      "artist": "Pere López Brosa",
+      "licence": "CC BY-SA 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Argentona_-_20220805_185058.jpg"
+     }
+    }
+   ],
+   "place": "A town of about 12,900 people in the Maresme, just inland from Mataró and about 30 km north-east of Barcelona, at the foot of the coastal hills. It was a summer retreat for Barcelona families and keeps their modernista houses, including Puig i Cadafalch's own, and a museum of water jugs with four pieces by Picasso. The beaches of the Maresme coast are a few kilometres away.",
+   "living": "A commuter town as much as a holiday one, lived in all year, with trains to Barcelona from Mataró next door.",
+   "wiki": "https://en.wikipedia.org/wiki/Argentona",
+   "qid": "Q11539",
+   "checked": "2026-11-04"
+  },
+  "a7642": {
+   "photos": [
+    {
+     "img": "img/Q16704-0.jpg",
+     "thumb": "img/Q16704-0-t.jpg",
+     "w": 1280,
+     "h": 960,
+     "credit": {
+      "artist": "EliziR",
+      "licence": "CC BY-SA 3.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/3.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Cara_sud_Monistrol_de_Montserrat_(gener_2007)_-_panoramio.jpg"
+     }
+    },
+    {
+     "img": "img/Q16704-1.jpg",
+     "thumb": "img/Q16704-1-t.jpg",
+     "w": 1280,
+     "h": 616,
+     "credit": {
+      "artist": "Elemaki",
+      "licence": "CC BY 3.0",
+      "licence_url": "https://creativecommons.org/licenses/by/3.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Monistrol.jpg"
+     }
+    },
+    {
+     "img": "img/Q16704-2.jpg",
+     "thumb": "img/Q16704-2-t.jpg",
+     "w": 1280,
+     "h": 857,
+     "credit": {
+      "artist": "János Korom Dr. &gt;17 Million views from Wien, Austria",
+      "licence": "CC BY-SA 2.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/2.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Monistral_Monserrat_520DSC_0083_(49937302806).jpg"
+     }
+    },
+    {
+     "img": "img/Q16704-3.jpg",
+     "thumb": "img/Q16704-3-t.jpg",
+     "w": 1280,
+     "h": 857,
+     "credit": {
+      "artist": "János Korom Dr. &gt;17 Million views from Wien, Austria",
+      "licence": "CC BY-SA 2.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/2.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Monistral_Monserrat_520DSC_0085_(49936791878).jpg"
+     }
+    },
+    {
+     "img": "img/Q16704-4.jpg",
+     "thumb": "img/Q16704-4-t.jpg",
+     "w": 1280,
+     "h": 857,
+     "credit": {
+      "artist": "János Korom Dr. &gt;17 Million views from Wien, Austria",
+      "licence": "CC BY-SA 2.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/2.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Monistral_Monserrat_520DSC_0089_(49937607817).jpg"
+     }
+    }
+   ],
+   "place": "A village of about 3,200 people on the river Llobregat at the foot of Montserrat, the jagged massif whose Benedictine monastery is one of Catalonia's best-known sights. A rack railway climbs from the village to the monastery, the mountain has some of the region's best walking, and the bridge over the river dates from the 14th century.",
+   "living": "Day visitors fill the mountain, but the village itself is quiet and lived in all year. Trains run to Barcelona every half hour.",
+   "wiki": "https://en.wikipedia.org/wiki/Monistrol_de_Montserrat",
+   "qid": "Q16704",
+   "checked": "2026-11-04"
+  },
+  "a7904": {
+   "photos": [
+    {
+     "img": "img/Q1945628-0.jpg",
+     "thumb": "img/Q1945628-0-t.jpg",
+     "w": 1280,
+     "h": 853,
+     "credit": {
+      "artist": "Joseolgon",
+      "licence": "CC BY 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Montaria_1.jpg"
+     }
+    },
+    {
+     "img": "img/Q1945628-1.jpg",
+     "thumb": "img/Q1945628-1-t.jpg",
+     "w": 1280,
+     "h": 853,
+     "credit": {
+      "artist": "mauricebricart",
+      "licence": "Public domain",
+      "licence_url": null,
+      "page": "https://commons.wikimedia.org/wiki/File:Montaria_DSCF8180_(53887785557).jpg"
+     }
+    },
+    {
+     "img": "img/Q1945628-2.jpg",
+     "thumb": "img/Q1945628-2-t.jpg",
+     "w": 1280,
+     "h": 853,
+     "credit": {
+      "artist": "Joseolgon",
+      "licence": "CC BY 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Serra_de_Arga_em_Montaria_2.jpg"
+     }
+    },
+    {
+     "img": "img/Q1945628-3.jpg",
+     "thumb": "img/Q1945628-3-t.jpg",
+     "w": 1280,
+     "h": 853,
+     "credit": {
+      "artist": "Joseolgon",
+      "licence": "CC BY 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Serra_de_Arga_em_Montaria_1.jpg"
+     }
+    },
+    {
+     "img": "img/Q1945628-4.jpg",
+     "thumb": "img/Q1945628-4-t.jpg",
+     "w": 1280,
+     "h": 853,
+     "credit": {
+      "artist": "Joseolgon",
+      "licence": "CC BY 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Serra_de_Arga_em_Montaria_5.jpg"
+     }
+    }
+   ],
+   "place": "A small mountain parish of about 450 people in the Serra de Arga, inland from Viana do Castelo in Portugal's green north-west, the Minho. Stone villages and watermills in the valleys, and granite moorland with horses grazing and wind turbines on the tops. Viana do Castelo, an old port with Atlantic beaches, is the nearest town.",
+   "living": "Very rural, with few shops or services in the parish itself. The Minho is the wettest part of Portugal: it's green because it rains a lot from autumn to spring.",
+   "wiki": "https://pt.wikipedia.org/wiki/Montaria",
+   "qid": "Q1945628",
+   "checked": "2026-11-04"
+  },
+  "a12836": {
+   "photos": [
+    {
+     "img": "img/Q2991252-0.jpg",
+     "thumb": "img/Q2991252-0-t.jpg",
+     "w": 1280,
+     "h": 945,
+     "credit": {
+      "artist": "Tiia Monto",
+      "licence": "CC BY 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Madalena_do_Mar_in_2026.jpg"
+     }
+    },
+    {
+     "img": "img/Q2991252-1.jpg",
+     "thumb": "img/Q2991252-1-t.jpg",
+     "w": 1280,
+     "h": 960,
+     "credit": {
+      "artist": "Patrice78500",
+      "licence": "CC BY-SA 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:DSCN7028_Madalena_do_Mar_-_Avenida_de_1o_de_fevereiro_-Est.jpg"
+     }
+    },
+    {
+     "img": "img/Q2991252-2.jpg",
+     "thumb": "img/Q2991252-2-t.jpg",
+     "w": 1280,
+     "h": 853,
+     "credit": {
+      "artist": "Herbert wie",
+      "licence": "CC BY-SA 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:0_Igreja_Matriz_Madalena_do_Mar_Madeira.jpg"
+     }
+    },
+    {
+     "img": "img/Q2991252-3.jpg",
+     "thumb": "img/Q2991252-3-t.jpg",
+     "w": 1280,
+     "h": 853,
+     "credit": {
+      "artist": "Herbert wie",
+      "licence": "CC BY-SA 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:0_Vereda_do_Nateiro_Madalena_do_Mar_Madeira.jpg"
+     }
+    },
+    {
+     "img": "img/Q2991252-4.jpg",
+     "thumb": "img/Q2991252-4-t.jpg",
+     "w": 1280,
+     "h": 853,
+     "credit": {
+      "artist": "Ximonic (Simo Räsänen)",
+      "licence": "CC BY-SA 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Hillside_houses_of_Madalena_do_Mar,_Ponta_do_Sol,_Madeira,_2023_May.jpg"
+     }
+    }
+   ],
+   "place": "A tiny seaside parish of about 500 people on Madeira's south-west coast, squeezed between the Atlantic and steep cliffs and planted almost entirely with bananas. It has a pebble beach and seafront road, and paragliders land here from the cliffs above. Ponta do Sol and Calheta, with its marina and sandy beach, are a few minutes along the coast.",
+   "living": "A parish this small has few homes for sale, so it's worth looking along the coast too. The south-west coast is one of the sunniest parts of Madeira.",
+   "wiki": "https://en.wikipedia.org/wiki/Madalena_do_Mar",
+   "qid": "Q2991252",
+   "checked": "2026-11-04"
+  },
+  "a722": {
+   "photos": [
+    {
+     "img": "img/Q749180-0.jpg",
+     "thumb": "img/Q749180-0-t.jpg",
+     "w": 1280,
+     "h": 960,
+     "credit": {
+      "artist": "Lacobrigo",
+      "licence": "CC BY-SA 3.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/3.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Cidade_de_Silves.jpg"
+     }
+    },
+    {
+     "img": "img/Q749180-1.jpg",
+     "thumb": "img/Q749180-1-t.jpg",
+     "w": 1280,
+     "h": 853,
+     "credit": {
+      "artist": "Vitor Oliveira from Torres Vedras, PORTUGAL",
+      "licence": "CC BY-SA 2.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/2.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Arredores_de_Silves_-_Portugal_(51848350541).jpg"
+     }
+    },
+    {
+     "img": "img/Q749180-2.jpg",
+     "thumb": "img/Q749180-2-t.jpg",
+     "w": 1280,
+     "h": 853,
+     "credit": {
+      "artist": "Eduard Marmet",
+      "licence": "CC BY-SA 2.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/2.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Countryside_near_Slives_(37182610581).jpg"
+     }
+    },
+    {
+     "img": "img/Q749180-3.jpg",
+     "thumb": "img/Q749180-3-t.jpg",
+     "w": 1280,
+     "h": 853,
+     "credit": {
+      "artist": "Vitor Oliveira from Torres Vedras, PORTUGAL",
+      "licence": "CC BY-SA 2.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/2.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Mercado_Municipal_de_Silves_-_Portugal_(52156297867).jpg"
+     }
+    },
+    {
+     "img": "img/Q749180-4.jpg",
+     "thumb": "img/Q749180-4-t.jpg",
+     "w": 1280,
+     "h": 793,
+     "credit": {
+      "artist": "Jules Verne Times Two",
+      "licence": "CC BY-SA 4.0",
+      "licence_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:House_ruins_along_the_Via_Algarviana_footpath,_Silves,_Portugal_(PPL1-Corrected)_julesvernex2-2.jpg"
+     }
+    }
+   ],
+   "place": "The old Moorish capital of the Algarve, a town of about 6,300 people on the river Arade, crowned by a red sandstone castle and a Gothic cathedral. Orange groves and low hills surround it, the Via Algarviana long-distance path crosses the hills to the north, and the beaches at Armação de Pêra and Portimão are on the coast to the south.",
+   "living": "A real town that lives all year, and a member of the Cittaslow network of slow towns, with the busy coast close but not on the doorstep.",
+   "wiki": "https://en.wikipedia.org/wiki/Silves%2C_Portugal",
+   "qid": "Q749180",
+   "checked": "2026-11-04"
+  }
+ }
+}

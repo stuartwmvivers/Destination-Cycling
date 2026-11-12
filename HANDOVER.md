@@ -22,9 +22,9 @@ A free, static website that helps a keen road cyclist (the owner, based in Scotl
 
 | Item | State |
 |---|---|
-| Live site | https://stuartwmvivers.github.io/Destination-Cycling/ (landing page) and `/spain-coast/` (Spain dashboard). The old `/spanish-coast-climate.html` redirects to `/spain-coast/`. |
+| Live site | https://stuartwmvivers.github.io/Destination-Cycling/ (Places, the home page, since 12 Nov 2026), `/climate/` (climate comparisons, the landing page until then), `/spain-coast/` (Spain dashboard) and `/score/bases/` (detailed scores). The old `/spanish-coast-climate.html` redirects to `/spain-coast/`. |
 | Repo | `stuartwmvivers/Destination-Cycling`, public. GitHub Pages is deployed by GitHub Actions (`.github/workflows/deploy.yml`) on every push to `main`: build, `data_check.py`, `render_check.js`, then publish `_site/`. A failed check publishes nothing. |
-| Site root (`/Destination-Cycling/`) | Landing page `index.html` (added 23 Oct 2026). |
+| Site root (`/Destination-Cycling/`) | Places (`site-src/pages/places.html`, `js/places.js`), the design signed off on 29 Oct 2026 (`docs/interface-plan.md`), live since 12 Nov 2026. The old landing page is at `/climate/`. |
 | Built files | Not committed since refactor phase D (23 Oct 2026). The last self-contained single-file page is in git history: `git show 052c30e:spanish-coast-climate.html`. |
 | Source | `config/`, `data/processed/`, `site-src/` and `build/build_site.py` build `_site/`. The new Spain dashboard renders identically to the published page across 31 settings (`tests/compare_pages.js`, 23 Oct 2026). |
 | Private twin | A Claude.ai "Dashboard" artifact with the same page and data. **Not reachable from Claude Code**; treat this repo as canonical from now on. |
@@ -65,9 +65,15 @@ pipeline/aemet_fetch.py / aemet_aggregate.py         Spanish national stations (
 pipeline/midas_fetch.py / midas_aggregate.py         UK baseline stations, Met Office MIDAS Open (needs CEDA_ACCESS_TOKEN)
 pipeline/score/               cycling-base score pipeline (docs/score-prototype-plan.md): own venv and large inputs in DC_CACHE, outside OneDrive and git
 pipeline/stations_combine.py  merges station sets -> data/processed/stations/<country>.json (rebuilds only sources whose inputs are present)
-site-src/pages/               index.html (landing), region.html (dashboard template, one page per region), about.html (method, trust, sources)
-site-src/css/                 tokens.css (light + dark design tokens), dashboard.css, landing.css
-site-src/js/                  dash-shim.js (the `dash` API, fetches region data), periods.js (calcs), dashboard.js (UI)
+pipeline/site/                the Places pages' data, run by hand after the score (score venv): make_data.py (areas.json, grid.json and the
+                              private site_prices.json), make_places.py (photos), make_facilities.py (bike shops), make_appeal.py (holidays)
+config/place_info.json        hand-written place descriptions and chosen Commons photos, read by make_places.py
+data/processed/site/          the Places pages' data and photos (img/), committed; never prices
+site-src/pages/               places.html (the home page), index.html (climate comparisons, built at /climate/), region.html (dashboard
+                              template, one page per region), score.html (detailed scores), about.html (method, trust, sources)
+site-src/css/                 tokens.css (light + dark design tokens), places.css, dashboard.css, landing.css, score.css
+site-src/js/                  places.js (the home page), dash-shim.js (the `dash` API, fetches region data), periods.js (calcs),
+                              dashboard.js (UI), score.js (detailed scores)
 build/build_site.py           -> _site/: pages, columnar data files per region, summary.json, vendored d3
 _site/                        git-ignored build output
 tests/data_check.py           4.4 reference values + region files match data/processed
@@ -279,6 +285,11 @@ Conclusions:
 | ECA&D (KNMI) | Planned: station validation across Europe | No registration for station data. `www.ecad.eu` was allowlisted, but the site returned **HTTP 503** on 21 Oct 2026. Retry. Bulk files may be served from another host. | Non-commercial research and education only. Acknowledge data providers; cite Klein Tank et al. (2002), *Int. J. Climatol.* 22, 1441–1453. |
 | Met Office MIDAS Open (via CEDA) | UK baseline stations (Dunning, Bristol), since 24 Oct 2026 | The owner has a CEDA account. Scripted downloads need a short-lived **access token** in `CEDA_ACCESS_TOKEN` (in the git-ignored `.env`); directory listings are public. Host `dap.ceda.ac.uk`, dataset version 202607 (daily temperature, daily rain, hourly mean wind). | Open Government Licence v3. Credited on the page, footer and About page. Before any formal publication, add the dataset DOIs from the CEDA catalogue for version 202607 (not yet recorded here). |
 | Statistics Portugal (INE), indicator 0012234 | Portugal's property prices on the score's private copy, since 30 Oct 2026 | No key. `www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0012234&lang=EN`, read into the cache (`prices-portugal/`) | Free to reuse crediting INE, but kept private by the owner's decision, like Spain's prices (`docs/portugal-plan.md`). Credited on the private copy. |
+| Wikimedia Commons | Photos on the Places pages (10 areas so far), since 12 Nov 2026 | No key; `pipeline/site/make_places.py` copies each chosen file at 1280 px plus a thumbnail into `data/processed/site/img/` | Only CC0, public domain, CC BY and CC BY-SA files. Each photo shows its author, licence (linked) and Commons page. |
+| Wikipedia page views and Commons geotags | "Leisure appeal" on the Places pages (shown, not scored) | Wikimedia REST and Commons APIs, no key (`make_appeal.py`) | Page-view data CC0; only counts are shown. |
+| INE Spain: experimental holiday-let statistics (May 2026) and the 2021 census (via the ineAtlas.data repository) | "Busyness" on the Places pages, Spain | No key; cached in `data/raw/appeal/` | CC BY 4.0 (INE's reuse terms; ineAtlas.data is CC BY 4.0). Credited on the About screen. |
+| Turismo de Portugal: Registo Nacional de Alojamento Local (RNAL) | "Busyness" on the Places pages, mainland Portugal | Its open-data map service, no key | CC BY on dados.gov.pt ("Estabelecimentos de Alojamento Local"). Credited on the About screen. Madeira isn't covered. |
+| OpenStreetMap via the Overpass API | Bike shops, hire and repair stands on the Places pages | No key (`make_facilities.py`) | ODbL, as for the score data. |
 | OpenStreetMap tiles (`tile.openstreetmap.org`) | Map background, via Leaflet 1.9.4 (vendored) | No key. The [tile usage policy](https://operations.osmfoundation.org/policies/tiles/) allows light use like this site with visible attribution; no bulk or automated downloading (the tests serve blank tiles instead). If traffic grows, switch to a tile provider: change the URL in `initMap` in `site-src/js/dashboard.js`. | Data © OpenStreetMap contributors, ODbL; attribution shown on the map and in the footer. Leaflet is BSD-2. (The geo-maps / Natural Earth / es-atlas outlines used until 24 Oct 2026 are gone.) |
 
 **Secrets:** keys go in environment variables (`METEOCAT_API_KEY`, `AEMET_API_KEY`, `CEDA_ACCESS_TOKEN`) or a git-ignored `.env`. Never in code, commits, the built page or issues. **Ask the owner for keys; they're not in this repo.**
@@ -289,6 +300,7 @@ Conclusions:
 
 ## 7. Front-end architecture (current)
 
+- **Home page: Places (since 12 Nov 2026).** `site-src/pages/places.html` and `js/places.js`, the design in `docs/interface-plan.md`: a list of named areas, an area page for each, Explore the map, Favourites, Compare and About, with hash routes (`#/area/<id>`, `#/explore`). It reads `data/site/` (copied from `data/processed/site/`, from `pipeline/site/`). `build_site.py --private` adds `data/site/prices.json` (from `data/private/site_prices.json`) and a private-copy banner; the public build never has them, and `tests/data_check.py` fails a public build that holds any price field. Favourites and settings stay in each browser (localStorage). The rest of this section describes the climate dashboards.
 - **Since refactor phase A (23 Oct 2026)** the dashboard is split into `site-src/pages/region.html` (markup), `site-src/css/dashboard.css` and three scripts loaded in order after d3:
   1. `site-src/js/dash-shim.js` implements the `dash` API (`data`, `onData`, `calc`, `params`, `setParams`, `resetParams`, `colors`, `setLink`), which comes from the Claude.ai Dashboard artifact the page was first built in. It fetches `data/regions/<region>.json`, named by `window.DC_PAGE`, expands the columns back into the original row shape, persists params to localStorage (`dc-params-<region>`), caches calcs and redraws on resize. It reports `loading` until the data arrive and `error` if the fetch fails.
   2. `site-src/js/periods.js`: `dash.calc('periods', …)` builds per place × year × period rows (period `'1'`…`'12'` or `'year'`; year `'2017'`…`'2025'` or `'all'`), with `_lo`/`_hi` for the all-years rows; `dash.calc('station_periods', …)` does the same for stations, plus `_n` counts of years with data.

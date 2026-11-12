@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Destination Cycling: places worth a look</title>
+<meta name="description" content="Areas of Spain and Portugal for cycling holidays and a holiday home, judged on climbs, riding weather, flights from Scotland, quiet roads, walking and eating out.">
+<link rel="stylesheet" href="{{ROOT}}vendor/leaflet-{{LEAFLET}}/leaflet.css">
+<link rel="stylesheet" href="{{ROOT}}css/places.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="#/">Destination Cycling</a>
+  <nav class="nav" aria-label="Main">
+    <a href="#/" data-nav="places">Places</a>
+    <a href="#/explore" data-nav="explore">Explore the map</a>
+    <a href="#/favourites" data-nav="favourites">Favourites <span class="count" id="fav-count"></span></a>
+    <a href="#/compare" data-nav="compare">Compare <span class="count" id="cmp-count"></span></a>
+    <a href="#/about" data-nav="about">About</a>
+  </nav>
+</header>
+{{BANNER}}<main id="app" tabindex="-1"><p class="loading">Loading places…</p></main>
+<script src="{{ROOT}}vendor/leaflet-{{LEAFLET}}/leaflet.js"></script>
+<script>window.DC_PLACES = {{CONFIG}};</script>
+<script src="{{ROOT}}js/places.js"></script>
+</body>
+</html>

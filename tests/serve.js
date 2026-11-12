@@ -1,7 +1,7 @@
 // Minimal static file server for tests (the site fetches its data, so file:// won't do).
 // serve(dir) -> Promise<{ url, close }>; also runnable: node tests/serve.js _site [port]
 const http = require('http'), fs = require('fs'), path = require('path');
-const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.svg': 'image/svg+xml' };
+const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml' };
 function serve(dir, port = 0) {
   const root = path.resolve(dir);
   const server = http.createServer((req, res) => {

@@ -75,6 +75,21 @@ const pagesIn = (dir) => fs.readdirSync(dir, { recursive: true }).filter((f) => 
           await p.click('#sc-presets button[data-p="agreed"]'); await p.check('#sc-gate'); await p.click('#sc-flights button[data-f="year_round"]'); await p.waitForTimeout(200);
         }
       }
+      if (await p.$('#app')) {   // Places pages: the list, an area page with photos, every other screen, then a plain area page
+        if (!(await p.locator('#app .card').count())) errs.push(`${name} ${w}: places list is empty`);
+        const plain = await p.$eval('#app .card', (c) => c.dataset.id);
+        const photo = await p.evaluate(async () => Object.keys((await (await fetch('data/site/places.json')).json()).places)[0]);
+        for (const r of [`area/${photo}`, 'explore', 'favourites', 'compare', 'about', `area/${plain}`]) {
+          await p.goto(url + '#/' + r); await p.waitForLoadState('networkidle'); await p.waitForTimeout(600);
+          const text = (await p.textContent('#app')) || '';
+          if (!text.trim() || /Couldn't load/.test(text)) errs.push(`${name} #/${r} ${w}: nothing shown`);
+          if (r === `area/${photo}` && !(await p.$('#hero-img'))) errs.push(`${name} #/${r} ${w}: no photo on a place that has photos`);
+          const [sw2, cw2] = await p.evaluate(() => [document.documentElement.scrollWidth, document.documentElement.clientWidth]);
+          if (sw2 > cw2) errs.push(`${name} #/${r} ${w}: horizontal overflow ${sw2}>${cw2}`);
+          await p.screenshot({ path: `render-${name}-${r.split('/')[0]}-${w}.png`, fullPage: r !== 'explore' });
+        }
+        await p.goto(url); await p.waitForLoadState('networkidle'); await p.waitForTimeout(600);
+      }
       await p.screenshot({ path: `render-${name.replace(/\//g, '_')}-${w}.png`, fullPage: true });
       await ctx.close();
     }

@@ -1,0 +1,5733 @@
+{
+ "radius_km": 15,
+ "source": "OpenStreetMap via Overpass API",
+ "fetched": "2026-11-05",
+ "areas": {
+  "a2651": {
+   "shops": 14,
+   "hire": 10,
+   "repair_stations": 5,
+   "near": [
+    {
+     "name": "biciAltea",
+     "km": 4.7,
+     "hire": true,
+     "repair": false,
+     "web": "http://www.labici.net/altea/",
+     "kind": "hire",
+     "points": 7
+    },
+    {
+     "name": "Ashé Bikes",
+     "km": 5.4,
+     "hire": false,
+     "repair": false,
+     "web": "https://ashebikes.com",
+     "kind": "shop"
+    },
+    {
+     "name": "Cicles Alvado",
+     "km": 5.6,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Cronobike",
+     "km": 6.7,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Coll de Rates Cycling Holidays",
+     "km": 10.1,
+     "hire": true,
+     "repair": false,
+     "web": "https://collderatescycling.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Start With Bike",
+     "km": 10.5,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.startwithbike.com",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Cicles Tony",
+     "km": 10.7,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Mobility Factory Sales and Rental",
+     "km": 10.8,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a2403": {
+   "shops": 16,
+   "hire": 10,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "Connect Cycling Center",
+     "km": 8.1,
+     "hire": false,
+     "repair": false,
+     "web": "http://www.connectasensibike.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Bicisanvi - Apeadero Cercanías R.E.N.F.E.",
+     "km": 8.2,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bicisanvi - Ciudad Deportiva",
+     "km": 8.5,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bicisanvi - Ajuntament",
+     "km": 8.7,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Guijarro Tot Sport",
+     "km": 8.9,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bicisanvi - Hort dels Lleons",
+     "km": 9.0,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "bicisanvi",
+     "km": 9.0,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 3
+    },
+    {
+     "name": "Bici Sanvi",
+     "km": 9.3,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    }
+   ]
+  },
+  "a688": {
+   "shops": 17,
+   "hire": 8,
+   "repair_stations": 2,
+   "near": [
+    {
+     "name": "Bicicletas Coleta",
+     "km": 5.3,
+     "hire": false,
+     "repair": true,
+     "web": "https://bicicletascoleta.es",
+     "kind": "shop"
+    },
+    {
+     "name": "Doctor Bike",
+     "km": 5.4,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "La Estación",
+     "km": 5.4,
+     "hire": true,
+     "repair": false,
+     "web": "https://bicicletaslaestacion.com",
+     "kind": "shop"
+    },
+    {
+     "name": "Carrmountain",
+     "km": 5.5,
+     "hire": true,
+     "repair": true,
+     "web": "https://www.carrmountain.com",
+     "kind": "shop"
+    },
+    {
+     "name": "Bicicletas Eléctricas Granada",
+     "km": 5.7,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Ecoway",
+     "km": 5.9,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Semar Élite",
+     "km": 6.0,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Harman Bikes Granada",
+     "km": 6.0,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a12610": {
+   "shops": 9,
+   "hire": 58,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "Arista eventos",
+     "km": 9.1,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Sitycleta Intermodal El Rincón",
+     "km": 9.4,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.sitycleta.com/es/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Sitycleta Plaza del Pilar",
+     "km": 10.0,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.sitycleta.com/es/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bicicletas Canarias",
+     "km": 10.1,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "MBC",
+     "km": 10.2,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Sitycleta Churruca",
+     "km": 10.4,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.sitycleta.com/es/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Sitycleta Plaza de América",
+     "km": 10.4,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.sitycleta.com/es/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Sitycleta Infecar (elect.)",
+     "km": 10.5,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.sitycleta.com/es/",
+     "kind": "hire",
+     "points": 1
+    }
+   ]
+  },
+  "a12582": {
+   "shops": 7,
+   "hire": 14,
+   "repair_stations": 1,
+   "near": [
+    {
+     "name": "TeideBike",
+     "km": 5.1,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bike Rent Tenerife - Cristianos",
+     "km": 5.5,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.bikerenttenerife.com",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bike Rent Tenerife - Costa Adeje",
+     "km": 5.6,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.bikerenttenerife.com",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Topacio",
+     "km": 5.7,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Kanarenpieper",
+     "km": 5.7,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bike Point Tenerife",
+     "km": 6.0,
+     "hire": true,
+     "repair": true,
+     "web": "https://www.bikepointtenerife.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Cycling in Tenerife",
+     "km": 6.0,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.cyclingintenerife.com",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bike Experience Tenerife",
+     "km": 6.1,
+     "hire": true,
+     "repair": false,
+     "web": "https://bikeexperiencetenerife.com/",
+     "kind": "hire",
+     "points": 1
+    }
+   ]
+  },
+  "a2787": {
+   "shops": 11,
+   "hire": 8,
+   "repair_stations": 3,
+   "near": [
+    {
+     "name": "Maxima Bikes",
+     "km": 1.0,
+     "hire": true,
+     "repair": true,
+     "web": "https://www.maximabikes.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Orange Bikes",
+     "km": 7.2,
+     "hire": true,
+     "repair": false,
+     "web": "https://orange-bikes.es/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Cicles Desnivell",
+     "km": 8.1,
+     "hire": true,
+     "repair": true,
+     "web": "https://bicicletasdesnivell.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Tu Triatlon",
+     "km": 8.1,
+     "hire": true,
+     "repair": true,
+     "web": "https://tutriatlon.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Cafe Ciclista",
+     "km": 8.5,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "DNA Bikes",
+     "km": 8.8,
+     "hire": false,
+     "repair": true,
+     "web": "https://www.dnabikes.es/",
+     "kind": "shop"
+    },
+    {
+     "name": "Xàbia's Bike",
+     "km": 8.9,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Cicles Xaló",
+     "km": 9.0,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a12555": {
+   "shops": 9,
+   "hire": 31,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "Fitness & Cycling",
+     "km": 3.5,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Accion-Bike",
+     "km": 8.2,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": null,
+     "km": 8.2,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Sitycleta ULPGC - Educación física",
+     "km": 8.6,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.sitycleta.com/es/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Sitycleta ULPGC - Ingeniería",
+     "km": 8.8,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.sitycleta.com/es/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Sitycleta ULPGC - CC. Básicas",
+     "km": 9.2,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.sitycleta.com/es/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Sitycleta ULPGC - Biblioteca General",
+     "km": 9.5,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.sitycleta.com/es/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Sitycleta ULPGC - Polivalente I",
+     "km": 9.9,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.sitycleta.com/es/",
+     "kind": "hire",
+     "points": 1
+    }
+   ]
+  },
+  "a12661": {
+   "shops": 2,
+   "hire": 2,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "Bicicod",
+     "km": 4.3,
+     "hire": true,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Comercial Pepín",
+     "km": 4.7,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bar Parada",
+     "km": 13.0,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    }
+   ]
+  },
+  "a1499": {
+   "shops": 1,
+   "hire": 0,
+   "repair_stations": 1,
+   "near": [
+    {
+     "name": "TerraSport Bike Shop",
+     "km": 3.3,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a12586": {
+   "shops": 4,
+   "hire": 3,
+   "repair_stations": 1,
+   "near": [
+    {
+     "name": "Triciclos Sur",
+     "km": 8.4,
+     "hire": true,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bike Point",
+     "km": 8.6,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Godzilla Surf Shop",
+     "km": 8.7,
+     "hire": true,
+     "repair": false,
+     "web": "https://godzillasurfshop.es/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Kanarenpieper",
+     "km": 13.7,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Vadebicis",
+     "km": 14.3,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "BiKronos",
+     "km": 14.9,
+     "hire": false,
+     "repair": false,
+     "web": "https://www.bikronos.com/en/",
+     "kind": "shop"
+    }
+   ]
+  },
+  "a12730": {
+   "shops": 9,
+   "hire": 2,
+   "repair_stations": 1,
+   "near": [
+    {
+     "name": "Taller de Bicis Moi",
+     "km": 9.0,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "IslandsBmx",
+     "km": 9.3,
+     "hire": false,
+     "repair": false,
+     "web": "https://www.islandsbmx.com",
+     "kind": "shop"
+    },
+    {
+     "name": "Teide Bike",
+     "km": 9.4,
+     "hire": false,
+     "repair": false,
+     "web": "https://teidebikerent.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "La Cumbre.cc",
+     "km": 9.7,
+     "hire": true,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bicicletas Gil",
+     "km": 9.8,
+     "hire": false,
+     "repair": true,
+     "web": "http://bicicletasgil.blogspot.com.es/",
+     "kind": "shop"
+    },
+    {
+     "name": "Tenerife Bike Center",
+     "km": 12.3,
+     "hire": false,
+     "repair": true,
+     "web": "http://www.tenerifebikecenter.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Virus Bike",
+     "km": 13.5,
+     "hire": true,
+     "repair": false,
+     "web": "http://virusbikeshop.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Bici Sprinter",
+     "km": 14.0,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a245": {
+   "shops": 4,
+   "hire": 4,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "Bicitecnia",
+     "km": 4.0,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bicis Yeyo",
+     "km": 6.3,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "bike-to-the-future",
+     "km": 6.9,
+     "hire": true,
+     "repair": true,
+     "web": "https://www.bike-to-the-future.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Trafico 2000 - rent a bike",
+     "km": 7.3,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bicipark",
+     "km": 7.5,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Ciclos Martín",
+     "km": 7.9,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a7576": {
+   "shops": 24,
+   "hire": 4,
+   "repair_stations": 3,
+   "near": [
+    {
+     "name": null,
+     "km": 4.5,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "The Bike Village",
+     "km": 5.0,
+     "hire": false,
+     "repair": true,
+     "web": "https://www.thebikevillage.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Direct bike",
+     "km": 5.0,
+     "hire": false,
+     "repair": false,
+     "web": "https://dbikeshop.com",
+     "kind": "shop"
+    },
+    {
+     "name": "Biking Point Mataró",
+     "km": 5.3,
+     "hire": false,
+     "repair": false,
+     "web": "https://www.bikingpoint.es/nuestras-tiendas/mataro",
+     "kind": "shop"
+    },
+    {
+     "name": "Monbike Mataró",
+     "km": 6.4,
+     "hire": false,
+     "repair": false,
+     "web": "http://monbikemataro.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Morenito",
+     "km": 6.7,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Corriol",
+     "km": 7.1,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Cycling no limit Cardadeu, S.L.",
+     "km": 7.5,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a7734": {
+   "shops": 15,
+   "hire": 2,
+   "repair_stations": 3,
+   "near": [
+    {
+     "name": "Tarya Bikes",
+     "km": 3.7,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Donda Bikes",
+     "km": 3.9,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Rutatur",
+     "km": 5.1,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Munt Bikes",
+     "km": 6.1,
+     "hire": false,
+     "repair": false,
+     "web": "https://www.muntbikes.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Cal Klaus",
+     "km": 7.0,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bikeforever Arenys",
+     "km": 8.5,
+     "hire": false,
+     "repair": false,
+     "web": "https://bikeforever.es/",
+     "kind": "shop"
+    },
+    {
+     "name": "Different Bikes",
+     "km": 9.4,
+     "hire": false,
+     "repair": false,
+     "web": "https://www.differentbikes.es",
+     "kind": "shop"
+    },
+    {
+     "name": "El Corredor Llinars del Vallès",
+     "km": 9.8,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a307": {
+   "shops": 9,
+   "hire": 2,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "Cycle Sierra Nevada",
+     "km": 1.7,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": null,
+     "km": 8.7,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bicicletas Motril",
+     "km": 9.9,
+     "hire": false,
+     "repair": false,
+     "web": "https://javibicicletas.es/",
+     "kind": "shop"
+    },
+    {
+     "name": "Taller Maxscooter",
+     "km": 11.0,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "El Taller de Mingorance",
+     "km": 11.0,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Encris",
+     "km": 11.1,
+     "hire": false,
+     "repair": false,
+     "web": "http://www.encris.es/",
+     "kind": "shop"
+    },
+    {
+     "name": "Miranda Bike Shop",
+     "km": 11.3,
+     "hire": false,
+     "repair": true,
+     "web": "https://www.mirandabike.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Bull Bikes",
+     "km": 11.3,
+     "hire": false,
+     "repair": true,
+     "web": "https://bullbikes.com/",
+     "kind": "shop"
+    }
+   ]
+  },
+  "a248": {
+   "shops": 6,
+   "hire": 3,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "x-bike",
+     "km": 9.2,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bikestore",
+     "km": 9.2,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Ciclos Martín",
+     "km": 11.6,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bicitecnia",
+     "km": 14.0,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bicis Yeyo",
+     "km": 14.7,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Trafico 2000 - rent a bike",
+     "km": 14.7,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "bike-to-the-future",
+     "km": 15.0,
+     "hire": true,
+     "repair": true,
+     "web": "https://www.bike-to-the-future.com/",
+     "kind": "shop"
+    }
+   ]
+  },
+  "a2508": {
+   "shops": 7,
+   "hire": 4,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "Bienvenido Bike Rent Tourism",
+     "km": 2.2,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": null,
+     "km": 8.0,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Vaquer",
+     "km": 11.5,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bici-Club",
+     "km": 11.6,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Hopp",
+     "km": 12.5,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Vip Experience",
+     "km": 12.6,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "TAO",
+     "km": 13.2,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Benidorm Motos",
+     "km": 13.2,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.benidormmotos.com/",
+     "kind": "hire",
+     "points": 1
+    }
+   ]
+  },
+  "a12694": {
+   "shops": 16,
+   "hire": 2,
+   "repair_stations": 1,
+   "near": [
+    {
+     "name": "Virus Bike",
+     "km": 5.4,
+     "hire": true,
+     "repair": false,
+     "web": "http://virusbikeshop.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Bici Sprinter",
+     "km": 7.4,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Tenerife Bike Center",
+     "km": 8.0,
+     "hire": false,
+     "repair": true,
+     "web": "http://www.tenerifebikecenter.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Vadebicis",
+     "km": 8.8,
+     "hire": false,
+     "repair": true,
+     "web": "https://vadebicis.es/",
+     "kind": "shop"
+    },
+    {
+     "name": "Teide Bike",
+     "km": 9.8,
+     "hire": false,
+     "repair": false,
+     "web": "https://teidebikerent.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Bicicletas Gil",
+     "km": 10.0,
+     "hire": false,
+     "repair": true,
+     "web": "http://bicicletasgil.blogspot.com.es/",
+     "kind": "shop"
+    },
+    {
+     "name": "Taller de Bicis Moi",
+     "km": 10.3,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "La Cumbre.cc",
+     "km": 10.4,
+     "hire": true,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a1686": {
+   "shops": 0,
+   "hire": 1,
+   "repair_stations": 2,
+   "near": [
+    {
+     "name": "Circuito Motocross Sangonera",
+     "km": 13.9,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.sangonera.es/circuito.html",
+     "kind": "hire",
+     "points": 1
+    }
+   ]
+  },
+  "a12635": {
+   "shops": 0,
+   "hire": 2,
+   "repair_stations": 1,
+   "near": [
+    {
+     "name": "Kudo Rent",
+     "km": 2.0,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bar Parada",
+     "km": 2.9,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    }
+   ]
+  },
+  "a12678": {
+   "shops": 6,
+   "hire": 5,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "Electric Cycles Tenerife",
+     "km": 6.0,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.ecrider.es/es/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Tricolos Canarias",
+     "km": 6.4,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Teide Bike",
+     "km": 6.4,
+     "hire": true,
+     "repair": false,
+     "web": "https://teidecycling.com",
+     "kind": "shop"
+    },
+    {
+     "name": "Basti's Bike Rental",
+     "km": 6.4,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.rennradvermietung-puertodelacruz.com/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "rent electric bike",
+     "km": 6.6,
+     "hire": true,
+     "repair": false,
+     "web": "https://bikeandsun.es",
+     "kind": "shop"
+    },
+    {
+     "name": "Ride Base",
+     "km": 6.8,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Probicis norte",
+     "km": 7.0,
+     "hire": false,
+     "repair": false,
+     "web": "https://www.probicis.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Gofi's Bici",
+     "km": 7.2,
+     "hire": false,
+     "repair": true,
+     "web": "https://www.gofisbici.es/",
+     "kind": "shop"
+    }
+   ]
+  },
+  "a251": {
+   "shops": 7,
+   "hire": 3,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "TrujBike",
+     "km": 9.9,
+     "hire": true,
+     "repair": true,
+     "web": "https://trujbike.es/",
+     "kind": "shop"
+    },
+    {
+     "name": "Bull Bikes",
+     "km": 13.9,
+     "hire": false,
+     "repair": true,
+     "web": "https://bullbikes.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Cycle Sierra Nevada",
+     "km": 14.1,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Miranda Bike Shop",
+     "km": 14.4,
+     "hire": false,
+     "repair": true,
+     "web": "https://www.mirandabike.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "La Rueda",
+     "km": 14.4,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "El Taller de Mingorance",
+     "km": 14.5,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Encris",
+     "km": 14.6,
+     "hire": false,
+     "repair": false,
+     "web": "http://www.encris.es/",
+     "kind": "shop"
+    },
+    {
+     "name": "Taller Maxscooter",
+     "km": 14.6,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a12508": {
+   "shops": 9,
+   "hire": 13,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "Mountain Bike Parcour (Gravity Center)",
+     "km": 2.8,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Free Motion",
+     "km": 3.6,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.free-motion.com/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Scotts rent a bike & excursion shop",
+     "km": 5.6,
+     "hire": true,
+     "repair": false,
+     "web": "https://scotts-rent-a-bike-excursion-shop.business.site/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bikeshop Maspalomas",
+     "km": 6.3,
+     "hire": false,
+     "repair": true,
+     "web": "http://www.bikegc.com",
+     "kind": "shop"
+    },
+    {
+     "name": "Free Motion - Playa del Inglés",
+     "km": 6.4,
+     "hire": true,
+     "repair": true,
+     "web": "https://www.free-motion.com",
+     "kind": "shop"
+    },
+    {
+     "name": "Moto and bike rent",
+     "km": 6.7,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.motoandbike.com/",
+     "kind": "shop"
+    },
+    {
+     "name": null,
+     "km": 6.7,
+     "hire": true,
+     "repair": false,
+     "web": "https://bike10mil.com",
+     "kind": "shop"
+    },
+    {
+     "name": "Vilana",
+     "km": 6.9,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a146": {
+   "shops": 35,
+   "hire": 20,
+   "repair_stations": 1,
+   "near": [
+    {
+     "name": "Alhbikes",
+     "km": 4.7,
+     "hire": false,
+     "repair": false,
+     "web": "https://alhbike.com",
+     "kind": "shop"
+    },
+    {
+     "name": "JJ Romero",
+     "km": 5.5,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bicis Buendia",
+     "km": 8.1,
+     "hire": false,
+     "repair": true,
+     "web": "https://bicisbuendia.com",
+     "kind": "shop"
+    },
+    {
+     "name": "Cyclohobby",
+     "km": 8.9,
+     "hire": false,
+     "repair": false,
+     "web": "https://www.ciclohobby.es",
+     "kind": "shop"
+    },
+    {
+     "name": "Bike Spain",
+     "km": 9.4,
+     "hire": false,
+     "repair": false,
+     "web": "http://bikespain.es",
+     "kind": "shop"
+    },
+    {
+     "name": "Cabberty",
+     "km": 9.5,
+     "hire": false,
+     "repair": false,
+     "web": "https://cabberty.com",
+     "kind": "shop"
+    },
+    {
+     "name": "Klimaverso Bikes",
+     "km": 10.4,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bicicletas Campos Lorca",
+     "km": 10.8,
+     "hire": false,
+     "repair": true,
+     "web": "https://www.camposlorca.com/",
+     "kind": "shop"
+    }
+   ]
+  },
+  "a2356": {
+   "shops": 12,
+   "hire": 13,
+   "repair_stations": 1,
+   "near": [
+    {
+     "name": "A Pedals",
+     "km": 2.8,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Ciclos Boyer",
+     "km": 3.0,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Ciclos Candela",
+     "km": 3.1,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bicicletas El Huertas",
+     "km": 4.1,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Ciclesport Aspe",
+     "km": 4.3,
+     "hire": false,
+     "repair": false,
+     "web": "http://www.ciclesport.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Quino Bike",
+     "km": 10.3,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Ciclos Sabater",
+     "km": 11.8,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Ciclos Pater",
+     "km": 11.9,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a12587": {
+   "shops": 0,
+   "hire": 0,
+   "repair_stations": 0,
+   "near": []
+  },
+  "a7329": {
+   "shops": 146,
+   "hire": 805,
+   "repair_stations": 20,
+   "near": [
+    {
+     "name": "Riera Nova",
+     "km": 3.1,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.ambici.cat/ca/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Plaça de la Pau",
+     "km": 3.3,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.ambici.cat/ca/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Piscina Municipal",
+     "km": 3.4,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.ambici.cat/ca/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Les Guardioles",
+     "km": 3.6,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.ambici.cat/ca/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "RENFE Molins de Rei",
+     "km": 3.7,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.ambici.cat/ca/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Biblioteca el Molí",
+     "km": 3.8,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.ambici.cat/ca/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "La Granja",
+     "km": 3.9,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.ambici.cat/ca/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Zona Esportiva Ricard Ginebreda",
+     "km": 4.1,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.ambici.cat/ca/",
+     "kind": "hire",
+     "points": 1
+    }
+   ]
+  },
+  "a7642": {
+   "shops": 12,
+   "hire": 0,
+   "repair_stations": 1,
+   "near": [
+    {
+     "name": "Isart Bikes",
+     "km": 12.4,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Tomas Bellès",
+     "km": 12.6,
+     "hire": false,
+     "repair": false,
+     "web": "http://tomasbelles.com",
+     "kind": "shop"
+    },
+    {
+     "name": "Bikeworld Piera",
+     "km": 12.6,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Triskel 365",
+     "km": 13.2,
+     "hire": false,
+     "repair": false,
+     "web": "http://www.triskel365.com",
+     "kind": "shop"
+    },
+    {
+     "name": "Fasol",
+     "km": 13.5,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Molabikes",
+     "km": 13.9,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Sala Sport Bike",
+     "km": 14.0,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Biking Point Terrassa",
+     "km": 14.1,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a8581": {
+   "shops": 8,
+   "hire": 7,
+   "repair_stations": 1,
+   "near": [
+    {
+     "name": "Podium Bikes",
+     "km": 7.2,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Praza do Seixo",
+     "km": 7.3,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Grip Bikes",
+     "km": 7.9,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Praza Inmaculada, Tui",
+     "km": 8.0,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Ciclos Palacios",
+     "km": 8.9,
+     "hire": false,
+     "repair": true,
+     "web": "ciclospalacios.com",
+     "kind": "shop"
+    },
+    {
+     "name": "Rua da Estação, Valença",
+     "km": 9.0,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Piscina Municipal, Valença",
+     "km": 9.0,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "M Bikes",
+     "km": 9.3,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a190": {
+   "shops": 36,
+   "hire": 21,
+   "repair_stations": 1,
+   "near": [
+    {
+     "name": "Mys Bicicletas",
+     "km": 2.2,
+     "hire": true,
+     "repair": true,
+     "web": "https://mysbicicletas.com",
+     "kind": "shop"
+    },
+    {
+     "name": "Bicis Rafa",
+     "km": 2.4,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Recyclo Bike Shop Pedregalejo",
+     "km": 2.9,
+     "hire": true,
+     "repair": true,
+     "web": "https://recyclobike.com",
+     "kind": "shop"
+    },
+    {
+     "name": "Karakorum Bike",
+     "km": 5.6,
+     "hire": false,
+     "repair": true,
+     "web": "https://karakorum-bike.negocio.site",
+     "kind": "shop"
+    },
+    {
+     "name": "La Bicicletta",
+     "km": 5.6,
+     "hire": true,
+     "repair": false,
+     "web": "https://labiciclettabikerent.com/es/",
+     "kind": "shop"
+    },
+    {
+     "name": "Alikindoi Rent a Bike",
+     "km": 5.8,
+     "hire": true,
+     "repair": false,
+     "web": "https://alikindoi.org",
+     "kind": "shop"
+    },
+    {
+     "name": "La Cleta",
+     "km": 5.8,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "QQ",
+     "km": 5.9,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.qqbikes.com/",
+     "kind": "hire",
+     "points": 1
+    }
+   ]
+  },
+  "a2548": {
+   "shops": 4,
+   "hire": 0,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "On Bike",
+     "km": 12.7,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Ciclos Sabater",
+     "km": 13.3,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Ciclos Pater",
+     "km": 13.4,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Quino Bike",
+     "km": 13.9,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a12719": {
+   "shops": 13,
+   "hire": 2,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "Haibike",
+     "km": 6.2,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Supermercado del Motorista",
+     "km": 6.3,
+     "hire": false,
+     "repair": false,
+     "web": "https://www.supermercadodelmotorista.es/",
+     "kind": "shop"
+    },
+    {
+     "name": "Tri-ciclos",
+     "km": 7.0,
+     "hire": false,
+     "repair": true,
+     "web": "http://www.triciclostenerife.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Vadebicis",
+     "km": 7.3,
+     "hire": false,
+     "repair": false,
+     "web": "https://vadebicis.es",
+     "kind": "shop"
+    },
+    {
+     "name": "Vadebicis",
+     "km": 9.7,
+     "hire": false,
+     "repair": true,
+     "web": "https://vadebicis.es/",
+     "kind": "shop"
+    },
+    {
+     "name": "La Cumbre.cc",
+     "km": 10.7,
+     "hire": true,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "IslandsBmx",
+     "km": 10.7,
+     "hire": false,
+     "repair": false,
+     "web": "https://www.islandsbmx.com",
+     "kind": "shop"
+    },
+    {
+     "name": "Bicicletas Gil",
+     "km": 10.9,
+     "hire": false,
+     "repair": true,
+     "web": "http://bicicletasgil.blogspot.com.es/",
+     "kind": "shop"
+    }
+   ]
+  },
+  "a2842": {
+   "shops": 9,
+   "hire": 3,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "El Pedal",
+     "km": 3.0,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Tracks and Pedals",
+     "km": 3.4,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Rimar",
+     "km": 3.4,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "David Estirado",
+     "km": 3.4,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Tracks and Pedals",
+     "km": 3.6,
+     "hire": true,
+     "repair": true,
+     "web": "https://www.tracksandpedals.es/",
+     "kind": "shop"
+    },
+    {
+     "name": "The Shop Bike",
+     "km": 6.1,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "ONBike Shop",
+     "km": 6.1,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Ciclos Benavent",
+     "km": 6.9,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a8934": {
+   "shops": 9,
+   "hire": 3,
+   "repair_stations": 1,
+   "near": [
+    {
+     "name": "BIZIEBIKE (BICICLETAS ELECTRICAS)",
+     "km": 2.8,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Marcial",
+     "km": 11.3,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Ride Galicia",
+     "km": 11.5,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Gorilabike",
+     "km": 11.6,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Tramo Libre",
+     "km": 11.7,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "El box de Jorge",
+     "km": 11.8,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Praça Deu la Deu, Monção",
+     "km": 12.5,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Parque A Canuda, Salvaterra do Miño",
+     "km": 12.5,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    }
+   ]
+  },
+  "a2835": {
+   "shops": 3,
+   "hire": 22,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "Bicisprint",
+     "km": 6.3,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bicicletes Sanchis",
+     "km": 9.8,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "21 - Camp de futbol",
+     "km": 9.8,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.ontibici.com",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "19 - Martínez Valls",
+     "km": 10.3,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.ontibici.com",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "20 - Avinguda Albaida",
+     "km": 10.4,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.ontibici.com",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "16 - Avinguda Vicent Girones Mora",
+     "km": 10.5,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.ontibici.com",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "3 - Alcalde Paco Montes",
+     "km": 10.6,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.ontibici.com",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "11 - Salvador Tormo",
+     "km": 10.6,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.ontibici.com",
+     "kind": "hire",
+     "points": 1
+    }
+   ]
+  },
+  "a2262": {
+   "shops": 13,
+   "hire": 20,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "Costa Blanca Hire",
+     "km": 5.9,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.costablancahire.com/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Ciclos Campuzano",
+     "km": 6.7,
+     "hire": false,
+     "repair": false,
+     "web": "https://www.cicloscampuzano.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Plan Bikes",
+     "km": 6.9,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Trek",
+     "km": 7.1,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Urban Bike",
+     "km": 7.7,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Alicante By Bike",
+     "km": 7.9,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bikes&City Alicante - Alquiler, rutas, restauración, reparación y venta de bicicletas",
+     "km": 8.3,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.bikesandcity.com",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": null,
+     "km": 8.7,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a128": {
+   "shops": 1,
+   "hire": 1,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "GP7 bikes",
+     "km": 5.9,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a209": {
+   "shops": 0,
+   "hire": 0,
+   "repair_stations": 1,
+   "near": []
+  },
+  "a8679": {
+   "shops": 3,
+   "hire": 0,
+   "repair_stations": 1,
+   "near": [
+    {
+     "name": "BiciXtrem",
+     "km": 7.0,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Velo Berga",
+     "km": 7.6,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Cofac-Ferbikes Prats S.L.",
+     "km": 11.3,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a476": {
+   "shops": 0,
+   "hire": 0,
+   "repair_stations": 0,
+   "near": []
+  },
+  "a2750": {
+   "shops": 8,
+   "hire": 0,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "Pedalet",
+     "km": 4.9,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "On Bike",
+     "km": 9.0,
+     "hire": false,
+     "repair": true,
+     "web": "https://onbikeshop.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Bicicletas Sanegre",
+     "km": 9.1,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bicibox Alcoy",
+     "km": 9.4,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Scott",
+     "km": 10.1,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "The Shop Bike",
+     "km": 10.2,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bicicletas Lerma-Carraspo",
+     "km": 10.9,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": null,
+     "km": 11.0,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a7809": {
+   "shops": 11,
+   "hire": 1,
+   "repair_stations": 1,
+   "near": [
+    {
+     "name": "Bici equip",
+     "km": 1.4,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Golden Bike´s",
+     "km": 2.3,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": null,
+     "km": 9.1,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Godoy Cardedeu",
+     "km": 9.1,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Biking Point Granollers",
+     "km": 9.1,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Cicles Ruaix",
+     "km": 9.3,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Cycling no limit Cardadeu, S.L.",
+     "km": 10.2,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Ravet Bike",
+     "km": 11.1,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a7904": {
+   "shops": 11,
+   "hire": 2,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "Garagem Alberto",
+     "km": 11.5,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Viana Cycles",
+     "km": 12.0,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Quintela Cycles",
+     "km": 12.0,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Butterfly Spirit",
+     "km": 12.2,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "StressOff",
+     "km": 12.3,
+     "hire": false,
+     "repair": true,
+     "web": "https://www.stressoff.pt/",
+     "kind": "shop"
+    },
+    {
+     "name": "Lavarinhas",
+     "km": 12.3,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "B my Bike",
+     "km": 12.8,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "InMountain Bike Shop",
+     "km": 13.0,
+     "hire": true,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a12534": {
+   "shops": 2,
+   "hire": 0,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "Bike Stop",
+     "km": 4.6,
+     "hire": false,
+     "repair": false,
+     "web": "https://www.free-motion.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Fitness & Cycling",
+     "km": 13.1,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a12836": {
+   "shops": 1,
+   "hire": 2,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "Bikulture",
+     "km": 9.3,
+     "hire": true,
+     "repair": true,
+     "web": "www.bikulture.com",
+     "kind": "shop"
+    }
+   ]
+  },
+  "a8584": {
+   "shops": 10,
+   "hire": 7,
+   "repair_stations": 1,
+   "near": [
+    {
+     "name": "Parque A Canuda, Salvaterra do Miño",
+     "km": 4.8,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Ride Galicia",
+     "km": 4.9,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Lodeira, Monção",
+     "km": 5.1,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "MonçaoBike",
+     "km": 5.3,
+     "hire": true,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Praça Deu la Deu, Monção",
+     "km": 6.2,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Praza Inmaculada, Tui",
+     "km": 7.7,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Piscina Municipal, Valença",
+     "km": 8.0,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Grip Bikes",
+     "km": 8.1,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a7407": {
+   "shops": 5,
+   "hire": 0,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "Bikeworld Piera",
+     "km": 7.5,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Isart Bikes",
+     "km": 7.9,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Isart Bikes",
+     "km": 8.0,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "OMBicis",
+     "km": 13.4,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Your Bike",
+     "km": 13.7,
+     "hire": false,
+     "repair": true,
+     "web": "https://www.your-bike.es/",
+     "kind": "shop"
+    }
+   ]
+  },
+  "a722": {
+   "shops": 5,
+   "hire": 3,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "G-RIDE Portimão",
+     "km": 6.1,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Green Promenade",
+     "km": 8.3,
+     "hire": false,
+     "repair": false,
+     "web": "https://greenpromenade.com/",
+     "kind": "shop"
+    },
+    {
+     "name": null,
+     "km": 8.6,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": null,
+     "km": 8.8,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Ferragudo BikeFlow | RENTALS, TOURS & BIKE HUB",
+     "km": 9.4,
+     "hire": true,
+     "repair": true,
+     "web": "https://www.waterflow.pt",
+     "kind": "shop"
+    },
+    {
+     "name": "Bewegen Carvoeiro",
+     "km": 12.6,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.bewegen.pt",
+     "kind": "hire",
+     "points": 1
+    }
+   ]
+  },
+  "a7978": {
+   "shops": 9,
+   "hire": 0,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "The Cyclery",
+     "km": 5.3,
+     "hire": false,
+     "repair": true,
+     "web": "http://www.thecyclery.es/",
+     "kind": "shop"
+    },
+    {
+     "name": "BKR VEC Store",
+     "km": 5.6,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": null,
+     "km": 5.8,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Sala Sport Bike",
+     "km": 5.9,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Fasol",
+     "km": 6.4,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Triskel 365",
+     "km": 6.7,
+     "hire": false,
+     "repair": false,
+     "web": "http://www.triskel365.com",
+     "kind": "shop"
+    },
+    {
+     "name": "Ribikes",
+     "km": 7.1,
+     "hire": false,
+     "repair": true,
+     "web": "http://www.ribikes.cat",
+     "kind": "shop"
+    },
+    {
+     "name": "Tomas Bellès",
+     "km": 7.5,
+     "hire": false,
+     "repair": false,
+     "web": "http://tomasbelles.com",
+     "kind": "shop"
+    }
+   ]
+  },
+  "a1435": {
+   "shops": 3,
+   "hire": 0,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "Bicicletas Gonzalo",
+     "km": 3.2,
+     "hire": false,
+     "repair": false,
+     "web": "https://www.bicicletasgonzalo.es/",
+     "kind": "shop"
+    },
+    {
+     "name": "Second Bike",
+     "km": 4.4,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Costabike",
+     "km": 5.3,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a626": {
+   "shops": 18,
+   "hire": 8,
+   "repair_stations": 2,
+   "near": [
+    {
+     "name": "JM Bikes",
+     "km": 4.6,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "BSM Bikes",
+     "km": 6.8,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Capitan Ways",
+     "km": 9.5,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Pedalmoto Bicicletas",
+     "km": 10.4,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Harman Bikes Granada",
+     "km": 10.6,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bicimarket Granada Sur",
+     "km": 10.8,
+     "hire": false,
+     "repair": false,
+     "web": "https://www.bicimarket.com/es/tiendas/63-bicimarket-granada",
+     "kind": "shop"
+    },
+    {
+     "name": "Bicicletas Coleta",
+     "km": 10.9,
+     "hire": false,
+     "repair": true,
+     "web": "https://bicicletascoleta.es",
+     "kind": "shop"
+    },
+    {
+     "name": "Nevada Bike",
+     "km": 11.0,
+     "hire": true,
+     "repair": false,
+     "web": "https://nevadabike.com",
+     "kind": "shop"
+    }
+   ]
+  },
+  "a294": {
+   "shops": 4,
+   "hire": 1,
+   "repair_stations": 1,
+   "near": [
+    {
+     "name": "Cyclohobby",
+     "km": 11.7,
+     "hire": false,
+     "repair": false,
+     "web": "https://www.ciclohobby.es",
+     "kind": "shop"
+    },
+    {
+     "name": "Bikefullness",
+     "km": 12.1,
+     "hire": true,
+     "repair": true,
+     "web": "http://www.bikefullness.com",
+     "kind": "shop"
+    },
+    {
+     "name": "Bicis Buendia",
+     "km": 14.1,
+     "hire": false,
+     "repair": true,
+     "web": "https://bicisbuendia.com",
+     "kind": "shop"
+    },
+    {
+     "name": "XRC Bikes",
+     "km": 14.4,
+     "hire": false,
+     "repair": true,
+     "web": "https://www.xrcbike.com",
+     "kind": "shop"
+    }
+   ]
+  },
+  "a6474": {
+   "shops": 0,
+   "hire": 1,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "Câmara Municipal de Arouca",
+     "km": 11.0,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    }
+   ]
+  },
+  "a1245": {
+   "shops": 0,
+   "hire": 0,
+   "repair_stations": 0,
+   "near": []
+  },
+  "a7646": {
+   "shops": 29,
+   "hire": 3,
+   "repair_stations": 2,
+   "near": [
+    {
+     "name": "Bike Tolrà",
+     "km": 0.7,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "BTT Esport Matadepera",
+     "km": 5.1,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Trek",
+     "km": 5.3,
+     "hire": false,
+     "repair": false,
+     "web": "https://www.bicisprint.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Bike-ocasion",
+     "km": 5.3,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "MTB a tu gusto",
+     "km": 5.7,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Ciclo sport Jaime I",
+     "km": 5.9,
+     "hire": false,
+     "repair": false,
+     "web": "http://ciclosjaumeprimero.blogspot.com.es",
+     "kind": "shop"
+    },
+    {
+     "name": "Biking Point",
+     "km": 6.0,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Terrabike",
+     "km": 6.2,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a2839": {
+   "shops": 4,
+   "hire": 1,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": null,
+     "km": 7.2,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "ONBike Shop",
+     "km": 13.9,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "The Shop Bike",
+     "km": 14.0,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Ciclos Benavent",
+     "km": 14.5,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a9158": {
+   "shops": 17,
+   "hire": 3,
+   "repair_stations": 4,
+   "near": [
+    {
+     "name": "Pistón Motos",
+     "km": 4.8,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Welgood",
+     "km": 5.3,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Trek",
+     "km": 5.9,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "xtrembike",
+     "km": 6.3,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "ANCA",
+     "km": 7.1,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bici O Con",
+     "km": 7.7,
+     "hire": false,
+     "repair": true,
+     "web": "https://www.biciocon.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "BICISS",
+     "km": 8.1,
+     "hire": true,
+     "repair": true,
+     "web": "https://biciss.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Que Bici",
+     "km": 8.2,
+     "hire": false,
+     "repair": false,
+     "web": "http://www.quebici.es",
+     "kind": "shop"
+    }
+   ]
+  },
+  "a8338": {
+   "shops": 2,
+   "hire": 4,
+   "repair_stations": 1,
+   "near": [
+    {
+     "name": "B my Bike",
+     "km": 10.4,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Av. das Comunidades Portuguesas, Vila Nova de Cerveira",
+     "km": 11.3,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Praça do Município, Vila Nova de Cerveira",
+     "km": 11.4,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Praza do Seixo",
+     "km": 11.4,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Butterfly Spirit",
+     "km": 13.2,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a823": {
+   "shops": 6,
+   "hire": 3,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "Monstruo Bike",
+     "km": 5.9,
+     "hire": false,
+     "repair": true,
+     "web": "https://monstruobike.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Mbikes",
+     "km": 9.9,
+     "hire": false,
+     "repair": false,
+     "web": "https://www.martimoto.com",
+     "kind": "shop"
+    },
+    {
+     "name": "Two Monkey Bike",
+     "km": 13.3,
+     "hire": false,
+     "repair": false,
+     "web": "https://two-monkey-bike.negocio.site/",
+     "kind": "shop"
+    },
+    {
+     "name": "Nevada Bike",
+     "km": 14.3,
+     "hire": true,
+     "repair": false,
+     "web": "https://nevadabike.com",
+     "kind": "shop"
+    },
+    {
+     "name": "JM Bikes",
+     "km": 14.7,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Pancracio Bicis",
+     "km": 14.7,
+     "hire": true,
+     "repair": true,
+     "web": "http://inbicyclewetrust.com",
+     "kind": "shop"
+    },
+    {
+     "name": "Locker & Bike",
+     "km": 14.7,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    }
+   ]
+  },
+  "a2504": {
+   "shops": 6,
+   "hire": 8,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "Ferretería",
+     "km": 6.0,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Ciclos Ochoa",
+     "km": 11.1,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Weekend Bikes",
+     "km": 11.8,
+     "hire": false,
+     "repair": true,
+     "web": "https://weekendbikeshop.es/",
+     "kind": "shop"
+    },
+    {
+     "name": "Bicisanvi - Ciudad Deportiva",
+     "km": 11.8,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Guijarro Tot Sport",
+     "km": 12.5,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bicisanvi - Ajuntament",
+     "km": 12.5,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bicisanvi - Hort dels Lleons",
+     "km": 12.5,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Trek San Vicente",
+     "km": 12.6,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a12842": {
+   "shops": 4,
+   "hire": 2,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "ExtremeBikes",
+     "km": 9.4,
+     "hire": false,
+     "repair": false,
+     "web": "http://extreme-bikes.com/index.php",
+     "kind": "shop"
+    },
+    {
+     "name": "Happy Bikes",
+     "km": 10.4,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.happybikes.pt",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "E-Bike Madeira",
+     "km": 10.9,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.ebikemadeira.com",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Freeride Madeira",
+     "km": 11.9,
+     "hire": false,
+     "repair": false,
+     "web": "https://freeridemadeira.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Bikezone",
+     "km": 12.8,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bike Zone Madeira - Bicycles Store & Repair",
+     "km": 13.2,
+     "hire": false,
+     "repair": false,
+     "web": "https://www.facebook.com/bzfunchal",
+     "kind": "shop"
+    }
+   ]
+  },
+  "a6902": {
+   "shops": 3,
+   "hire": 0,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "Armazéns Marão",
+     "km": 2.1,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": null,
+     "km": 2.2,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": null,
+     "km": 2.5,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a7171": {
+   "shops": 5,
+   "hire": 3,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": null,
+     "km": 13.4,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Armazéns Marão",
+     "km": 13.6,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": null,
+     "km": 13.7,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bikezone",
+     "km": 14.4,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "BikeSmile",
+     "km": 14.4,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bicicletas Vitelinhas Estação 2",
+     "km": 14.6,
+     "hire": true,
+     "repair": false,
+     "web": "https://vitelinhas.cm-fafe.pt/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bicicletas Vitelinhas Estação 1",
+     "km": 14.6,
+     "hire": true,
+     "repair": false,
+     "web": "https://vitelinhas.cm-fafe.pt/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bicicletas Vitelinhas Estação 3",
+     "km": 14.7,
+     "hire": true,
+     "repair": false,
+     "web": "https://vitelinhas.cm-fafe.pt/",
+     "kind": "hire",
+     "points": 1
+    }
+   ]
+  },
+  "a6967": {
+   "shops": 4,
+   "hire": 0,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "Ciclesport MARCOS VALLS",
+     "km": 3.9,
+     "hire": false,
+     "repair": true,
+     "web": "http://www.bike-shop.es/index.php?id_lang=7",
+     "kind": "shop"
+    },
+    {
+     "name": "Top Cycling",
+     "km": 3.9,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Mariné",
+     "km": 14.5,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Maxi Bike",
+     "km": 14.8,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a5649": {
+   "shops": 12,
+   "hire": 20,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "Bicicletas beÁgueda Estação 05",
+     "km": 1.4,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.cm-agueda.pt/beagueda",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bicicletas beÁgueda Estação 06",
+     "km": 1.5,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.cm-agueda.pt/beagueda",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bike Vendas",
+     "km": 2.6,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bike Vendas",
+     "km": 3.1,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Brinco-Bike",
+     "km": 3.2,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Brinco-Bike",
+     "km": 3.2,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "RC Bike",
+     "km": 3.3,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "JC Bikes",
+     "km": 4.1,
+     "hire": false,
+     "repair": true,
+     "web": "http://www.jcbikes.com",
+     "kind": "shop"
+    }
+   ]
+  },
+  "a9866": {
+   "shops": 6,
+   "hire": 20,
+   "repair_stations": 1,
+   "near": [
+    {
+     "name": "Campo de Fútbol Manuel Jiménez Abalo",
+     "km": 4.8,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Luz Salgada",
+     "km": 4.9,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "IES Castro Alobre",
+     "km": 5.0,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Parque Matosinhos",
+     "km": 5.0,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "09 - Rodrigo de Mendoza",
+     "km": 5.1,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "O Piñeiriño",
+     "km": 5.2,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": null,
+     "km": 5.3,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Rodas",
+     "km": 5.4,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a7896": {
+   "shops": 6,
+   "hire": 3,
+   "repair_stations": 2,
+   "near": [
+    {
+     "name": "Live Bikes",
+     "km": 1.6,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": null,
+     "km": 12.9,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "A. Pou",
+     "km": 13.0,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": null,
+     "km": 13.0,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Taller I Motos Molist SL",
+     "km": 13.5,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Descent",
+     "km": 13.8,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.descent.cat/en",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Mickey Motos",
+     "km": 14.1,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Tarya Bikes",
+     "km": 14.3,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a2142": {
+   "shops": 6,
+   "hire": 26,
+   "repair_stations": 2,
+   "near": [
+    {
+     "name": "BiciElx Estación #35 Hospital del Vinalopó",
+     "km": 6.6,
+     "hire": true,
+     "repair": false,
+     "web": "https://bicielx.es/estaciones-bicicletas/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Quesada Bikes",
+     "km": 6.8,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bici Elx",
+     "km": 6.9,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 2
+    },
+    {
+     "name": "BiciElx Estación #89 CEIP Dama d’Elx",
+     "km": 7.1,
+     "hire": true,
+     "repair": false,
+     "web": "https://bicielx.es/estaciones-bicicletas/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "BiciElx - C.P. Mariano Benlliure",
+     "km": 7.2,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "BiciElx Estación #23 - Conrado del Campo / Trinquet",
+     "km": 7.3,
+     "hire": true,
+     "repair": false,
+     "web": "https://bicielx.es/estaciones-bicicletas/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "BiciElx - Plaça de Crevillent",
+     "km": 7.5,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Ajuntament D'Elx",
+     "km": 7.5,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 3
+    }
+   ]
+  },
+  "a468": {
+   "shops": 2,
+   "hire": 1,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": null,
+     "km": 8.6,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Pérez Bike",
+     "km": 9.0,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "23 HQ Degrees Sports",
+     "km": 13.2,
+     "hire": true,
+     "repair": false,
+     "web": "https://hq.23degrees-sports.com",
+     "kind": "hire",
+     "points": 1
+    }
+   ]
+  },
+  "a8694": {
+   "shops": 23,
+   "hire": 33,
+   "repair_stations": 4,
+   "near": [
+    {
+     "name": "Auto Equip",
+     "km": 6.9,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "20- Sant Ponç",
+     "km": 7.1,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "01- Biblioteca Antònia Adroher",
+     "km": 7.4,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "12-Fontajau",
+     "km": 7.4,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Parada n24",
+     "km": 7.4,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Cyclosphera",
+     "km": 7.5,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Top Bici",
+     "km": 7.7,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Dosofftrack",
+     "km": 7.8,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a2692": {
+   "shops": 10,
+   "hire": 6,
+   "repair_stations": 4,
+   "near": [
+    {
+     "name": "53.eleven",
+     "km": 1.2,
+     "hire": false,
+     "repair": false,
+     "web": "https://53eleven.cc/",
+     "kind": "shop"
+    },
+    {
+     "name": "Vuelta Turistica",
+     "km": 4.9,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.vuelta-turistica.com/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": null,
+     "km": 5.8,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Baguet",
+     "km": 6.3,
+     "hire": true,
+     "repair": true,
+     "web": "https://www.baguet.cc/",
+     "kind": "shop"
+    },
+    {
+     "name": "Cicles Tony",
+     "km": 6.8,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Start With Bike",
+     "km": 7.1,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.startwithbike.com",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Coll de Rates Cycling Holidays",
+     "km": 7.3,
+     "hire": true,
+     "repair": false,
+     "web": "https://collderatescycling.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Cicles Xaló",
+     "km": 11.7,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a91": {
+   "shops": 3,
+   "hire": 6,
+   "repair_stations": 1,
+   "near": [
+    {
+     "name": "Marbella Rent a Bike",
+     "km": 7.1,
+     "hire": false,
+     "repair": false,
+     "web": "https://www.marbellarentabike.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "ANDALUCIA ON BIKE",
+     "km": 8.1,
+     "hire": true,
+     "repair": false,
+     "web": "http://www.andaluciaonbike.com",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bike Base",
+     "km": 8.6,
+     "hire": true,
+     "repair": true,
+     "web": "https://www.bikebase.es/",
+     "kind": "shop"
+    },
+    {
+     "name": "Benalmadena Segway Tours & Bikes",
+     "km": 10.0,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.marbellasegwaytours.com/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Fantastica Playa les Cucis",
+     "km": 10.1,
+     "hire": true,
+     "repair": false,
+     "web": "https://marbellarentabike.com/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Sun Bikes",
+     "km": 13.6,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bike Philosophy Marbella",
+     "km": 14.1,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a2021": {
+   "shops": 21,
+   "hire": 63,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": null,
+     "km": 9.5,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Repuestos Aguilar",
+     "km": 10.1,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Ciclosport Moya",
+     "km": 10.2,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bicicletas Borrascas",
+     "km": 11.6,
+     "hire": true,
+     "repair": true,
+     "web": "https://www.bicicletasborrascassl.es/",
+     "kind": "shop"
+    },
+    {
+     "name": "Thebike",
+     "km": 12.2,
+     "hire": true,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Ciclos Teo",
+     "km": 12.4,
+     "hire": true,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "MUyBICI: Santiago y Zaraiche",
+     "km": 12.4,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Autoferro H&V Bikes",
+     "km": 12.8,
+     "hire": true,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a2680": {
+   "shops": 7,
+   "hire": 15,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "Bicicletas Lerma-Carraspo",
+     "km": 9.0,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "The Shop Bike",
+     "km": 9.5,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Scott",
+     "km": 9.5,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bicibox Alcoy",
+     "km": 10.2,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "On Bike",
+     "km": 10.5,
+     "hire": false,
+     "repair": true,
+     "web": "https://onbikeshop.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Bicicletas Sanegre",
+     "km": 10.6,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "24 - Renfe",
+     "km": 13.5,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.ontibici.com",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "23 - Nou Hospital",
+     "km": 13.6,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.ontibici.com",
+     "kind": "hire",
+     "points": 1
+    }
+   ]
+  },
+  "a2139": {
+   "shops": 4,
+   "hire": 0,
+   "repair_stations": 1,
+   "near": [
+    {
+     "name": "Quesada Bikes",
+     "km": 12.1,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": null,
+     "km": 12.5,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": null,
+     "km": 14.6,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Gonvibikes",
+     "km": 14.7,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a7908": {
+   "shops": 6,
+   "hire": 1,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "InMountain Bike Shop",
+     "km": 7.7,
+     "hire": true,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Villa Bike",
+     "km": 8.3,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "BikeVez",
+     "km": 8.8,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Moto Arcos",
+     "km": 9.0,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Quintela Cycles",
+     "km": 10.0,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Garagem Alberto",
+     "km": 11.9,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a12505": {
+   "shops": 9,
+   "hire": 14,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": null,
+     "km": 2.5,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Colnago",
+     "km": 6.3,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Life On 2 Wheels Bike Center",
+     "km": 6.8,
+     "hire": true,
+     "repair": true,
+     "web": "https://www.lifeon2wheels.eu",
+     "kind": "shop"
+    },
+    {
+     "name": "Cyclo Canaria",
+     "km": 6.8,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Elemi & Lino's bike",
+     "km": 7.5,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Free Motion Bikecenter - Meloneras",
+     "km": 7.8,
+     "hire": true,
+     "repair": true,
+     "web": "https://www.free-motion.com",
+     "kind": "shop"
+    },
+    {
+     "name": "Ekib Gran Canaria",
+     "km": 8.3,
+     "hire": true,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Moto and bike rent",
+     "km": 8.8,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.motoandbike.com/",
+     "kind": "shop"
+    }
+   ]
+  },
+  "a9516": {
+   "shops": 8,
+   "hire": 2,
+   "repair_stations": 1,
+   "near": [
+    {
+     "name": "Todo Bici",
+     "km": 2.1,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Tourmalet",
+     "km": 2.2,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Mortirolo Cycling",
+     "km": 2.4,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "New Bikes",
+     "km": 3.9,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Salnes Bici",
+     "km": 11.2,
+     "hire": false,
+     "repair": false,
+     "web": "https://salnesbici.com/",
+     "kind": "shop"
+    },
+    {
+     "name": null,
+     "km": 11.5,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "El Puerto Bike Work Shop",
+     "km": 12.1,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Moto Bike Pontevedra",
+     "km": 13.2,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a5988": {
+   "shops": 8,
+   "hire": 0,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "Orlando",
+     "km": 5.9,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": null,
+     "km": 9.0,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Pedalsempre",
+     "km": 13.2,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bike Vendas",
+     "km": 14.0,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "JC Bikes",
+     "km": 14.1,
+     "hire": false,
+     "repair": true,
+     "web": "http://www.jcbikes.com",
+     "kind": "shop"
+    },
+    {
+     "name": "Bike Vendas",
+     "km": 14.1,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Brinco-Bike",
+     "km": 14.4,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Brinco-Bike",
+     "km": 14.5,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a363": {
+   "shops": 0,
+   "hire": 1,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "AlpujarraBikes",
+     "km": 8.6,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.alpujarrabikes.com/",
+     "kind": "hire",
+     "points": 1
+    }
+   ]
+  },
+  "a6554": {
+   "shops": 4,
+   "hire": 1,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": null,
+     "km": 12.8,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": null,
+     "km": 13.2,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "LongusBike",
+     "km": 13.6,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": null,
+     "km": 14.3,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bikepor",
+     "km": 15.0,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.bikepor.com",
+     "kind": "hire",
+     "points": 1
+    }
+   ]
+  },
+  "a7431": {
+   "shops": 0,
+   "hire": 0,
+   "repair_stations": 0,
+   "near": []
+  },
+  "a4168": {
+   "shops": 9,
+   "hire": 53,
+   "repair_stations": 6,
+   "near": [
+    {
+     "name": "Bicicletes Cabedo",
+     "km": 5.3,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Ciclos Faustin",
+     "km": 7.7,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Tubikes",
+     "km": 11.0,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Canmanolo",
+     "km": 11.1,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bicicas Grupo Lourdes",
+     "km": 11.2,
+     "hire": true,
+     "repair": false,
+     "web": "https://bicicas.es",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bicicas UJI - PayNoPain",
+     "km": 11.3,
+     "hire": true,
+     "repair": false,
+     "web": "https://bicicas.es",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bicicas Piscina Municipal",
+     "km": 11.5,
+     "hire": true,
+     "repair": false,
+     "web": "https://bicicas.es",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "59. UJI - FCS",
+     "km": 11.5,
+     "hire": true,
+     "repair": false,
+     "web": "https://bicicas.es:443/",
+     "kind": "hire",
+     "points": 1
+    }
+   ]
+  },
+  "a4494": {
+   "shops": 3,
+   "hire": 10,
+   "repair_stations": 4,
+   "near": [
+    {
+     "name": "Energy Bike",
+     "km": 12.5,
+     "hire": true,
+     "repair": true,
+     "web": "http://energybikes.es/",
+     "kind": "shop"
+    },
+    {
+     "name": "Bicicas Hospital General",
+     "km": 13.9,
+     "hire": true,
+     "repair": false,
+     "web": "https://bicicas.es",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bicicas San Agustín",
+     "km": 14.0,
+     "hire": true,
+     "repair": false,
+     "web": "https://bicicas.es",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bicicas Plaza Teodoro Izquierdo",
+     "km": 14.7,
+     "hire": true,
+     "repair": false,
+     "web": "https://bicicas.es",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "UJI - Facultad de Ciencias Jurídicas y Económicas",
+     "km": 14.7,
+     "hire": true,
+     "repair": false,
+     "web": "https://bicicas.es",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bicicas Station 1 - Facultad de Ciencias Humanas y Sociales",
+     "km": 14.8,
+     "hire": true,
+     "repair": false,
+     "web": "https://bicicas.es",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Cicles AB",
+     "km": 14.9,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Cicles AB",
+     "km": 14.9,
+     "hire": false,
+     "repair": false,
+     "web": "https://ciclesab.com/",
+     "kind": "shop"
+    }
+   ]
+  },
+  "a6560": {
+   "shops": 0,
+   "hire": 0,
+   "repair_stations": 0,
+   "near": []
+  },
+  "a6820": {
+   "shops": 6,
+   "hire": 0,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "Douro Cycles",
+     "km": 7.1,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "bicampeã",
+     "km": 10.0,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bicicletas Rebelo",
+     "km": 10.2,
+     "hire": false,
+     "repair": false,
+     "web": "https://bcdvilareal.pt/lojas/bicicletas-rebelo/",
+     "kind": "shop"
+    },
+    {
+     "name": "SSS Ciclomotores Campeã",
+     "km": 10.5,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Roda No Ar - BikeShop",
+     "km": 12.1,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": null,
+     "km": 14.0,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a3927": {
+   "shops": 4,
+   "hire": 6,
+   "repair_stations": 1,
+   "near": [
+    {
+     "name": "Tramuntana Tours",
+     "km": 0.7,
+     "hire": false,
+     "repair": false,
+     "web": "https://tramuntanatours.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Kilometro Cero",
+     "km": 0.7,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Mayol",
+     "km": 0.8,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Tramuntana Tours",
+     "km": 3.1,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Kilómetro Cero",
+     "km": 3.6,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "North Wind Cycles.com",
+     "km": 9.7,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Cycling Planet",
+     "km": 10.0,
+     "hire": false,
+     "repair": false,
+     "web": "http://www.cyclingplanet.es",
+     "kind": "shop"
+    },
+    {
+     "name": "Comerç Bike",
+     "km": 14.0,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a4405": {
+   "shops": 1,
+   "hire": 5,
+   "repair_stations": 1,
+   "near": [
+    {
+     "name": "Energy Bike",
+     "km": 6.2,
+     "hire": true,
+     "repair": true,
+     "web": "http://energybikes.es/",
+     "kind": "shop"
+    },
+    {
+     "name": "Bicicas Avenida Ferrandis Salvador",
+     "km": 12.8,
+     "hire": true,
+     "repair": false,
+     "web": "https://bicicas.es",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bicicas Planetario",
+     "km": 14.3,
+     "hire": true,
+     "repair": false,
+     "web": "https://bicicas.es",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bicicas Tirant lo Blanch - Pinar",
+     "km": 14.3,
+     "hire": true,
+     "repair": false,
+     "web": "https://bicicas.es",
+     "kind": "hire",
+     "points": 1
+    }
+   ]
+  },
+  "a7659": {
+   "shops": 13,
+   "hire": 2,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "KTM",
+     "km": 4.9,
+     "hire": false,
+     "repair": false,
+     "web": "https://ktm-bike.pt/pt/pt/contactos",
+     "kind": "shop"
+    },
+    {
+     "name": "Garagem Alberto",
+     "km": 10.3,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Viabike",
+     "km": 11.2,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Quintela Cycles",
+     "km": 12.3,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "StressOff",
+     "km": 12.8,
+     "hire": false,
+     "repair": true,
+     "web": "https://www.stressoff.pt/",
+     "kind": "shop"
+    },
+    {
+     "name": "Lavarinhas",
+     "km": 12.8,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Viana Cycles",
+     "km": 13.3,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Moto Acessórios de Barcelos",
+     "km": 13.5,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a5194": {
+   "shops": 6,
+   "hire": 17,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "Bicicletas beÁgueda Estação 20",
+     "km": 4.4,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.cm-agueda.pt/beagueda",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bicicletas beÁgueda Estação 18",
+     "km": 5.8,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.cm-agueda.pt/beagueda",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Motokit",
+     "km": 6.9,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Going Bike",
+     "km": 7.0,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bicicletas beÁgueda Estação 19",
+     "km": 8.2,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.cm-agueda.pt/beagueda",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bicicletas beÁgueda Estação 07",
+     "km": 8.5,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.cm-agueda.pt/beagueda",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bicicletas beÁgueda Estação 04",
+     "km": 9.6,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.cm-agueda.pt/beagueda",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bicicletas beÁgueda Estação 08",
+     "km": 9.7,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.cm-agueda.pt/beagueda",
+     "kind": "hire",
+     "points": 1
+    }
+   ]
+  },
+  "a12832": {
+   "shops": 4,
+   "hire": 3,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "Bikezone",
+     "km": 3.1,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bike Zone Madeira - Bicycles Store & Repair",
+     "km": 3.1,
+     "hire": false,
+     "repair": false,
+     "web": "https://www.facebook.com/bzfunchal",
+     "kind": "shop"
+    },
+    {
+     "name": "Freeride Madeira",
+     "km": 4.2,
+     "hire": false,
+     "repair": false,
+     "web": "https://freeridemadeira.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "E-Bike Madeira",
+     "km": 4.9,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.ebikemadeira.com",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Happy Bikes",
+     "km": 5.5,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.happybikes.pt",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "ExtremeBikes",
+     "km": 6.0,
+     "hire": false,
+     "repair": false,
+     "web": "http://extreme-bikes.com/index.php",
+     "kind": "shop"
+    }
+   ]
+  },
+  "a12869": {
+   "shops": 0,
+   "hire": 0,
+   "repair_stations": 0,
+   "near": []
+  },
+  "a3697": {
+   "shops": 31,
+   "hire": 118,
+   "repair_stations": 1,
+   "near": [
+    {
+     "name": "Comerç Bike",
+     "km": 3.0,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bike Repair Mallorca",
+     "km": 6.0,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bicipalma 4",
+     "km": 6.6,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.bicipalma.com/ca/palma/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bicipalma 73",
+     "km": 7.2,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.bicipalma.com/ca/palma/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bicipalma 5",
+     "km": 7.4,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.bicipalma.com/ca/palma/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bicipalma 78",
+     "km": 7.5,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.bicipalma.com/ca/palma/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Ciclos Gomila",
+     "km": 7.7,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bicipalma 43",
+     "km": 7.7,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.bicipalma.com/ca/palma/",
+     "kind": "hire",
+     "points": 1
+    }
+   ]
+  },
+  "a3537": {
+   "shops": 26,
+   "hire": 120,
+   "repair_stations": 1,
+   "near": [
+    {
+     "name": "LibertySport",
+     "km": 1.3,
+     "hire": true,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Liberty Sport",
+     "km": 3.4,
+     "hire": true,
+     "repair": true,
+     "web": "https://www.libertysport.es/",
+     "kind": "shop"
+    },
+    {
+     "name": "Lolo’s Bike",
+     "km": 3.4,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.lolosbike.com",
+     "kind": "shop"
+    },
+    {
+     "name": "tienda de bici",
+     "km": 3.4,
+     "hire": true,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Pepe",
+     "km": 3.6,
+     "hire": false,
+     "repair": false,
+     "web": "https://bicicletaspepe.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Yes We Bike!",
+     "km": 4.6,
+     "hire": false,
+     "repair": false,
+     "web": "https://yeswe.bike/",
+     "kind": "shop"
+    },
+    {
+     "name": "Bicipalma 57",
+     "km": 5.7,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.bicipalma.com/ca/palma/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bicipalma 8",
+     "km": 6.3,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.bicipalma.com/ca/palma/",
+     "kind": "hire",
+     "points": 1
+    }
+   ]
+  },
+  "a12872": {
+   "shops": 1,
+   "hire": 1,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "Bikulture",
+     "km": 12.4,
+     "hire": true,
+     "repair": true,
+     "web": "www.bikulture.com",
+     "kind": "shop"
+    }
+   ]
+  },
+  "a3788": {
+   "shops": 5,
+   "hire": 1,
+   "repair_stations": 3,
+   "near": [
+    {
+     "name": "Bicicletes Nadal Oliver",
+     "km": 4.7,
+     "hire": false,
+     "repair": false,
+     "web": "https://www.bicicletesnadal.com",
+     "kind": "shop"
+    },
+    {
+     "name": "Bikeservice",
+     "km": 5.7,
+     "hire": false,
+     "repair": true,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Ciclos Gomila",
+     "km": 6.7,
+     "hire": false,
+     "repair": false,
+     "web": "https://www.ciclosgomila.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Cycling Planet",
+     "km": 11.9,
+     "hire": false,
+     "repair": false,
+     "web": "http://www.cyclingplanet.es",
+     "kind": "shop"
+    },
+    {
+     "name": "North Wind Cycles.com",
+     "km": 12.1,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Comerç Bike",
+     "km": 13.5,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    }
+   ]
+  },
+  "a3469": {
+   "shops": 23,
+   "hire": 89,
+   "repair_stations": 1,
+   "near": [
+    {
+     "name": "Quintana",
+     "km": 2.2,
+     "hire": false,
+     "repair": false,
+     "web": "http://www.ciclosquintana.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Outlet bike",
+     "km": 2.2,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Quintana Playa de Palma",
+     "km": 3.0,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.ciclosquintana.com/en/",
+     "kind": "shop"
+    },
+    {
+     "name": "Hürzeler",
+     "km": 3.3,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Justrentabike",
+     "km": 4.1,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.justrentabike.es",
+     "kind": "shop"
+    },
+    {
+     "name": "Cyclista Ughy & Wittner Radverleih",
+     "km": 4.1,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.cyclista.at/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "e-Bike Point",
+     "km": 4.5,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Huerzeler",
+     "km": 4.8,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.huerzeler.com/en/inspiration/stationen-und-hotels/mallorca/station/playa-de-palma-gran-fiesta",
+     "kind": "hire",
+     "points": 1
+    }
+   ]
+  },
+  "a3781": {
+   "shops": 5,
+   "hire": 22,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "Bicipalma 118",
+     "km": 11.4,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.bicipalma.com/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bicipalma 119",
+     "km": 11.5,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.bicipalma.com/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bicipalma 116",
+     "km": 11.6,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.bicipalma.com/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bicipalma 115",
+     "km": 11.7,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.bicipalma.com/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bicipalma 117",
+     "km": 11.8,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.bicipalma.com/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bicipalma 114",
+     "km": 12.0,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.bicipalma.com/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Bimont",
+     "km": 13.0,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "Bicipalma 83",
+     "km": 13.3,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.bicipalma.com/ca/palma/",
+     "kind": "hire",
+     "points": 1
+    }
+   ]
+  },
+  "a3992": {
+   "shops": 24,
+   "hire": 32,
+   "repair_stations": 2,
+   "near": [
+    {
+     "name": "Meam si Torn",
+     "km": 8.0,
+     "hire": false,
+     "repair": false,
+     "web": "https://meamsitorn.com/",
+     "kind": "shop"
+    },
+    {
+     "name": "Universal Aparthotel Elisa",
+     "km": 8.5,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.universalbeachhotels.com/hoteles/universal-aparthotel-elisa",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Scott",
+     "km": 8.6,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.coastadventure.net/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Salesca",
+     "km": 8.7,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 3
+    },
+    {
+     "name": "Philipp's",
+     "km": 8.7,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.radsport-mallorca.de/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Las Gaviotas Suites",
+     "km": 8.7,
+     "hire": true,
+     "repair": true,
+     "web": "https://www.hotellasgaviotas.com",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": null,
+     "km": 8.8,
+     "hire": false,
+     "repair": false,
+     "web": null,
+     "kind": "shop"
+    },
+    {
+     "name": "eBike-Mallorca",
+     "km": 8.8,
+     "hire": true,
+     "repair": false,
+     "web": "https://ebike-mallorca.com/",
+     "kind": "hire",
+     "points": 1
+    }
+   ]
+  },
+  "a3612": {
+   "shops": 1,
+   "hire": 7,
+   "repair_stations": 0,
+   "near": [
+    {
+     "name": "Rent-A-Bike",
+     "km": 7.2,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "DoctorBicycles Bike Rental",
+     "km": 7.3,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.doctorbicycles.com",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "S.A.M.",
+     "km": 7.5,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "RideMallorca",
+     "km": 7.6,
+     "hire": true,
+     "repair": false,
+     "web": "https://ridemallorca.com/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Cycling Center Paguera",
+     "km": 7.6,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.rad-international.de/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Tramuntbike",
+     "km": 11.0,
+     "hire": true,
+     "repair": false,
+     "web": null,
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "international",
+     "km": 11.1,
+     "hire": true,
+     "repair": false,
+     "web": "https://www.rad-international.de/",
+     "kind": "hire",
+     "points": 1
+    },
+    {
+     "name": "Yes We Bike!",
+     "km": 11.9,
+     "hire": false,
+     "repair": false,
+     "web": "https://yeswe.bike/",
+     "kind": "shop"
+    }
+   ]
+  }
+ }
+}

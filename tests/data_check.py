@@ -53,9 +53,13 @@ for sub, key in [('climate', 'climate'), ('stations', 'stations')]:
     if missing: fails.append(f'{sub}: {len(missing)} source rows not in any region file, e.g. {sorted(missing)[:3]}')
 
 # private property prices (build_site.py --private) must never be in a build that GitHub Actions publishes
-private = glob.glob(J('_site', 'data', 'score', '*-prices.json'))
+private = glob.glob(J('_site', 'data', 'score', '*-prices.json')) + glob.glob(J('_site', 'data', 'site', 'prices.json'))
 if private and os.environ.get('GITHUB_ACTIONS'): fails.append(f'private price data in the build: {private}')
-elif private: print(f'note: this is a PRIVATE build ({len(private)} price file); never publish it')
+elif private: print(f'note: this is a PRIVATE build ({len(private)} price files); never publish it')
+else:   # a public build: no price field may hide in any other data file or page either
+    for f in glob.glob(J('_site', '**', '*.json'), recursive=True) + glob.glob(J('_site', '**', '*.html'), recursive=True):
+        text = open(f, encoding='utf-8').read()
+        if any(k in text for k in ('eur_m2', 'grid_eur', 'Private family copy')): fails.append(f'price data or private wording in the public build: {f}')
 
 if fails:
     print('\n'.join(fails)); sys.exit(1)

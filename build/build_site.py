@@ -2,12 +2,15 @@
 """Build the static site into _site/ from config/, data/processed/ and site-src/.
 
   config/places.json, config/regions.json      what to build
+  data/processed/site/                         the Places pages' data and photos (pipeline/site/, run by hand)
   data/processed/climate/<country>.json         monthly modelled rows (HANDOVER 4.2)
   data/processed/stations/<country>.json        monthly station rows (HANDOVER 5.3)
   site-src/pages, css, js                       page templates, styles, scripts
 
 Output (git-ignored; deployed by GitHub Actions):
-  _site/index.html                    landing page
+  _site/index.html                    Places, the home page (site-src/pages/places.html and js/places.js)
+  _site/data/site/                    its data and photos, copied from data/processed/site/
+  _site/climate/index.html            climate comparisons: the region cards and the rideable-days chart
   _site/<region>/index.html           one dashboard per region, all from site-src/pages/region.html
   _site/data/regions/<region>.json    that region's places (plus UK baselines), climate and stations, columnar
   _site/data/summary.json             every place: 9-year monthly and whole-year averages
@@ -18,7 +21,8 @@ summary.json matches the dashboard's (JavaScript Math.round, halves up).
 
 Usage: python3 build/build_site.py   (needs node_modules/d3 from `npm ci`)
        python3 build/build_site.py --private   adds the PRIVATE property prices (data/private/, git-ignored) to the
-       score page, for the owner's local copy or the login-protected family copy only. Never in CI or on GitHub Pages.
+       Places pages and the score page, for the owner's local copy or the login-protected family copy only. Never in CI
+       or on GitHub Pages.
 """
 import glob, json, math, os, re, shutil, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -211,7 +215,24 @@ page('about/index.html', 'About Destination Cycling', 'How the Destination Cycli
      ['landing'], fill(read(J('site-src', 'pages', 'about.html')), {'YEARS': YEARS_LABEL, 'N_YEARS': N_YEARS}),
      'Source and method: <a href="https://github.com/stuartwmvivers/Destination-Cycling">GitHub</a>.')
 
-# ---------- landing page ----------
+# ---------- Places: the home page (docs/interface-plan.md, DC-27) ----------
+# data/processed/site/ comes from pipeline/site/ (run by hand) and is copied as it is. Photos: Wikimedia Commons, each
+# credited on the page. Prices only in the private build, from data/private/site_prices.json (pipeline/site/make_data.py).
+SITE = J('data', 'processed', 'site')
+for f in ['areas', 'grid', 'places', 'facilities', 'appeal']:
+    sizes[f'data/site/{f}.json'] = write(f'data/site/{f}.json', read(os.path.join(SITE, f'{f}.json')))
+shutil.copytree(os.path.join(SITE, 'img'), os.path.join(OUT, 'data', 'site', 'img'))
+site_priv = J('data', 'private', 'site_prices.json')
+site_prices = bool(PRIVATE and os.path.exists(site_priv))
+if PRIVATE and not site_prices: print(f'  --private: no {site_priv}; run pipeline/site/make_data.py first')
+if site_prices: sizes['data/site/prices.json'] = write('data/site/prices.json', read(site_priv))
+banner = ('<p class="copy-note">Private family copy: it includes home prices, which are for personal and family use only. '
+          'Please don\'t share them.</p>\n' if site_prices else '')
+sizes['index.html'] = write('index.html', fill(read(J('site-src', 'pages', 'places.html')), {
+    'LEAFLET': LEAFLET, 'BANNER': banner,
+    'CONFIG': json.dumps({'root': '', 'prices': site_prices})}).replace('{{ROOT}}', ''))
+
+# ---------- climate comparisons (the landing page until 12 November 2026) ----------
 ride = {p['place']: p['avg']['ride'][12] for p in summary['places']}
 ranked = sorted(places, key=lambda p: -ride[p['place']])
 top = max(ride.values())
@@ -222,17 +243,17 @@ bars = '\n'.join(
 def card(reg):
     own = [p for p in places if p['country'] in reg['countries']]
     text = reg['card']['text'].format(places=len(own), years=YEARS_LABEL, stations=sum(p['place'] in stations for p in own))
-    return (f'      <a class="lp-card" href="{reg["id"]}/">\n        <span class="lp-tag">Available</span>\n'
+    return (f'      <a class="lp-card" href="{{{{ROOT}}}}{reg["id"]}/">\n        <span class="lp-tag">Available</span>\n'
             f'        <h3>{esc(reg["card"]["title"])}</h3>\n        <p>{esc(text)}</p>\n'
             f'        <span class="lp-go">{esc(reg["card"]["link"])}</span>\n      </a>')
-score_cards = ''.join('\n      <a class="lp-card" href="score/bases/">\n        <span class="lp-tag">Prototype</span>\n'
+score_cards = ''.join('\n      <a class="lp-card" href="{{ROOT}}score/bases/">\n        <span class="lp-tag">Detailed scores</span>\n'
                       '        <h3>Cycling bases in Spain and Portugal</h3>\n        <p>Every 5 km of both countries scored on climbs within riding distance, weather at the climbs, '
                       'flights from Scotland, quiet roads and walking, with weights you can change.</p>\n'
                       '        <span class="lp-go">Explore the score</span>\n      </a>' for sid in score_regions if sid == 'bases')
 index_body = fill(read(J('site-src', 'pages', 'index.html')),
                   {'RIDE_BARS': bars, 'REGION_CARDS': '\n'.join(card(r) for r in regions) + score_cards, 'YEARS': YEARS_LABEL})
-page('index.html', 'Destination Cycling',
-     'Comparing places in Europe as year-round road-cycling bases, starting with nine years of weather on the Spanish coast.',
+page('climate/index.html', 'Destination Cycling: climate comparisons',
+     'Nine years of weather on the Spanish coast, checked against weather stations and compared with two UK baselines.',
      ['landing'], index_body,
      'Weather data: <a href="https://open-meteo.com/">Open-Meteo</a> historical archive (ECMWF analysis, CC BY 4.0). '
      'Station readings: © Servei Meteorològic de Catalunya (Meteocat), used with permission; © AEMET, Agencia Estatal de Meteorología; '

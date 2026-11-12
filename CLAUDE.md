@@ -33,4 +33,6 @@ METEOCAT_API_KEY=... python3 pipeline/meteocat_fetch.py && python3 pipeline/mete
 AEMET_API_KEY=...    python3 pipeline/aemet_fetch.py    && python3 pipeline/aemet_aggregate.py
 python3 pipeline/midas_fetch.py && python3 pipeline/midas_aggregate.py   # needs CEDA_ACCESS_TOKEN in .env
 python3 pipeline/stations_combine.py              # rebuilds only sources whose inputs are present
+python pipeline/site/make_data.py                 # Places data after a score rerun (score venv, DC_CACHE); then make_places/make_facilities/make_appeal
+python3 build/build_site.py --private             # owner's/family copy with prices: never push or publish this build
 ```

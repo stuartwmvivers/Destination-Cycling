@@ -6,7 +6,9 @@ A free, static website comparing places in Europe as **year-round road-cycling b
 
 | Page | What it shows |
 |---|---|
-| [Landing page](https://stuartwmvivers.github.io/Destination-Cycling/) | What the site is, regions covered, rideable days a year for every place |
+| [Places](https://stuartwmvivers.github.io/Destination-Cycling/) | The home page: areas of Spain and Portugal worth a look for cycling holidays, each with climbs, riding weather, flights, walking, eating out and bike shops; a map of every scored point; favourites and side-by-side comparison |
+| [Climate comparisons](https://stuartwmvivers.github.io/Destination-Cycling/climate/) | Regions covered and rideable days a year for every place |
+| [Detailed scores](https://stuartwmvivers.github.io/Destination-Cycling/score/bases/) | Every scored point with the full method and controls |
 | [Spanish coast](https://stuartwmvivers.github.io/Destination-Cycling/spain-coast/) | 20 places on the Costa Brava, Costa del Sol, Costa Blanca and Mallorca, 2017–2025: map, seasonal charts, every month of every year, and a model-vs-weather-station comparison for 17 towns |
 | [About](https://stuartwmvivers.github.io/Destination-Cycling/about/) | How the figures are made, how far to trust them, and every data source |
 
@@ -30,7 +32,7 @@ Needs Python 3 and Node.js.
 ```bash
 npm ci
 npx playwright install chromium     # once, for the tests
-python3 build/build_site.py         # -> _site/ (landing page, one dashboard per region, data files)
+python3 build/build_site.py         # -> _site/ (Places, climate pages, one dashboard per region, data files)
 python3 tests/data_check.py         # reference values and data integrity
 node tests/render_check.js _site    # every page, desktop and phone
 node tests/serve.js _site 8000      # preview at http://127.0.0.1:8000/
